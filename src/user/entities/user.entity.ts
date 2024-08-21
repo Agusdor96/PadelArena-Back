@@ -34,7 +34,7 @@ export class User {
         address:string
 
     @Column({ type: "text", nullable: false, default: "default-image-url" })
-        profileImg: string
+        profileImg?: string
 
     @ManyToMany(()=> Team, (team) => team.user)
         team: Team

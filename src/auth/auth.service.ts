@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as Bcrypt from 'bcrypt'
+import { CredentialsDto, UserDto } from 'src/user/dto/user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -14,7 +15,7 @@ export class AuthService {
     private readonly JWTservice: JwtService
   ) {}
 
-  async signInUser(credentials: any) {
+  async signInUser(credentials: CredentialsDto) {
     const userExist = await this.userRepository.findOne({where:{email:credentials.email}})
     const passwordComparation = Bcrypt.compare(
       credentials.password, 
@@ -37,7 +38,7 @@ export class AuthService {
       throw new BadRequestException('Email o contraseña incorrectos')
     }
   }
-  async signUpUser(UserDto: any) {
+  async signUpUser(UserDto: UserDto) {
     const emailAlreadyExist = await this.userRepository.findOne({where:{email:UserDto.email}})
     if(!emailAlreadyExist){
         const encryptedPassword = await Bcrypt.hash(UserDto.password, 10)
