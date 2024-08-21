@@ -5,16 +5,6 @@ export class CreateTournamentDto {
     @IsString()
     name: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    @Min(16)
-    teamsQuantity: number;
-
-    
-    @IsNotEmpty()
-    @IsNumber()
-    matchDuration: number;
-
     @IsDate()
     @IsNotEmpty()
     startDate: Date;
@@ -22,21 +12,40 @@ export class CreateTournamentDto {
     @IsDate()
     @IsNotEmpty()
     startTime: Date;
-
+    
     @IsDate()
     @IsNotEmpty()
     endTime: Date;
-
+    
     @IsNotEmpty()
     @IsString()
     @Length(1,7)
     playingDays: string[];
-
+    
     @IsNotEmpty()
     @IsString()
     status: string;
 
     @IsNotEmpty()
     @IsNumber()
+    @Min(16)
+    teamsQuantity: number;
+    
+    @IsNotEmpty()
+    @IsNumber()
+    matchDuration: number;
+
+    @IsNotEmpty()
+    @IsNumber()
     courts: number;
+
+    @IsNotEmpty()
+    descrption: string;
+
+    @IsNotEmpty()
+    tournamentImg: string;
+
+    @IsNotEmpty()
+    category: string;
+
 }

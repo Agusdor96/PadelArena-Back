@@ -53,7 +53,7 @@ export class Tournament {
 
   @Column("text", { array: true, nullable: true })
   imgUrl: string[]
-  
+
   @Column({ type: "text", nullable: false, default: "default-image-url" })
   tournamentFlyer: string
 
