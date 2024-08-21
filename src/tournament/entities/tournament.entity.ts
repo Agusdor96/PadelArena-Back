@@ -1,4 +1,5 @@
 import { Category } from 'src/category/entities/category.entity';
+import { Fixture } from 'src/fixture/entities/fixture.entity';
 import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -12,7 +13,7 @@ export class Tournament {
   @PrimaryGeneratedColumn('uuid')
   id:string = uuid()
   
-  @Column({type:"varchar", lenght: 50})
+  @Column({type:"varchar", length: 50})
   name:string
 
   @Column()
@@ -33,22 +34,22 @@ export class Tournament {
   @Column()
   status: boolean
 
-  @Column()
-  imgUrl:string[]
+  @Column("text", { array: true })
+    imgUrl: string[]
 
   @Column()
   courtsAvailable: number
 
-  @ManyToOne(() => Category, (category) => category.tournaments)
+  @ManyToOne(() => Category, (category) => category.tournaments, {nullable:false})
   category: Partial<Category>
 
-  @OneToMany(() => Team, (team) => team.tournament)
+  @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
   team: Team[]
 
-  @OneToMany(() => Match, (match) => match.tournament)
+  @OneToMany(() => Match, (match) => match.tournament, {nullable:true})
   matches: Match[]
 
-  @OneToOne(() => Fixture)
+  @OneToOne(() => Fixture, {nullable:true})
   fixture: Fixture
 
 }
