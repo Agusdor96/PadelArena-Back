@@ -12,6 +12,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { TeamModule } from './team/team.module';
 import { MatchModule } from './match/match.module';
 import { FixtureModule } from './fixture/fixture.module';
+import { FileModule } from './file/file.module';
+import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.module';
 
 @Module({
   imports: [
@@ -36,7 +38,9 @@ import { FixtureModule } from './fixture/fixture.module';
     TeamModule,
     MatchModule,
     TournamentModule,
-    FixtureModule
+    FixtureModule,
+    FileModule,
+    PlayerStadisticsModule
 
   ],
   controllers: [AppController],

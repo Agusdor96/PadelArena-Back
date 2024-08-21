@@ -8,7 +8,6 @@ import {v4 as uuid} from 'uuid'
 @Entity({
     name: "TEAM"
 })
-
 export class Team {
     @PrimaryGeneratedColumn("uuid")
         id:string = uuid()

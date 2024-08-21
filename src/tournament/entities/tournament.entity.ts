@@ -33,22 +33,10 @@ export class Tournament {
 
   @Column()
   status: boolean
-  
-  @Column()
-  teamsQuantity: number
 
-  @Column()
-  matchDuration: number
+  @Column("text", { array: true })
+    imgUrl: string[]
 
-  @Column()
-  description: string
-  
-  @Column("text", { array: true, nullable: true })
-  imgUrl: string[]
-
-  @Column({ type: "text", nullable: false, default: "default-image-url" })
-  tournamentFlyer: string
-  
   @Column()
   courtsAvailable: number
 
