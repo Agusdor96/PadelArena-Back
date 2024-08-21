@@ -16,13 +16,17 @@ constructor(
     const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
     if (exist && exist.status == "active") throw new BadRequestException('Tournament already exists');
     if(createTournamentDto.qParticipantes % 2 != 0) throw new BadRequestException("Quantity cant be odd");
-    else{
+    
       const partidosPorRonda = createTournamentDto.qParticipantes /2;
-      const qHorasHabilesDia = (createTournamentDto.horaFin.getTime() - createTournamentDto.horaComienzo.getTime()) / (1000*60*60);
-      const qHorasPartidosDia = partidosPorRonda * (createTournamentDto.duracionPartidos /60) ;
-      const qPartidosDia = qHorasPartidosDia / qHorasHabilesDia;
+
+      const qPartidosDia = (((createTournamentDto.horaFin.getTime() - createTournamentDto.horaComienzo.getTime()) / (1000*60*60)) /(createTournamentDto.duracionPartidos / 60)) / createTournamentDto.courts;
+
       const duracionTorneo = qPartidosDia / createTournamentDto.playingDays.length;
-    }
+
+      
+
+     
+      
     
   }
 

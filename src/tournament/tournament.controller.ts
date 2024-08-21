@@ -9,7 +9,12 @@ export class TournamentController {
 
   @Post('/new')
   create(@Body() createTournamentDto: CreateTournamentDto) {
-    return this.tournamentService.create(createTournamentDto);
+    try {
+      this.tournamentService.create(createTournamentDto);
+      return {message:"Torneo creado con exito", createTournamentDto};
+    } catch (error) {
+      return {message:"Error al crear torneo", error};
+    }
   }
 
   @Get()
