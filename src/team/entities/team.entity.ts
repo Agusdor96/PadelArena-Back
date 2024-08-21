@@ -2,6 +2,7 @@ import { Category } from "src/category/entities/category.entity";
 import { Tournament } from "src/tournament/entities/tournament.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {v4 as uuid} from 'uuid'
 
 @Entity({
     name: "TEAM"
@@ -9,7 +10,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColum
 
 export class Team {
     @PrimaryGeneratedColumn("uuid")
-        id:string;
+        id:string = uuid()
 
     @Column({type: "varchar", length: 50, nullable:false})
         name: string
@@ -22,5 +23,9 @@ export class Team {
         user: User[]
 
     @ManyToOne(() => Tournament, (tournament) => tournament.team)
-    tournament:Tournament;
+        tournament:Tournament
+    
+    @ManyToMany(()=> Match, (match)=> match.teams)
+    @JoinTable({name: "TEAM_MATCH"})
+        match: Match
 }
