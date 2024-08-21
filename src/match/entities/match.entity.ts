@@ -26,6 +26,6 @@ export class Match {
     @ManyToOne(() => Fixture, fixture => fixture.matches)
     fixture: Fixture
 
-    @ManyToOne(() => Team)
-    teamWinner: Team
+    @Column()
+    teamWinner: string
 }
