@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -15,7 +15,14 @@ export class FileService {
     private userRepository: Repository<User>,
     private fileRepository: FileRepository
   ){}
-  UpdateTournamentPrincipalImage() {}
+  async UpdateTournamentPrincipalImage(id:string, file: Express.Multer.File){
+    const tournament = await this.tournamentRepostory.findOne({where: {id}})
+    if(!tournament){
+      throw new NotFoundException('No fue posible encontrar el torneo')
+    }else {
+      const 
+    }
+  }
 
   UploadTournamentMultimedia(){}
 
