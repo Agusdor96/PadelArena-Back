@@ -1,4 +1,5 @@
 import { Category } from 'src/category/entities/category.entity';
+import { Fixture } from 'src/fixture/entities/fixture.entity';
 import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -12,7 +13,7 @@ export class Tournament {
   @PrimaryGeneratedColumn('uuid')
   id:string = uuid()
   
-  @Column({type:"varchar", lenght: 50})
+  @Column({type:"varchar", length: 50})
   name:string
 
   @Column()
