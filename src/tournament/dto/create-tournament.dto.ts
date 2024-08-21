@@ -8,24 +8,24 @@ export class CreateTournamentDto {
     @IsNotEmpty()
     @IsNumber()
     @Min(16)
-    qEquipos: number;
+    teamsQuantity: number;
 
     
     @IsNotEmpty()
     @IsNumber()
-    duracionPartidos: number;
+    matchDuration: number;
 
     @IsDate()
     @IsNotEmpty()
-    fechaInicio: Date;
+    startDate: Date;
     
     @IsDate()
     @IsNotEmpty()
-    horaComienzo: Date;
+    startTime: Date;
 
     @IsDate()
     @IsNotEmpty()
-    horaFin: Date;
+    endTime: Date;
 
     @IsNotEmpty()
     @IsString()
@@ -39,10 +39,4 @@ export class CreateTournamentDto {
     @IsNotEmpty()
     @IsNumber()
     courts: number;
-
-    
-
-    //relacion con categoria 
-    // realcion con teams 
-    //realacion con matches
 }
