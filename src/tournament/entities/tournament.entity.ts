@@ -7,7 +7,7 @@ import {v4 as uuid} from 'uuid';
 
 
  @Entity({
-     name: 'tournament'
+     name: 'TOURNAMENT'
  })
 export class Tournament {
   @PrimaryGeneratedColumn('uuid')
@@ -28,19 +28,31 @@ export class Tournament {
   @Column()
   finishTime:Date
 
-  @Column()
-  playingDay:Date
+  @Column("text", {array: true})
+  playingDay:string[]
 
   @Column()
   status: boolean
+  
+  @Column()
+  teamsQuantity: number
 
-  @Column("text", { array: true })
-    imgUrl: string[]
+  @Column()
+  matchDuration: number
 
+  @Column()
+  description: string
+  
+  @Column("text", { array: true, nullable: true })
+  imgUrl: string[]
+
+  @Column({ type: "text", nullable: false, default: "default-image-url" })
+  tournamentFlyer: string
+  
   @Column()
   courtsAvailable: number
 
-  @ManyToOne(() => Category, (category) => category.tournaments, {nullable:false})
+  @ManyToOne(() => Category, (category) => category.tournaments, {nullable:true})
   category: Partial<Category>
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
