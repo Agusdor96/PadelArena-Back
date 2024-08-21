@@ -1,4 +1,5 @@
 import { Category } from "src/category/entities/category.entity";
+import { Tournament } from "src/tournament/entities/tournament.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
