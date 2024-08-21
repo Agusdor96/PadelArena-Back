@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Team } from "src/team/entities/team.entity";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "USERS"  
@@ -29,5 +30,8 @@ export class User {
         city:string
 
     @Column('text')
-        address:string   
+        address:string
+
+    @ManyToMany(()=> Team, (team) => team.user)
+    team: Team
 }
