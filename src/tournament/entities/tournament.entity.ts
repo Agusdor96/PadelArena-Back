@@ -35,16 +35,32 @@ export class Tournament {
   @Column()
   status: boolean
 
-  @Column("text", { array: true })
-    imgUrl: string[]
-  
+  @Column({
+    type: "enum",
+    enum: InscriptionEnum,
+    default: InscriptionEnum.OPEN,
+  })
+    inscription: InscriptionEnum
+
+  @Column()
+  teamsQuantity: number
+
+  @Column()
+  matchDuration: number
+
+  @Column()
+  description: string
+
+  @Column("text", { array: true, nullable: true })
+  imgUrl: string[]
+
   @Column({ type: "text", nullable: false, default: "default-image-url" })
-    tournamentFlyer: string
+  tournamentFlyer: string
 
   @Column()
   courtsAvailable: number
 
-  @ManyToOne(() => Category, (category) => category.tournaments, {nullable:true})
+  @ManyToOne(() => Category, (category) => category.tournaments, {nullable:false})
   category: Partial<Category>
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
