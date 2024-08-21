@@ -34,22 +34,22 @@ export class Tournament {
   @Column()
   status: boolean
 
-  @Column()
-  imgUrl:string[]
+  @Column("text", { array: true })
+    imgUrl: string[]
 
   @Column()
   courtsAvailable: number
 
-  @ManyToOne(() => Category, (category) => category.tournaments)
+  @ManyToOne(() => Category, (category) => category.tournaments, {nullable:false})
   category: Partial<Category>
 
-  @OneToMany(() => Team, (team) => team.tournament)
+  @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
   team: Team[]
 
-  @OneToMany(() => Match, (match) => match.tournament)
+  @OneToMany(() => Match, (match) => match.tournament, {nullable:true})
   matches: Match[]
 
-  @OneToOne(() => Fixture)
+  @OneToOne(() => Fixture, {nullable:true})
   fixture: Fixture
 
 }

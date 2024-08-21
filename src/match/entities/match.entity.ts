@@ -27,5 +27,5 @@ export class Match {
     fixture: Fixture
 
     @Column()
-    teamWinner: Team
+    teamWinner: string
 }
