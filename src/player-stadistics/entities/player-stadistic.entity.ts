@@ -14,8 +14,5 @@ export class PlayerStadistic {
 
     @Column()
         loss: number
-    
-    @OneToOne(()=> User)
-    @JoinColumn({name: "player_stadistics"})
-        player: User
+
 }
