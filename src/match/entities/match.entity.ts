@@ -1,4 +1,5 @@
 import { Team } from "src/team/entities/team.entity";
+import { Tournament } from "src/tournament/entities/tournament.entity";
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
 
