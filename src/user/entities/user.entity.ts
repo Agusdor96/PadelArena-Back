@@ -1,5 +1,6 @@
+import { PlayerStadistic } from "src/player-stadistics/entities/player-stadistic.entity";
 import { Team } from "src/team/entities/team.entity";
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "USERS"  
@@ -32,6 +33,13 @@ export class User {
     @Column('text')
         address:string
 
+    @Column({ type: "text", nullable: false, default: "default-image-url" })
+        profileImg: string
+
     @ManyToMany(()=> Team, (team) => team.user)
-    team: Team
+        team: Team
+
+    @OneToOne(()=> PlayerStadistic)
+    @JoinColumn({name: "player_stadistics"})
+        playerStadistic: PlayerStadistic
 }

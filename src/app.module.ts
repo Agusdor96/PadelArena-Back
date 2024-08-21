@@ -13,6 +13,7 @@ import { TeamModule } from './team/team.module';
 import { MatchModule } from './match/match.module';
 import { FixtureModule } from './fixture/fixture.module';
 import { FileModule } from './file/file.module';
+import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { FileModule } from './file/file.module';
     MatchModule,
     TournamentModule,
     FixtureModule,
-    FileModule
+    FileModule,
+    PlayerStadisticsModule
 
   ],
   controllers: [AppController],
