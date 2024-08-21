@@ -1,7 +1,7 @@
-import { Matches } from 'class-validator';
 import { Category } from 'src/category/entities/category.entity';
+import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 
 
@@ -10,9 +10,9 @@ import {v4 as uuid} from 'uuid';
  })
 export class Tournament {
   @PrimaryGeneratedColumn('uuid')
-  id:string
+  id:string = uuid()
   
-  @Column({type:'varchar', lenght: 50})
+  @Column({type:"varchar", lenght: 50})
   name:string
 
   @Column()
