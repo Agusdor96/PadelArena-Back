@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TournamentModule } from './tournament/tournament.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
@@ -22,7 +23,6 @@ import { TeamModule } from './team/team.module';
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
-
     JwtModule.register({
       global:true,
       signOptions: {expiresIn: '2h'},
@@ -31,6 +31,7 @@ import { TeamModule } from './team/team.module';
     AuthModule,
     UserModule,
     CategoryModule,
+    TournamentModule,
     TeamModule
 
   ],
