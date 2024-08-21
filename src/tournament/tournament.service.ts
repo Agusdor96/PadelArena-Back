@@ -13,19 +13,36 @@ constructor(
 
 
   async create(createTournamentDto: CreateTournamentDto) {
-    const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
-    if (exist && exist.status == "active") throw new BadRequestException('Tournament already exists');
-    if(createTournamentDto.qParticipantes % 2 != 0) throw new BadRequestException("Quantity cant be odd");
+    //const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
+    //if (exist && exist.status == "active") throw new BadRequestException('Tournament already exists');
+
+    if(createTournamentDto.qEquipos % 2 != 0 || createTournamentDto.qEquipos < 16 ) throw new BadRequestException("Team quantity cant be odd or less than 16");
     
-      const partidosPorRonda = createTournamentDto.qParticipantes /2;
+      const partidosInicial = createTournamentDto.qEquipos /2;
 
-      const qPartidosDia = (((createTournamentDto.horaFin.getTime() - createTournamentDto.horaComienzo.getTime()) / (1000*60*60)) /(createTournamentDto.duracionPartidos / 60)) / createTournamentDto.courts;
+      const horaComienzo = new Date(createTournamentDto.horaComienzo);
 
-      const duracionTorneo = qPartidosDia / createTournamentDto.playingDays.length;
+       const horaFin = new Date(createTournamentDto.horaFin);
 
+      const horasDisponiblesPorDia = (horaFin.getTime() - horaComienzo.getTime()) / (1000 * 60 * 60);
+      
+      const partidosPorDia = (horasDisponiblesPorDia / (createTournamentDto.duracionPartidos / 60)) * createTournamentDto.courts;
+
+      let qPartidosRonda = partidosInicial;
+      let totalPartidos = 0;
+      while(qPartidosRonda > 1 ){
+        totalPartidos += qPartidosRonda;
+        qPartidosRonda /= 2;
+      }
+      totalPartidos +=1;
+      
+      const duracionTorneo = Math.ceil(totalPartidos / partidosPorDia );
       
 
-     
+      console.log("partidos iniciales: ", partidosInicial);
+      console.log("horas disponibles por dia: ",horasDisponiblesPorDia);
+      console.log("Partidos por dia: ",partidosPorDia);
+      console.log("duracion del Torneo en dias : ",duracionTorneo);
       
     
   }

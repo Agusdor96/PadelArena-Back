@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString, Length, Min } from "class-validator";
 
 export class CreateTournamentDto {
     @IsNotEmpty()
@@ -7,13 +7,18 @@ export class CreateTournamentDto {
 
     @IsNotEmpty()
     @IsNumber()
-    qParticipantes: number;
+    @Min(16)
+    qEquipos: number;
 
     
     @IsNotEmpty()
     @IsNumber()
     duracionPartidos: number;
 
+    @IsDate()
+    @IsNotEmpty()
+    fechaInicio: Date;
+    
     @IsDate()
     @IsNotEmpty()
     horaComienzo: Date;
@@ -34,6 +39,8 @@ export class CreateTournamentDto {
     @IsNotEmpty()
     @IsNumber()
     courts: number;
+
+    
 
     //relacion con categoria 
     // realcion con teams 
