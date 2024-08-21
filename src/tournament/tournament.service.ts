@@ -13,8 +13,8 @@ constructor(
 
 
   async create(createTournamentDto: CreateTournamentDto) {
-    //const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
-    //if (exist && exist.status == "active") throw new BadRequestException('Tournament already exists');
+    const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
+    if (exist && exist.status) throw new BadRequestException('Tournament already exists');
 
     if(createTournamentDto.qEquipos % 2 != 0 || createTournamentDto.qEquipos < 16 ) throw new BadRequestException("Team quantity cant be odd or less than 16");
     
