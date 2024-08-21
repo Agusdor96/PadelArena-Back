@@ -4,6 +4,7 @@ import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {v4 as uuid} from 'uuid';
+import { InscriptionEnum } from '../inscription.enum';
 
 
  @Entity({
@@ -12,7 +13,7 @@ import {v4 as uuid} from 'uuid';
 export class Tournament {
   @PrimaryGeneratedColumn('uuid')
   id:string = uuid()
-  
+
   @Column({type:"varchar", length: 50})
   name:string
 
@@ -21,7 +22,7 @@ export class Tournament {
 
   @Column()
   endDate:Date
-  
+
   @Column()
   startingTime:Date
 
@@ -36,6 +37,9 @@ export class Tournament {
 
   @Column("text", { array: true })
     imgUrl: string[]
+  
+  @Column({ type: "text", nullable: false, default: "default-image-url" })
+    tournamentFlyer: string
 
   @Column()
   courtsAvailable: number
@@ -51,5 +55,4 @@ export class Tournament {
 
   @OneToOne(() => Fixture, {nullable:true})
   fixture: Fixture
-
 }

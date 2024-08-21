@@ -24,5 +24,6 @@ export class Fixture {
     matches: Match[]
 
     @OneToOne(() => Tournament)
-    tournament: Tournament
+    @JoinColumn({name: "tournament_Id"})
+        tournament: Tournament
 }
