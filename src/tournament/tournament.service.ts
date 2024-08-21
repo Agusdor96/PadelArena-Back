@@ -13,22 +13,22 @@ constructor(
 
 
   async create(createTournamentDto: CreateTournamentDto) {
-    //const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
-    //if (exist && exist.status == "active") throw new BadRequestException('Tournament already exists');
+    const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
+    if (exist && exist.status) throw new BadRequestException('Tournament already exists');
 
-    if(createTournamentDto.qEquipos % 2 != 0 || createTournamentDto.qEquipos < 16 ) throw new BadRequestException("Team quantity cant be odd or less than 16");
+    if(createTournamentDto.teamsQuantity % 2 != 0 || createTournamentDto.teamsQuantity < 16 ) throw new BadRequestException("Team quantity cant be odd or less than 16");
     
-      const partidosInicial = createTournamentDto.qEquipos /2;
+      const InitialMatches = createTournamentDto.teamsQuantity /2;
 
-      const horaComienzo = new Date(createTournamentDto.horaComienzo);
+      const startTime = new Date(createTournamentDto.startTime);
 
-       const horaFin = new Date(createTournamentDto.horaFin);
+       const endTime = new Date(createTournamentDto.endTime);
 
-      const horasDisponiblesPorDia = (horaFin.getTime() - horaComienzo.getTime()) / (1000 * 60 * 60);
+      const availableHoursPerDay = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
       
-      const partidosPorDia = (horasDisponiblesPorDia / (createTournamentDto.duracionPartidos / 60)) * createTournamentDto.courts;
+      const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
-      let qPartidosRonda = partidosInicial;
+      let qPartidosRonda = InitialMatches;
       let totalPartidos = 0;
       while(qPartidosRonda > 1 ){
         totalPartidos += qPartidosRonda;
@@ -36,13 +36,20 @@ constructor(
       }
       totalPartidos +=1;
       
-      const duracionTorneo = Math.ceil(totalPartidos / partidosPorDia );
-      
+      const tournamentDuration = Math.ceil(totalPartidos / matchesPerDay );
+      //const endDate = new Date
 
-      console.log("partidos iniciales: ", partidosInicial);
-      console.log("horas disponibles por dia: ",horasDisponiblesPorDia);
-      console.log("Partidos por dia: ",partidosPorDia);
-      console.log("duracion del Torneo en dias : ",duracionTorneo);
+
+      const tournament = new Tournament();
+      tournament.name = createTournamentDto.name;
+      tournament.startDate = createTournamentDto.startDate;
+
+
+
+      console.log("partidos iniciales: ", InitialMatches);
+      console.log("horas disponibles por dia: ",availableHoursPerDay);
+      console.log("Partidos por dia: ",matchesPerDay);
+      console.log("duracion del Torneo en dias : ",tournamentDuration);
       
     
   }
