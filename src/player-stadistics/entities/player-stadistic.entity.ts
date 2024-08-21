@@ -1,5 +1,5 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity({
@@ -15,6 +15,7 @@ export class PlayerStadistic {
     @Column()
         loss: number
     
-    @OneToOne(()=> User, (user)=> user.playerStadistics)
+    @OneToOne(()=> User)
+    @JoinColumn({name: "player_stadistics"})
         player: User
 }
