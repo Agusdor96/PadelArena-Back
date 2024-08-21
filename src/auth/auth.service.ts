@@ -1,16 +1,21 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as Bcrypt from 'bcrypt'
+import { User } from 'src/user/entities/user.entity';
+import { Repository } from 'typeorm';
 
 
 @Injectable()
 export class AuthService {
   constructor (
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private readonly JWTservice: JwtService
   ) {}
 
-  signInUser(credentials: any) {
-    const userExist = {id: 1, email: 'mail@mail.com', password: 'password123'}//metodo findOne()
+  async signInUser(credentials: any) {
+    const userExist = await this.userRepository.findOne({where:{email:credentials.email}})
     const passwordComparation = Bcrypt.compare(
       credentials.password, 
       userExist.password
@@ -21,7 +26,7 @@ export class AuthService {
           sub: userExist.id,
           id: userExist.id,
           email: userExist.email,
-          roles: ['user']//cambiar esto tambien cuando esten listo los guardianes
+          roles: ['user']  //cambiar esto tambien cuando esten listo los guardianes
         }
         const token = this.JWTservice.sign(userPayload);
         return {message: 'Inicio de sesion realizado con exito', token}
@@ -33,13 +38,13 @@ export class AuthService {
     }
   }
   async signUpUser(UserDto: any) {
-    const emailAlreadyExist = 'findOne({where:{email:UserDto.email}})'
-
+    const emailAlreadyExist = await this.userRepository.findOne({where:{email:UserDto.email}})
     if(!emailAlreadyExist){
       if(UserDto.password === UserDto.passwordConfirmation) {
         const encryptedPassword = await Bcrypt.hash(UserDto.password, 10)
-        const newUser = 'save({...UserDto, password: encryptedPassword})'
-        return {message: `Usuario creado con exito`}//ver que info necesita el front para retornarla
+        const newUser = await this.userRepository.save({...UserDto, password: encryptedPassword})
+        const {password, ...user} = newUser
+        return {message: `Usuario creado con exito: ${user}`}
       }else{
         throw new BadRequestException('Las contraseñas deben ser iguales')
       }
