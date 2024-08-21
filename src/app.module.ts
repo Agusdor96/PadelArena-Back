@@ -3,8 +3,10 @@ import { AppController } from './app.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import typeorm from './config/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -18,7 +20,14 @@ import typeorm from './config/typeorm';
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    JwtModule.register({
+      global:true,
+      signOptions: {expiresIn: '2h'},
+      secret: process.env.JWT_SECRET
+    }),
+    AuthModule,
     UserModule
+
   ],
   controllers: [AppController],
   providers: [AppService],
