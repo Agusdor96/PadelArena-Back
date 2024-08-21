@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Team } from "src/team/entities/team.entity";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "CATEGORY"
@@ -12,4 +13,7 @@ export class Category {
     
     @Column({type: "text", nullable:false})
     description:string
+
+    @OneToMany(() => Team, (team) => team.category)
+    team: Team
 }
