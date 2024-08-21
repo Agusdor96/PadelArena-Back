@@ -40,16 +40,12 @@ export class AuthService {
   async signUpUser(UserDto: any) {
     const emailAlreadyExist = await this.userRepository.findOne({where:{email:UserDto.email}})
     if(!emailAlreadyExist){
-      if(UserDto.password === UserDto.passwordConfirmation) {
         const encryptedPassword = await Bcrypt.hash(UserDto.password, 10)
         const newUser = await this.userRepository.save({...UserDto, password: encryptedPassword})
         const {password, ...user} = newUser
-        return {message: `Usuario creado con exito: ${user}`}
-      }else{
-        throw new BadRequestException('Las contraseñas deben ser iguales')
-      }
+        return {message: 'Usuario creado con exito', user}
     }else{
       throw new BadRequestException('El email provisto ya está registrado');
-    }    
+    }
   }
 }
