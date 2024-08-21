@@ -11,6 +11,7 @@ import typeorm from './config/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { TeamModule } from './team/team.module';
 import { MatchModule } from './match/match.module';
+import { FixtureModule } from './fixture/fixture.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { MatchModule } from './match/match.module';
     CategoryModule,
     TeamModule,
     MatchModule,
-    TournamentModule
+    TournamentModule,
+    FixtureModule
 
   ],
   controllers: [AppController],
