@@ -20,6 +20,6 @@ export class Team {
     @JoinTable({name: "TEAM_USERS"})
         user: User[]
 
-    @Column("uuid")
-        tournament:string
+    @ManyToOne(() => Tournament, (tournament) => tournament.team)
+        tournament:Tournament;
 }
