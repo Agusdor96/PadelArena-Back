@@ -20,7 +20,8 @@ export class FileService {
     if(!tournament){
       throw new NotFoundException('No fue posible encontrar el torneo')
     }else {
-      const 
+      const tournamentFlayer = (await this.fileRepository.uploadImage(file)).secure_url;
+      await this.tournamentRepostory.update(id, {})
     }
   }
 
