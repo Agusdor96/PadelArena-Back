@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import typeorm from './config/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule,
     UserModule,
     CategoryModule,
-    TournamentModule
+    TournamentModule,
+    TeamModule
 
   ],
   controllers: [AppController],
