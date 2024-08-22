@@ -1,0 +1,23 @@
+[
+    {
+      "name": "Primera",
+      "description": "Jugadores de pádel en el nivel más alto de competencia."
+    },
+    {
+      "name": "Segunda",
+      "description": "Jugadores de pádel en un nivel avanzado, pero no tan competitivo como la Categoría A."
+    },
+    {
+      "name": "Tercera",
+      "description": "Jugadores de pádel con habilidades intermedias, aún desarrollando su técnica."
+    },
+    {
+      "name": "Cuarta",
+      "description": "Jugadores de pádel principiantes o con experiencia limitada en el deporte."
+    },
+    {
+      "name": "Quinta",
+      "description": "Jugadores de pádel en un nivel de iniciación, nuevos en el deporte."
+    }
+  ]
+  
