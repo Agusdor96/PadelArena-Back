@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
+import { PasswordInterceptor } from './interceptor/user.interceptor';
 //import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
@@ -13,11 +14,13 @@ export class UserController {
   }
 
   @Get()
+  @UseInterceptors(PasswordInterceptor)
   getUsers() {
     return this.userService.getAllUsers();
   }
 
   @Get(':id')
+  @UseInterceptors(PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUser(id);
   }
