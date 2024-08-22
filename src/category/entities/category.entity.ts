@@ -17,12 +17,12 @@ export class Category {
     @Column({type: "text", nullable:false})
         description:string
 
-    @OneToMany(() => Team, (team) => team.category)
+    @OneToMany(() => Team, (team) => team.category, {nullable:true})
         team: Team
 
-    @OneToMany(() => Tournament, (tournaments)=> tournaments.category)
+    @OneToMany(() => Tournament, (tournaments)=> tournaments.category, {nullable:true} )
         tournaments: Tournament
 
-    @OneToMany(()=> User, (user)=> user.category)
+    @OneToMany(()=> User, (user)=> user.category, {nullable:true})
         users: User[]
 }
