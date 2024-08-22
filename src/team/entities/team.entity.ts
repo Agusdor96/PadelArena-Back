@@ -20,7 +20,7 @@ export class Team {
 
     @ManyToMany(()=> User, (user) => user.team)
     @JoinTable({name: "TEAM_USERS"})
-        user: User[]
+        players: User[]
 
     @ManyToOne(() => Tournament, (tournament) => tournament.team)
         tournament:Tournament
