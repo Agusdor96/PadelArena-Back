@@ -7,10 +7,11 @@ import { TournamentService } from 'src/tournament/tournament.service';
 import { Category } from 'src/category/entities/category.entity';
 import { Tournament } from 'src/tournament/entities/tournament.entity';
 import { TournamentModule } from 'src/tournament/tournament.module';
+import { Team } from 'src/team/entities/team.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Match, Tournament, Category])],
+    TypeOrmModule.forFeature([Match, Tournament, Category,Team])],
   controllers: [MatchController],
   providers: [MatchService, TournamentService],
 })
