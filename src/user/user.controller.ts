@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 //import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -13,8 +13,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  getUsers() {
+    return this.userService.getAllUsers();
   }
 
   @Get(':id')
