@@ -23,8 +23,12 @@ constructor(
     return users
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async getUser(id: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({id:id})
+      if(!user){
+        throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+      }
+    return user;
   }
 
   update(id: number, updateUserDto) {
