@@ -23,8 +23,9 @@ export class TeamService {
   ) {}
   async newTeam(tournamentId: string, TeamDto: TeamDto) {
     const tournament = await this.tournamentService.getTournament(tournamentId);
+    
     for (const user of TeamDto.players) {
-      const users = await this.userService.findOne({ where: { id: user.id } });
+      const users = await this.userService.findOne({ where: { id: user } });
       const userHaveTeam = users.team;
       if (userHaveTeam) {
         throw new BadRequestException(
@@ -34,7 +35,7 @@ export class TeamService {
         const team = {
           name: TeamDto.name,
           category: tournament.category,
-          user: TeamDto.players,
+          user: users,
           tournament: tournament,
         };
         await this.teamRepository.save(team);
