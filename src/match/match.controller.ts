@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { MatchService } from './match.service';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
 
-@Controller('match')
+@Controller('tournament-match')
 export class MatchController {
   constructor(private readonly matchService: MatchService) {}
 
@@ -12,23 +12,14 @@ export class MatchController {
     return this.matchService.create(createMatchDto);
   }
 
-  @Get()
-  findAll() {
-    return this.matchService.findAll();
+  @Get(":tournamentId")
+  getAllMatches(
+    @Param("tournamentId", ParseUUIDPipe) tournamentId:string){
+    return this.matchService.getAllMatchesFromTournament(tournamentId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.matchService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
-    return this.matchService.update(+id, updateMatchDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.matchService.remove(+id);
   }
 }
