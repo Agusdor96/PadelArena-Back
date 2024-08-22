@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
-import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
 import { Repository } from 'typeorm';
@@ -88,6 +87,7 @@ constructor(
         team:true,
         matches:true,
         fixture:true,
+        category: true
       }
     })
     if(!tournament){
@@ -95,13 +95,5 @@ constructor(
     }
   
     return tournament;
-  }
-
-  update(id: number, updateTournamentDto: UpdateTournamentDto) {
-    return `This action updates a #${id} tournament`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tournament`;
   }
 }
