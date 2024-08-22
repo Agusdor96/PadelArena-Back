@@ -4,11 +4,13 @@ import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
 import { Repository } from 'typeorm';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class TournamentService {
 constructor(
   @InjectRepository(Tournament) private tournamentRepository: Repository<Tournament>,
+  @InjectRepository(Category) private categoryRepository: Repository<Category>,
 ){}
 
 
@@ -36,6 +38,8 @@ constructor(
       }
       totalPartidos +=1;
       
+      const category = await this.categoryRepository.findOne({where: {name:createTournamentDto.category.name}});
+
       const tournamentDuration = Math.ceil(totalPartidos / matchesPerDay );
       const endDate = new Date(createTournamentDto.startDate);
       endDate.setDate(endDate.getDate() + tournamentDuration);
@@ -53,6 +57,7 @@ constructor(
       tournament.description = createTournamentDto.descrption;
       tournament.tournamentFlyer = createTournamentDto.tournamentImg;
       tournament.courtsAvailable = createTournamentDto.courts;
+      tournament.category = category;
 
 
       console.log("partidos iniciales: ", InitialMatches);
