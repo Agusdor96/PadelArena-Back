@@ -1,48 +1,52 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString, Length, Min } from "class-validator";
+import { Category } from "src/category/entities/category.entity";
 
 export class CreateTournamentDto {
     @IsNotEmpty()
     @IsString()
     name: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    @Min(16)
-    qEquipos: number;
-
-    
-    @IsNotEmpty()
-    @IsNumber()
-    duracionPartidos: number;
-
     @IsDate()
     @IsNotEmpty()
-    fechaInicio: Date;
+    startDate: Date;
     
     @IsDate()
     @IsNotEmpty()
-    horaComienzo: Date;
-
+    startTime: Date;
+    
     @IsDate()
     @IsNotEmpty()
-    horaFin: Date;
-
+    endTime: Date;
+    
     @IsNotEmpty()
     @IsString()
     @Length(1,7)
     playingDays: string[];
-
+    
     @IsNotEmpty()
     @IsString()
     status: string;
 
     @IsNotEmpty()
     @IsNumber()
+    @Min(16)
+    teamsQuantity: number;
+    
+    @IsNotEmpty()
+    @IsNumber()
+    matchDuration: number;
+
+    @IsNotEmpty()
+    @IsNumber()
     courts: number;
 
-    
+    @IsNotEmpty()
+    descrption: string;
 
-    //relacion con categoria 
-    // realcion con teams 
-    //realacion con matches
+    @IsNotEmpty()
+    tournamentImg: string;
+
+    @IsNotEmpty()
+    category: Category;
+
 }

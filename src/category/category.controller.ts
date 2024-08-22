@@ -17,6 +17,12 @@ export class CategoryController {
     return this.categoryService.findAll();
   }
 
+  @Get('/preload')
+  preload() {
+    return this.categoryService.precargaCategorias();
+  }
+
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);

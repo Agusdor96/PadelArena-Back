@@ -4,31 +4,33 @@ import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
 import { Repository } from 'typeorm';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class TournamentService {
 constructor(
   @InjectRepository(Tournament) private tournamentRepository: Repository<Tournament>,
+  @InjectRepository(Category) private categoryRepository: Repository<Category>,
 ){}
 
 
   async create(createTournamentDto: CreateTournamentDto) {
     const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
     if (exist && exist.status) throw new BadRequestException('Tournament already exists');
-
-    if(createTournamentDto.qEquipos % 2 != 0 || createTournamentDto.qEquipos < 16 ) throw new BadRequestException("Team quantity cant be odd or less than 16");
+    if(createTournamentDto.teamsQuantity % 2 != 0 || createTournamentDto.teamsQuantity < 16 ) throw new BadRequestException("Team quantity cant be odd or less than 16");
     
-      const partidosInicial = createTournamentDto.qEquipos /2;
 
-      const horaComienzo = new Date(createTournamentDto.horaComienzo);
+      const InitialMatches = createTournamentDto.teamsQuantity /2;
 
-       const horaFin = new Date(createTournamentDto.horaFin);
+      const startTime = new Date(createTournamentDto.startTime);
 
-      const horasDisponiblesPorDia = (horaFin.getTime() - horaComienzo.getTime()) / (1000 * 60 * 60);
+       const endTime = new Date(createTournamentDto.endTime);
+
+      const availableHoursPerDay = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
       
-      const partidosPorDia = (horasDisponiblesPorDia / (createTournamentDto.duracionPartidos / 60)) * createTournamentDto.courts;
+      const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
-      let qPartidosRonda = partidosInicial;
+      let qPartidosRonda = InitialMatches;
       let totalPartidos = 0;
       while(qPartidosRonda > 1 ){
         totalPartidos += qPartidosRonda;
@@ -36,14 +38,36 @@ constructor(
       }
       totalPartidos +=1;
       
-      const duracionTorneo = Math.ceil(totalPartidos / partidosPorDia );
-      
+      const category = await this.categoryRepository.findOne({where: {name:createTournamentDto.category.name}});
 
-      console.log("partidos iniciales: ", partidosInicial);
-      console.log("horas disponibles por dia: ",horasDisponiblesPorDia);
-      console.log("Partidos por dia: ",partidosPorDia);
-      console.log("duracion del Torneo en dias : ",duracionTorneo);
+      const tournamentDuration = Math.ceil(totalPartidos / matchesPerDay );
+      const endDate = new Date(createTournamentDto.startDate);
+      endDate.setDate(endDate.getDate() + tournamentDuration);
+
+      const tournament = new Tournament();
+      tournament.name = createTournamentDto.name;
+      tournament.startDate = createTournamentDto.startDate;
+      tournament.endDate = endDate;
+      tournament.startingTime = createTournamentDto.startTime;
+      tournament.finishTime = createTournamentDto.endTime;
+      tournament.playingDay = createTournamentDto.playingDays;
+      tournament.status = true;
+      tournament.teamsQuantity = createTournamentDto.teamsQuantity;
+      tournament.matchDuration = createTournamentDto.matchDuration;
+      tournament.description = createTournamentDto.descrption;
+      tournament.tournamentFlyer = createTournamentDto.tournamentImg;
+      tournament.courtsAvailable = createTournamentDto.courts;
+      tournament.category = category;
+
+
+      console.log("partidos iniciales: ", InitialMatches);
+      console.log("horas disponibles por dia: ",availableHoursPerDay);
+      console.log("Partidos por dia: ",matchesPerDay);
+      console.log("duracion del Torneo en dias : ",tournamentDuration);
+      console.log("inicio del toreno: ", createTournamentDto.startDate);
+      console.log("finalizacion del toreno: ", endDate);
       
+      return await this.tournamentRepository.save(tournament);
     
   }
 
