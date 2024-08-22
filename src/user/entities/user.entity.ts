@@ -40,7 +40,7 @@ export class User {
     @ManyToOne(()=> Category, (category) => category.users)
         category:Category
 
-    @ManyToMany(()=> Team, (team) => team.user)
+    @ManyToMany(()=> Team, (team) => team.players)
         team: Team
 
     @OneToOne(()=> PlayerStadistic)
