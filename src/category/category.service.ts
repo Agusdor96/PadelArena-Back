@@ -4,22 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
-
-
-const data = [
-  {
-      "name": "Senior",
-      "description": "Con mas de 40 Juegos Ganados "
-  },
-  {
-      "name": "Semi Senior",
-      "description": "Con mas de 20 Juegos Ganados "
-  },
-  {
-      "name": "Junior",
-      "description": "Con menos de 20 Juegos Ganados "
-  }
-]
+import * as data from "../data.json";
 
 @Injectable()
 export class CategoryService {

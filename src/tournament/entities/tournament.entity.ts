@@ -61,7 +61,7 @@ export class Tournament {
   courtsAvailable: number
 
   @ManyToOne(() => Category, (category) => category.tournaments, {nullable:false})
-  category: Partial<Category>
+  category: Category
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
   team: Team[]

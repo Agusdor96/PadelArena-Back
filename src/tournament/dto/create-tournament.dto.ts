@@ -1,4 +1,5 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString, Length, Min } from "class-validator";
+import { Category } from "src/category/entities/category.entity";
 
 export class CreateTournamentDto {
     @IsNotEmpty()
@@ -46,6 +47,6 @@ export class CreateTournamentDto {
     tournamentImg: string;
 
     @IsNotEmpty()
-    category: string;
+    category: Category;
 
 }
