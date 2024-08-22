@@ -3,7 +3,7 @@ import { FixtureService } from './fixture.service';
 import { CreateFixtureDto } from './dto/create-fixture.dto';
 import { UpdateFixtureDto } from './dto/update-fixture.dto';
 
-@Controller('fixture')
+@Controller('tournament/fixture')
 export class FixtureController {
   constructor(private readonly fixtureService: FixtureService) {}
 
