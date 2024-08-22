@@ -7,10 +7,10 @@ import { UpdateMatchDto } from './dto/update-match.dto';
 export class MatchController {
   constructor(private readonly matchService: MatchService) {}
 
-  @Post()
-  create(@Body() createMatchDto: CreateMatchDto) {
-    return this.matchService.create(createMatchDto);
-  }
+  // @Post()
+  // create(@Body() createMatchDto: CreateMatchDto) {
+  //   return this.matchService.create(createMatchDto);
+  // }
 
   @Get(":tournamentId")
   getAllMatches(

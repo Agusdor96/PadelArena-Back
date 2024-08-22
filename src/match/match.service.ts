@@ -3,18 +3,38 @@ import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { TournamentService } from 'src/tournament/tournament.service';
+import { Team } from 'src/team/entities/team.entity';
 
 @Injectable()
 export class MatchService {
   constructor(
     @InjectRepository(Match) private matchRepository:Repository<Match>,
+    @InjectRepository(Team) private teamRepository:Repository<Team>,
     @Inject() private tournamentService:TournamentService
   ){}
 
-  create(createMatchDto: CreateMatchDto) {
-    return 'This action adds a new match';
+  async createMatch(createMatchDto: CreateMatchDto) {    
+    const teamEntity = createMatchDto.teams
+    
+    for(const teamName of teamEntity){
+      const teams = await this.teamRepository.find({
+        where: {
+          name:teamName.name
+        }
+      })
+
+      if(!teams.length){
+        throw new NotFoundException("No se encontraron equipos con esos nombres")
+      }
+      const newMatch = {
+        date: createMatchDto.date,
+        time: createMatchDto.time,
+        teams: teams
+      }
+      return newMatch;
+    }
   }
 
  async getAllMatchesFromTournament(tournamentId:string) {
