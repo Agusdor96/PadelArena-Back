@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -71,12 +71,30 @@ constructor(
     
   }
 
-  findAll() {
-    return `This action returns all tournament`;
+  async getAllTournaments() {
+    const tournaments = await this.tournamentRepository.find()
+    if(!tournaments.length){
+      throw new NotFoundException("No hay torneos creados")
+    }
+    return tournaments;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tournament`;
+  async getTournament(id: string) {
+    const tournament = await this.tournamentRepository.findOne({
+      where: {
+        id:id
+      },
+      relations: {
+        team:true,
+        matches:true,
+        fixture:true,
+      }
+    })
+    if(!tournament){
+      throw new NotFoundException("No se encuentra torneo con el id proporcionado")
+    }
+  
+    return tournament;
   }
 
   update(id: number, updateTournamentDto: UpdateTournamentDto) {

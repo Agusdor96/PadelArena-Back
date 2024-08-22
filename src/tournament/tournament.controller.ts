@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, ParseUUIDPipe } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
@@ -18,13 +18,13 @@ export class TournamentController {
   }
 
   @Get()
-  findAll() {
-    return this.tournamentService.findAll();
+  getTournaments() {
+    return this.tournamentService.getAllTournaments();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tournamentService.findOne(+id);
+  getOneTournament(@Param('id', ParseUUIDPipe) id: string) {
+    return this.tournamentService.getTournament(id);
   }
 
   @Put(':id')
