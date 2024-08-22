@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
 import { Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
+import { StatusEnum } from './inscription.enum';
 
 @Injectable()
 export class TournamentService {
@@ -50,7 +51,7 @@ constructor(
       tournament.startingTime = createTournamentDto.startTime;
       tournament.finishTime = createTournamentDto.endTime;
       tournament.playingDay = createTournamentDto.playingDays;
-      tournament.status = true;
+      tournament.status = StatusEnum.PENDING;
       tournament.teamsQuantity = createTournamentDto.teamsQuantity;
       tournament.matchDuration = createTournamentDto.matchDuration;
       tournament.description = createTournamentDto.descrption;
