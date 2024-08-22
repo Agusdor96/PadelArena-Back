@@ -4,7 +4,7 @@ import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {v4 as uuid} from 'uuid';
-import { InscriptionEnum } from '../inscription.enum';
+import { InscriptionEnum, StatusEnum } from '../inscription.enum';
 
 
  @Entity({
@@ -32,8 +32,12 @@ export class Tournament {
   @Column("text", {array: true})
   playingDay:string[]
 
-  @Column()
-  status: boolean
+  @Column({
+    type: 'enum',
+    enum: StatusEnum,
+    default: StatusEnum.PENDING
+  })
+  status: StatusEnum
 
   @Column({
     type: "enum",
