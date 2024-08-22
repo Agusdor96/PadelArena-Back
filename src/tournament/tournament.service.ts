@@ -87,6 +87,7 @@ constructor(
         team:true,
         matches:true,
         fixture:true,
+        category: true
       }
     })
     if(!tournament){
