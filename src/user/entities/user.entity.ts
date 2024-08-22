@@ -1,6 +1,7 @@
+import { Category } from "src/category/entities/category.entity";
 import { PlayerStadistic } from "src/player-stadistics/entities/player-stadistic.entity";
 import { Team } from "src/team/entities/team.entity";
-import { Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "USERS"  
@@ -35,6 +36,9 @@ export class User {
 
     @Column({ type: "text", nullable: false, default: "default-image-url" })
         profileImg?: string
+
+    @ManyToOne(()=> Category, (category) => category.users)
+        category:Category
 
     @ManyToMany(()=> Team, (team) => team.user)
         team: Team

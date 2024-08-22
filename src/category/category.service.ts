@@ -1,9 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from './entities/category.entity';
+import { Repository } from 'typeorm';
+
+
+const data = [
+  {
+      "name": "Senior",
+      "description": "Con mas de 40 Juegos Ganados "
+  },
+  {
+      "name": "Semi Senior",
+      "description": "Con mas de 20 Juegos Ganados "
+  },
+  {
+      "name": "Junior",
+      "description": "Con menos de 20 Juegos Ganados "
+  }
+]
 
 @Injectable()
 export class CategoryService {
+  constructor(
+    @InjectRepository(Category) private categoryRepository: Repository<Category>,
+  ){}
+
   create(createCategoryDto: CreateCategoryDto) {
     return 'This action adds a new category';
   }
@@ -23,4 +46,20 @@ export class CategoryService {
   remove(id: number) {
     return `This action removes a #${id} category`;
   }
+
+
+
+async precargaCategorias(){
+  for(const item of data){
+    const exist = await this.categoryRepository.findOne({where: {name: item.name}});
+    if(!exist){
+      await this.categoryRepository.save(item);
+      return (`categorias cargadas correctamente`);
+    }else{
+      throw {message: `categoria ${item.name} ya existe, continuando precarga`}
+    }
+  }
+}
+
+
 }
