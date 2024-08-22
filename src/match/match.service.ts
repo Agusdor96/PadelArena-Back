@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,15 +12,27 @@ export class MatchService {
     @InjectRepository(Match) private matchRepository:Repository<Match>,
     @Inject() private tournamentService:TournamentService
   ){}
+
   create(createMatchDto: CreateMatchDto) {
     return 'This action adds a new match';
   }
 
  async getAllMatchesFromTournament(tournamentId:string) {
-  
+    const tournament = await this.tournamentService.getTournament(tournamentId)
+    const matches = tournament.matches;
+
+    if(!matches.length){
+      throw new NotFoundException("No se encontraron partidos asociados a este torneo")
+    }
+    return matches;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} match`;
+  async getOneMatch(teamId: string) {
+    const match = await this.matchRepository.findOneBy({id:teamId})
+    if(!match){
+      throw new NotFoundException("No se encontro ningun partido con el id proporcionado")
+    }
+
+    return match;
   }
 }

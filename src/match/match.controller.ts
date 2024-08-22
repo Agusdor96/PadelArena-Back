@@ -18,8 +18,8 @@ export class MatchController {
     return this.matchService.getAllMatchesFromTournament(tournamentId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.matchService.findOne(+id);
+  @Get(':matchId')
+  getOneMatch(@Param('matchId') matchId: string) {
+    return this.matchService.getOneMatch(matchId);
   }
 }
