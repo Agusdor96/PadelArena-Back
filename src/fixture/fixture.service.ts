@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFixtureDto } from './dto/create-fixture.dto';
+import { CreateFixtureDto } from './dto/fixture.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from 'src/tournament/entities/tournament.entity';
 import { Repository } from 'typeorm';
@@ -24,11 +24,16 @@ export class FixtureService {
       where: { id: tournamentId },
       relations: { category: true, team: true },
     });
+    const tournamentHasClosedInscription = tournament.inscription 
     if(tournament){
-      if(tournament.team.length){
-        const qTeams = tournament.team.length;
-        //ponemos una pausa aca para acomodarnos
+      if(tournamentHasClosedInscription === 'cerradas'){
+        if(tournament.team.length){
+        const qTeams = tournament.team.length + 1;
+
+        }
       }
     }
   }
 
+
+}
