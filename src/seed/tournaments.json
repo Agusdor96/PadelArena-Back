@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Summer Padel Cup",
+    "startDate": "2024-09-01", 
+    "startTime": "2024-09-01T10:00:00", 
+    "endTime": "2024-09-01T18:00:00", 
+    "playingDays": ["Monday", "Wednesday", "Friday"],
+    "status": "por comenzar",
+    "teamsQuantity": 16,
+    "matchDuration": 60,
+    "courts": 3,
+    "description": "El torneo de verano más esperado con un premio de 5000€. ¡Prepárate para la competición!",
+    "tournamentImg": "https://example.com/summer-padel-cup.jpg",
+    "category": "id de la categoria"
+  },
+  {
+    "name": "Autumn Padel Challenge",
+    "startDate": "2024-10-10", 
+    "startTime": "2024-10-10T09:00:00", 
+    "endTime": "2024-10-10T17:00:00", 
+    "playingDays": ["Tuesday", "Thursday", "Saturday"],
+    "status": "en progreso",
+    "teamsQuantity": 16,
+    "matchDuration": 90,
+    "courts": 4,
+    "description": "Desafío de padel otoñal con un premio de 7500€. ¡Compite con los mejores!",
+    "tournamentImg": "https://example.com/autumn-padel-challenge.jpg",
+    "category": "id de la categoria"
+  },
+  {
+    "name": "Winter Padel League",
+    "startDate": "2024-12-01", 
+    "startTime": "2024-12-01T11:00:00", 
+    "endTime": "2024-12-01T19:00:00", 
+    "playingDays": ["Monday", "Thursday"],
+    "status": "por comenzar",
+    "teamsQuantity": 16,
+    "matchDuration": 30,
+    "courts": 2,
+    "description": "Liga de invierno con un premio de 3000€. ¡No dejes pasar esta oportunidad!",
+    "tournamentImg": "https://example.com/winter-padel-league.jpg",
+    "category": "id de la categoria"
+  },
+  {
+    "name": "Spring Padel Open",
+    "startDate": "2024-03-20", 
+    "startTime": "2024-03-20T12:00:00", 
+    "endTime": "2024-03-20T20:00:00", 
+    "playingDays": ["Wednesday", "Saturday", "Sunday"],
+    "status": "finalizado",
+    "teamsQuantity": 16,
+    "matchDuration": 90,
+    "courts": 4,
+    "description": "Torneo de primavera con un premio de 6000€. ¡Demuestra tu talento en la pista!",
+    "tournamentImg": "https://example.com/spring-padel-open.jpg",
+    "category": "id de la categoria"
+  },
+  {
+    "name": "Padel Masters Cup",
+    "startDate": "2024-11-15", 
+    "startTime": "2024-11-15T13:00:00", 
+    "endTime": "2024-11-15T21:00:00", 
+    "playingDays": ["Friday", "Saturday"],
+    "status": "en progreso",
+    "teamsQuantity": 16,
+    "matchDuration": 60,
+    "courts": 3,
+    "description": "Copa de maestros de padel con un premio de 10000€. ¡Sólo para los mejores!",
+    "tournamentImg": "https://example.com/padel-masters-cup.jpg",
+    "category": "id de la categoria"
+  }
+]
