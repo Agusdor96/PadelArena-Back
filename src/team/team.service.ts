@@ -35,7 +35,7 @@ export class TeamService {
         const team = {
           name: TeamDto.name,
           category: tournament.category,
-          user: users,
+          user: [users],
           tournament: tournament,
         };
         await this.teamRepository.save(team);

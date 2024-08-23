@@ -20,9 +20,9 @@ async precargaCategorias(){
     const exist = await this.categoryRepository.findOne({where: {name: item.name}});
     if(!exist){
       await this.categoryRepository.save(item);
-      return (`categorias cargadas correctamente`);
     }else{
       throw {message: `categoria ${item.name} ya existe, continuando precarga`}
+      continue;
     }
   }
 }
