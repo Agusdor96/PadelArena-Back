@@ -12,6 +12,6 @@ async function bootstrap() {
   const categoryService = app.get(CategoryService)
   await categoryService.preloadCategories()
 
-  await app.listen(process.env.SERVER_PORT);
+  await app.listen(Number(process.env.SERVER_PORT));
 }
 bootstrap();

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
-import { PasswordInterceptor } from './interceptor/user.interceptor';
+import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
 //import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
