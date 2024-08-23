@@ -15,16 +15,18 @@ export class CategoryService {
     return await this.categoryRepository.find()
   }
 
-async precargaCategorias(){
-  for(const item of data){
-    const exist = await this.categoryRepository.findOne({where: {name: item.name}});
-    if(!exist){
-      await this.categoryRepository.save(item);
-    }else{
-      throw {message: `categoria ${item.name} ya existe, continuando precarga`}
-      continue;
+  async preloadCategories(){
+    const findCategories = await this.categoryRepository.find()
+    if(findCategories.length > 0){
+      return {message: "Las categorias ya estan cargadas en la Base de datos"}
     }
+    for(const item of data){
+      const exist = await this.categoryRepository.findOne({where: {name: item.name}});
+      if(!exist){
+        await this.categoryRepository.save(item);
+      }
+    }
+    return {message: "Categorias cargadas"}
   }
-}
 
 }

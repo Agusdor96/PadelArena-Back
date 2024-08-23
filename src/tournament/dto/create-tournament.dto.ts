@@ -10,13 +10,13 @@ export class CreateTournamentDto {
     @IsNotEmpty()
     startDate: Date;
     
-    @IsDate()
+    @IsString()
     @IsNotEmpty()
-    startTime: Date;
+    startTime: string;
     
-    @IsDate()
+    @IsString()
     @IsNotEmpty()
-    endTime: Date;
+    endTime: string;
     
     @IsNotEmpty()
     @IsString()
@@ -41,7 +41,7 @@ export class CreateTournamentDto {
     courts: number;
 
     @IsNotEmpty()
-    descrption: string;
+    description: string;
 
     @IsNotEmpty()
     tournamentImg: string;

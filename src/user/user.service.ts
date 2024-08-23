@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
+  
 constructor(
   @InjectRepository(User) private userRepository:Repository<User>
 ){}
@@ -23,19 +24,24 @@ constructor(
     return users
   }
 
-  async getUser(id: string): Promise<User> {
+  async getUsersByCategory(categoryId: string) {
+    const usersFromOneCategory = await this.userRepository.findBy({
+      category: {
+        id:categoryId
+      }
+    })
+
+    if(!usersFromOneCategory.length){
+      throw new NotFoundException("No se encuentran jugadores en la categoria proporcionada")
+    }
+    return usersFromOneCategory;
+  }
+
+  async getUserById(id: string): Promise<User> {
     const user = await this.userRepository.findOneBy({id:id})
       if(!user){
         throw new NotFoundException("No se encuentra usuario con el id proporcionado")
       }
     return user;
-  }
-
-  update(id: number, updateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

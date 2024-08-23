@@ -37,10 +37,10 @@ export class FileService {
     } else {
       const tournamentNewImg = (await this.fileRepository.uploadImage(file))
         .secure_url;
-      const imgArray = tournament.imgUrl
+      const imgArray = tournament.gallery
       const arrayUpdated = {tournamentNewImg, ...imgArray}
       const tournamentUpdated:Tournament = {
-        imgUrl: arrayUpdated,
+        gallery: arrayUpdated,
         ...tournament
       }
       await this.tournamentRepostory.save(tournamentUpdated);

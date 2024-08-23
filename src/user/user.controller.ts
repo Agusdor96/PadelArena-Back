@@ -19,19 +19,16 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
+  @Get('category/:categoryId')
+  @UseInterceptors(PasswordInterceptor)
+  getUsersBy(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
+    return this.userService.getUsersByCategory(categoryId);
+  }
+
   @Get(':id')
   @UseInterceptors(PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.getUser(id);
+    return this.userService.getUserById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
 }
