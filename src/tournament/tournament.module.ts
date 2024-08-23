@@ -9,5 +9,6 @@ import { Category } from 'src/category/entities/category.entity';
   imports: [TypeOrmModule.forFeature([Tournament,Category])],
   controllers: [TournamentController],
   providers: [TournamentService],
+  exports: [TournamentService]
 })
 export class TournamentModule {}

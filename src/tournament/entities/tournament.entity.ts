@@ -4,7 +4,7 @@ import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {v4 as uuid} from 'uuid';
-import { InscriptionEnum } from '../inscription.enum';
+import { InscriptionEnum, StatusEnum } from '../tournament.enum';
 
 
  @Entity({
@@ -24,16 +24,20 @@ export class Tournament {
   endDate:Date
 
   @Column()
-  startingTime:Date
+  startingTime:string
 
   @Column()
-  finishTime:Date
+  finishTime:string
 
   @Column("text", {array: true})
   playingDay:string[]
 
-  @Column()
-  status: boolean
+  @Column({
+    type: 'enum',
+    enum: StatusEnum,
+    default: StatusEnum.PENDING
+  })
+  status: StatusEnum
 
   @Column({
     type: "enum",
@@ -52,7 +56,7 @@ export class Tournament {
   description: string
 
   @Column("text", { array: true, nullable: true })
-  imgUrl: string[]
+  gallery: string[]
 
   @Column({ type: "text", nullable: false, default: "default-image-url" })
   tournamentFlyer: string

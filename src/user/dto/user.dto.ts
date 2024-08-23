@@ -28,7 +28,6 @@ export class UserDto {
   @Length(5, 20)
   phone: string;
 
-
   @IsNotEmpty()
   @Length(3, 50)
   @IsString()

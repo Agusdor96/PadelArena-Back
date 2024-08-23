@@ -29,7 +29,7 @@ export class FileController {
             message: 'El archivo no debe pesar mas de 500kb',
           }),
           new FileTypeValidator({
-            fileType: /(jpg|jepg|png|webp|mp4|webm|wmv|swf)$/,
+            fileType: /(jpg|jpeg|png|webp|mp4|webm|wmv|swf)$/,
           }),
         ],
       }),
