@@ -28,6 +28,7 @@ constructor(
             startDate: createTournamentDto.startDate
         },
     });
+    // ok
     
     if (existingTournament) {
       throw new BadRequestException("No se puede crear el torneo. Ya existe un torneo con el mismo nombre y categoría que está 'en progreso' o 'por comenzar'. Además, no se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
