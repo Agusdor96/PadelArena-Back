@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFixtureDto } from './dto/fixture.dto';
+import { FixtureDto } from './dto/fixture.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from 'src/tournament/entities/tournament.entity';
 import { Repository } from 'typeorm';
@@ -18,7 +18,7 @@ export class FixtureService {
   ) {}
   async createFixture(
     tournamentId: string,
-    createFixtureDto: CreateFixtureDto,
+    FixtureDto: FixtureDto,
   ) {
     const tournament = await this.tournamentRepository.findOne({
       where: { id: tournamentId },

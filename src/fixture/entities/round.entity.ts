@@ -1,8 +1,5 @@
-import { match } from "assert";
 import { Match } from "src/match/entities/match.entity";
-import { Team } from "src/team/entities/team.entity";
-import { Tournament } from "src/tournament/entities/tournament.entity";
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Fixture } from "./fixture.entity";
 
@@ -16,12 +13,11 @@ export class Round {
     @Column()
     stage: string
 
-    @Column()
+    @ManyToOne(()=> Match)
     matches: Match[]
     
-
-    @Column()
-    winners: Team[]
+    @Column('text', {array: true})
+    winners: string[]
 
     @ManyToOne(() => Fixture, (fixture) => fixture.round)
     fixture: Fixture
