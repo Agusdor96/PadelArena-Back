@@ -1,5 +1,4 @@
-import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity({
@@ -14,5 +13,4 @@ export class PlayerStadistic {
 
     @Column()
         loss: number
-
 }
