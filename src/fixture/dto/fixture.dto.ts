@@ -1,7 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 import { Round } from "../entities/round.entity";
 
-export class CreateFixtureDto {
+export class FixtureDto {
 
     @IsNotEmpty()
     round: Round
