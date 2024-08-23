@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { StatusEnum } from './tournament.enum';
 
@@ -34,8 +34,6 @@ constructor(
       throw new BadRequestException("No se puede crear el torneo. Ya existe un torneo con el mismo nombre y categoría que está 'en progreso' o 'por comenzar'. Además, no se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
     }
 
-    
-
       const InitialMatches = createTournamentDto.teamsQuantity /2;
       const startTime = new Date(createTournamentDto.startTime);
       const endTime = new Date(createTournamentDto.endTime);
@@ -49,12 +47,7 @@ constructor(
         qMatchRounds /= 2;
       }
       totalMatches +=1;
-      
-      const category = await this.categoryRepository.findOne({where: {name:createTournamentDto.category.name}});
-        if(!category){
-          throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
-        }
-
+  
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
       const endDate = new Date(createTournamentDto.startDate);
@@ -71,7 +64,7 @@ constructor(
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
         tournament.matchDuration = createTournamentDto.matchDuration;
         tournament.description = createTournamentDto.description;
-        tournament.tournamentFlyer = createTournamentDto.tournamentImg;
+        tournament.tournamentFlyer = createTournamentDto.tournamentFlyer;
         tournament.courtsAvailable = createTournamentDto.courts;
         tournament.category = category;
     
