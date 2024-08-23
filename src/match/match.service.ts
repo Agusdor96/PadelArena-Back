@@ -1,9 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateMatchDto } from './dto/create-match.dto';
-import { UpdateMatchDto } from './dto/update-match.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { MatchDto } from './dto/match.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TournamentService } from 'src/tournament/tournament.service';
 import { Team } from 'src/team/entities/team.entity';
 
@@ -15,7 +14,7 @@ export class MatchService {
     @Inject() private tournamentService:TournamentService
   ){}
 
-  async createMatch(createMatchDto: CreateMatchDto) {    
+  async createMatch(createMatchDto: MatchDto) {    
     const teamEntity = createMatchDto.teams
     
     for(const teamName of teamEntity){
