@@ -30,7 +30,8 @@ export class AuthService {
           roles: ['user']  //cambiar esto tambien cuando esten listo los guardianes
         }
         const token = this.JWTservice.sign(userPayload);
-        return {message: 'Inicio de sesion realizado con exito', token, userExist}
+        const {password, ...userClean} = userExist
+        return {message: 'Inicio de sesion realizado con exito', token, userClean}
       }else{
         throw new BadRequestException('Email o contraseña incorrectos')
       }
@@ -43,7 +44,7 @@ export class AuthService {
     if(!emailAlreadyExist){
         const encryptedPassword = await Bcrypt.hash(UserDto.password, 10)
         const newUser = await this.userRepository.save({...UserDto, password: encryptedPassword})
-        const {password, ...user} = newUser
+        const {password, passwordConfirm,  ...user} = newUser
         return {message: 'Usuario creado con exito', user}
     }else{
       throw new BadRequestException('El email provisto ya está registrado');
