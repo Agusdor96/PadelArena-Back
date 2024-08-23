@@ -30,7 +30,7 @@ export class AuthService {
           roles: ['user']  //cambiar esto tambien cuando esten listo los guardianes
         }
         const token = this.JWTservice.sign(userPayload);
-        return {message: 'Inicio de sesion realizado con exito', token}
+        return {message: 'Inicio de sesion realizado con exito', token, userExist}
       }else{
         throw new BadRequestException('Email o contraseña incorrectos')
       }
