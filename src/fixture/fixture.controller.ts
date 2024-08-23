@@ -1,7 +1,7 @@
 
 import { Controller, Post, Body, Param, ParseUUIDPipe} from '@nestjs/common';
 import { FixtureService } from './fixture.service';
-import { CreateFixtureDto } from './dto/create-fixture.dto';
+import { CreateFixtureDto } from './dto/fixture.dto';
 
 
 @Controller('tournament/fixture')

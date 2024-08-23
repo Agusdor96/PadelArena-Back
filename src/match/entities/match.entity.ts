@@ -23,9 +23,6 @@ export class Match {
     @ManyToOne(()=> Tournament, tournament=> tournament.matches)
     tournament: Tournament
 
-    @ManyToOne(() => Fixture, fixture => fixture.matches)
-    fixture: Fixture
-
     @Column()
     teamWinner: string
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFixtureDto } from './dto/create-fixture.dto';
+import { CreateFixtureDto } from './dto/fixture.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from 'src/tournament/entities/tournament.entity';
 import { Repository } from 'typeorm';
@@ -32,3 +32,5 @@ export class FixtureService {
     }
   }
 
+
+}

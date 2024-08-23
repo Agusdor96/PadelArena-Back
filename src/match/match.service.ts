@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { MatchDto } from './dto/match.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
