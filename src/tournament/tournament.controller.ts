@@ -9,13 +9,9 @@ export class TournamentController {
 
   @Post('/new')
   @UseInterceptors(new TransformTime())
-  create(@Body() createTournamentDto: CreateTournamentDto) {
-    try {
-      this.tournamentService.create(createTournamentDto);
-      return {message:"Torneo creado con exito", createTournamentDto};
-    } catch (error) {
-      return {message:"Error al crear torneo", error};
-    }
+  async create(@Body() createTournamentDto: CreateTournamentDto) {
+      await this.tournamentService.create(createTournamentDto);
+    return {message:"Torneo creado con exito", createTournamentDto};
   }
 
   @Get()

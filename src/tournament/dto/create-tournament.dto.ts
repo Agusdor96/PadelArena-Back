@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString, Length, Min } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString, IsUUID, Length, Min } from "class-validator";
 import { Category } from "src/category/entities/category.entity";
 
 export class CreateTournamentDto {
@@ -44,9 +44,9 @@ export class CreateTournamentDto {
     description: string;
 
     @IsNotEmpty()
-    tournamentImg: string;
+    tournamentFlyer: string;
 
     @IsNotEmpty()
-    category: Category;
-
+    @IsUUID()
+    category: string;
 }
