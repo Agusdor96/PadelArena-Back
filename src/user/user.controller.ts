@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
+import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
 //import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -13,22 +14,21 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @UseInterceptors(PasswordInterceptor)
+  getUsers() {
+    return this.userService.getAllUsers();
+  }
+
+  @Get('category/:categoryId')
+  @UseInterceptors(PasswordInterceptor)
+  getUsersBy(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
+    return this.userService.getUsersByCategory(categoryId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @UseInterceptors(PasswordInterceptor)
+  getOneUser(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.getUserById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
 }
