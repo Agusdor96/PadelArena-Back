@@ -14,11 +14,27 @@ constructor(
 ){}
 
   async create(createTournamentDto: CreateTournamentDto) {
-    const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
-    if (exist && exist.status) 
-      throw new BadRequestException('Tournament already exists');
-    if(createTournamentDto.teamsQuantity % 2 != 0 || createTournamentDto.teamsQuantity < 16 ) 
-      throw new BadRequestException("Team quantity cant be odd or less than 16");
+
+    const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
+      if(!category){
+          throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
+      }
+
+      const existingTournament = await this.tournamentRepository.findOne({
+        where: {
+            name: createTournamentDto.name,
+            category: { id: createTournamentDto.category },
+            status: In([StatusEnum.IN_PROGRESS, StatusEnum.PENDING]),
+            startDate: createTournamentDto.startDate
+        },
+    });
+    
+    
+    if (existingTournament) {
+      throw new BadRequestException("No se puede crear el torneo. Ya existe un torneo con el mismo nombre y categoría que está 'en progreso' o 'por comenzar'. Además, no se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
+    }
+
+    
 
       const InitialMatches = createTournamentDto.teamsQuantity /2;
       const startTime = new Date(createTournamentDto.startTime);
