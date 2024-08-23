@@ -1,7 +1,7 @@
-import { IsArray, IsDate, IsNotEmpty, IsOptional, IsUUID } from "class-validator"
+import { IsArray, IsDate, IsNotEmpty, IsOptional} from "class-validator"
 import { Team } from "src/team/entities/team.entity"
 
-export class CreateMatchDto {
+export class MatchDto {
 
     @IsNotEmpty()
     @IsDate()

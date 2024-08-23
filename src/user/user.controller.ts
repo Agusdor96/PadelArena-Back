@@ -1,17 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
 import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
-//import { UpdateUserDto } from './dto/update-user.dto';
+
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: UserDto) {
-    return this.userService.create(createUserDto);
-  }
 
   @Get()
   @UseInterceptors(PasswordInterceptor)
