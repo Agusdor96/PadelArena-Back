@@ -1,17 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get,  Param, ParseUUIDPipe } from '@nestjs/common';
 import { MatchService } from './match.service';
-import { CreateMatchDto } from './dto/create-match.dto';
-import { UpdateMatchDto } from './dto/update-match.dto';
+
 
 @Controller('tournament-match')
 export class MatchController {
   constructor(private readonly matchService: MatchService) {}
-
-  // @Post()
-  // create(@Body() createMatchDto: CreateMatchDto) {
-  //   return this.matchService.create(createMatchDto);
-  // }
-
+  
   @Get(":tournamentId")
   getAllMatches(
     @Param("tournamentId", ParseUUIDPipe) tournamentId:string){
