@@ -15,12 +15,18 @@ constructor(
 
 
   async create(createTournamentDto: CreateTournamentDto) {
-    const exist = await this.tournamentRepository.findOne({where: {name: createTournamentDto.name}});
-    if (exist && exist.status){
-      throw new BadRequestException('Este torneo ');
+    const exist = await this.tournamentRepository.findOne({where: {
+      name: createTournamentDto.name
+    }});
+
+    if (exist && exist.category.name === createTournamentDto.category.name){
+      const tournamentStatus = exist.status
+      if(tournamentStatus === StatusEnum.IN_PROGRESS){
+        throw new BadRequestException('Ya hay un torneo en juego de esa categoria. Aguarda a que termine el torneo para crear uno nuevo');
+      }
     }
     if(createTournamentDto.teamsQuantity % 2 != 0 || createTournamentDto.teamsQuantity < 16 ){
-      throw new BadRequestException("Team quantity cant be odd or less than 16");
+      throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64");
 
     }
     
