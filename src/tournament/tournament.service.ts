@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { StatusEnum } from './tournament.enum';
 
@@ -13,8 +13,8 @@ constructor(
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
 ){}
 
-
   async create(createTournamentDto: CreateTournamentDto) {
+
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
       if(!category){
           throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
@@ -28,16 +28,14 @@ constructor(
             startDate: createTournamentDto.startDate
         },
     });
-    // ok
+    
     
     if (existingTournament) {
       throw new BadRequestException("No se puede crear el torneo. Ya existe un torneo con el mismo nombre y categoría que está 'en progreso' o 'por comenzar'. Además, no se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
     }
 
-    if (createTournamentDto.teamsQuantity !== 16 && createTournamentDto.teamsQuantity !== 32 && createTournamentDto.teamsQuantity !== 64) {
-      throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64");
-    }
     
+
       const InitialMatches = createTournamentDto.teamsQuantity /2;
       const startTime = new Date(createTournamentDto.startTime);
       const endTime = new Date(createTournamentDto.endTime);
@@ -52,6 +50,11 @@ constructor(
       }
       totalMatches +=1;
       
+      const category = await this.categoryRepository.findOne({where: {name:createTournamentDto.category.name}});
+        if(!category){
+          throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
+        }
+
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
       const endDate = new Date(createTournamentDto.startDate);
@@ -68,11 +71,14 @@ constructor(
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
         tournament.matchDuration = createTournamentDto.matchDuration;
         tournament.description = createTournamentDto.description;
-        tournament.tournamentFlyer = createTournamentDto.tournamentFlyer;
+        tournament.tournamentFlyer = createTournamentDto.tournamentImg;
         tournament.courtsAvailable = createTournamentDto.courts;
         tournament.category = category;
     
-      return await this.tournamentRepository.save(tournament);
+      const newTournament = await this.tournamentRepository.save(tournament);
+
+      return newTournament;
+    
   }
 
   async getAllTournaments() {

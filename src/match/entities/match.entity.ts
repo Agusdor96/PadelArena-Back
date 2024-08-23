@@ -17,14 +17,14 @@ export class Match {
     @Column()
     time: string
 
+    @Column()
+    orderTeam: number
+
     @ManyToMany(()=>Team, team=> team.match)
     teams: Team[]
 
     @ManyToOne(()=> Tournament, tournament=> tournament.matches)
     tournament: Tournament
-
-    @ManyToOne(() => Fixture, fixture => fixture.matches)
-    fixture: Fixture
 
     @Column()
     teamWinner: string
