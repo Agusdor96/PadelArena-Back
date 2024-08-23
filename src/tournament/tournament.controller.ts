@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
+import { TransformTime } from 'src/interceptors/dateTime.interceptor';
 
 @Controller('tournament')
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
 
   @Post('/new')
+  @UseInterceptors(new TransformTime())
   create(@Body() createTournamentDto: CreateTournamentDto) {
     try {
       this.tournamentService.create(createTournamentDto);
