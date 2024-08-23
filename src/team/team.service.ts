@@ -7,7 +7,7 @@ import {
 import { TeamDto } from './dto/team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Team } from './entities/team.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { TournamentService } from 'src/tournament/tournament.service';
 import { User } from 'src/user/entities/user.entity';
 
@@ -23,7 +23,7 @@ export class TeamService {
   ) {}
   async newTeam(tournamentId: string, TeamDto: TeamDto) {
     const tournament = await this.tournamentService.getTournament(tournamentId);
-    
+    const players = await this.userService.find({ where: { id: In(TeamDto.players) } });
     for (const user of TeamDto.players) {
       const users = await this.userService.findOne({ where: { id: user } });
       const userHaveTeam = users.team;
@@ -35,7 +35,7 @@ export class TeamService {
         const team = {
           name: TeamDto.name,
           category: tournament.category,
-          user: users,
+          user: players,
           tournament: tournament,
         };
         await this.teamRepository.save(team);
