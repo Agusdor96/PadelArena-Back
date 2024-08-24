@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Param, ParseUUIDPipe} from '@nestjs/common';
 import { TeamService } from './team.service';
 import { TeamDto } from './dto/team.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("TEAM")
 @Controller('tournament-team')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}

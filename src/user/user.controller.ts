@@ -1,8 +1,9 @@
 import { Controller, Get, Param, ParseUUIDPipe, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags("USERS")
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

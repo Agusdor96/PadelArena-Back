@@ -15,7 +15,7 @@ export class Team {
     @Column({type: "varchar", length: 50, nullable:false})
         name: string
 
-    @Column()
+    @Column({nullable:true})
         order:number
     
     @ManyToOne(() => Category, (category)=>category.team)
