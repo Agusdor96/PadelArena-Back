@@ -11,7 +11,8 @@ import { In, Repository } from 'typeorm';
 import { TournamentService } from 'src/tournament/tournament.service';
 import { User } from 'src/user/entities/user.entity';
 import * as data from '../seed/team.json';
-import { skipLast } from 'rxjs';
+import { Tournament } from 'src/tournament/entities/tournament.entity';
+import { StatusEnum } from 'src/tournament/tournament.enum';
 
 @Injectable()
 export class TeamService {
@@ -22,25 +23,39 @@ export class TeamService {
     private tournamentService: TournamentService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Tournament)
+    private tournamentRepository: Repository<Tournament>,
   ) {}
   async newTeam(tournamentId: string, TeamDto: TeamDto) {
     const tournament = await this.tournamentService.getTournament(tournamentId);
     const players = await this.userRepository.find({
       where: { id: In(TeamDto.players) },
     });
-    for (const user of TeamDto.players) {
-      const users = await this.userRepository.findOne({ where: { id: user } });
-      const userHaveTeam = users.team;
-      if (userHaveTeam) {
+    if (tournament.inscription === 'abiertas') {
+      const tournaments = await this.tournamentRepository.find({
+        where: { status: StatusEnum.PENDING || StatusEnum.IN_PROGRESS },
+        relations: { team: true },
+      });
+
+      const tournamentMapped = tournaments.map((tournament) =>
+        tournament.team.some(() => players[0] || players[1]),
+      );
+
+      const isTeamOnActiveTournament = tournamentMapped.some(() => true);
+      if (isTeamOnActiveTournament) {
         throw new BadRequestException(
-          'El usuario solo puede pertenecer a un equipo',
-        );
+          'El jugador ya se encuentra inscripto a un torneo pendiente o en progreso');
+      }
+      if (!players) {
+        throw new BadRequestException('Jugadores no encontrados');
       } else {
+        const teams = await this.teamRepository.find();
         const team = {
           name: TeamDto.name,
           category: tournament.category,
           user: players,
           tournament: tournament,
+          order: teams.length,
         };
         await this.teamRepository.save(team);
         return { message: 'Equipo creado con exito', team };
@@ -74,33 +89,23 @@ export class TeamService {
   }
 
   async preload() {
-    const user = await this.userRepository.find();
-    for (const team of data) {
-      const exist = await this.teamRepository.findOne({
-        where: { name: team.name },
-      });
-
-      for (let i = 0; i <= user.length; i += 1) {
-        const slicedPlayers = user.slice(i, i + 2);
-        const newTeam = {
-          name: team.name,
-          players: slicedPlayers,
-        };
-        if (!exist) {
-          await this.teamRepository.save(newTeam);
-        } else {
-          continue;
+    let orderTeam = 0;
+    const users = await this.userRepository.find();
+    for (let i = 1; i < users.length + 1; i += 2) {
+      const teamIndex = (i - 1) / 2;
+      if (teamIndex < data.length) {
+        const teamExist = await this.teamRepository.findOne({
+          where: { name: data[teamIndex].name },
+          relations: { user: true },
+        });
+        if (!teamExist) {
+          data[teamIndex].user = [users[i - 1], users[i]];
+          data[teamIndex].order = orderTeam;
+          orderTeam++;
+          await this.teamRepository.save(data[teamIndex]);
         }
       }
     }
     return { message: 'Equipos precargados correctamente' };
   }
 }
-
-// const newTeam = new Team()
-// newTeam.name = team.name;
-// newTeam.user[0] = user[contador];
-// newTeam.user[1] = user[contador+1];
-
-// await this.teamRepository.save(newTeam);
-// contador +=2;
