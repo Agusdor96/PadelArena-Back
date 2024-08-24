@@ -1,38 +1,114 @@
 [
-    {
+  {
       "name": "Team Alpha",
       "players": [
-        "a4b1c9b1-4b8d-4a2a-8c9f-12b4a5a9c7f3",
-        "b2d3f5e7-4e9b-4c7d-9a5e-9b2a7c8d5e7f"
+          "3fdffcf4-c403-4fb0-8806-9330418ac8cf",
+          "52cebde2-53e6-42cc-a3a5-f3a55918481a"
       ]
-    },
-    {
+  },
+  {
       "name": "Team Beta",
       "players": [
-        "c3e7f9b1-8f1d-4c9a-9f3a-1b4c7d5e9f7d",
-        "d4f9a3b2-9b8d-4e7c-a1b4-9d5c7f3e1b7f"
+          "c3e7f9b1-8f1d-4c9a-9f3a-1b4c7d5e9f7d",
+          "7ec64be4-85a9-46ba-af00-b8b55694ff03"
       ]
-    },
-    {
+  },
+  {
       "name": "Team Gamma",
       "players": [
-        "e5a3b7f2-9c8d-4a3f-8b1c-2e7d4c9f5a7b",
-        "f6b9c3e7-1d8a-4f9b-9e2d-3b7d1c5a2f9e"
+          "6c8aa08e-53e0-4afb-9dec-60260ecfcfd2",
+          "f6b9c3e7-1d8a-4f9b-9e2d-3b7d1c5a2f9e"
       ]
-    },
-    {
+  },
+  {
       "name": "Team Delta",
       "players": [
-        "g7c1d9f2-3a8b-4e1c-8d7f-4b9f5a3e7c1b",
-        "h8d7e3a2-2f9b-4d1a-9c8d-5e3a7b1f4c9e"
+          "47dabad9-1c55-4d77-991f-3b7a51141b40",
+          "7e6144cb-43fd-45d8-8bee-9269135de2fe"
       ]
-    },
-    {
+  },
+  {
       "name": "Team Epsilon",
       "players": [
-        "i9e1f3a2-4b7d-4c8a-9d1f-6a7c9b5e3d7f",
-        "j1f7b9e3-5d9c-4a2f-8b3d-7c1e9f4a6d3b"
+          "e8f84ec0-3f68-43ee-94fa-4f4bdf429088",
+          "f6954f51-920f-4d61-9477-0d2232b3a4b9"
       ]
-    }
-  ]
-  
+  },
+  {
+      "name": "Team Zeta",
+      "players": [
+          "k2g3h4i5-6j7k-8l9m-0n1o-2p3q4r5s6t7u",
+          "l3h4i5j6-7k8l-9m0n-1o2p-3q4r5s6t7u8v"
+      ]
+  },
+  {
+      "name": "Team Eta",
+      "players": [
+          "m4i5j6k7-8l9m-0n1o-2p3q-4r5s6t7u8v9w",
+          "n5j6k7l8-9m0n-1o2p-3q4r-5s6t7u8v9w0x"
+      ]
+  },
+  {
+      "name": "Team Theta",
+      "players": [
+          "o6k7l8m9-0n1o-2p3q-4r5s-6t7u8v9w0x1y",
+          "p7l8m9n0-1o2p-3q4r-5s6t-7u8v9w0x1y2z"
+      ]
+  },
+  {
+      "name": "Team Iota",
+      "players": [
+          "q8m9n0o1-2p3q-4r5s-6t7u-8v9w0x1y2z3a",
+          "r9n0o1p2-3q4r-5s6t-7u8v-9w0x1y2z3a4b"
+      ]
+  },
+  {
+      "name": "Team Kappa",
+      "players": [
+          "s0o1p2q-4r5s-6t7u-8v9w-0x1y2z3a4b5c",
+          "t1p2q3r-5s6t-7u8v-9w0x-1y2z3a4b5c6d"
+      ]
+  },
+  {
+      "name": "Team Lambda",
+      "players": [
+          "u2q3r4s-6t7u-8v9w-0x1y-2z3a4b5c6d7e",
+          "v3r4s5t-7u8v-9w0x-1y2z-3a4b5c6d7e8f"
+      ]
+  },
+  {
+      "name": "Team Mu",
+      "players": [
+          "w4s5t6u-8v9w-0x1y-2z3a-4b5c6d7e8f9g",
+          "x5t6u7v-9w0x-1y2z-3a4b-5c6d7e8f9g0h"
+      ]
+  },
+  {
+      "name": "Team Nu",
+      "players": [
+          "y6u7v8w-0x1y-2z3a-4b5c-6d7e8f9g0h1i",
+          "z7v8w9x-1y2z-3a4b-5c6d-7e8f9g0h1i2j"
+      ]
+  },
+  {
+      "name": "Team Xi",
+      "players": [
+          "a8w9x0y-2z3a-4b5c-6d7e-8f9g0h1i2j3k",
+          "b9x0y1z-3a4b-5c6d-7e8f-9g0h1i2j3k4l"
+      ]
+  },
+  {
+      "name": "Team Omicron",
+      "players": [
+          "c0y1z2a-4b5c-6d7e-8f9g-0h1i2j3k4l5m",
+          "d1z2a3b-5c6d-7e8f-9g0h-1i2j3k4l5m6n"
+      ]
+  },
+  {
+      "name": "Team Pi",
+      "players": [
+          "e2a3b4c-6d7e-8f9g-0h1i-2j3k4l5m6n7o",
+          "f3b4c5d-7e8f-9g0h-1i2j-3k4l5m6n7o8p"
+      ]
+  }
+]

@@ -17,23 +17,30 @@ export class FixtureService {
     private roundRepository: Repository<Round>,
   ) {}
   async createFixture(
-    tournamentId: string,
-    FixtureDto: FixtureDto,
+    id: string,
+    FixtureDto?: FixtureDto,
   ) {
-    const tournament = await this.tournamentRepository.findOne({
-      where: { id: tournamentId },
-      relations: { category: true, team: true },
-    });
-    const tournamentHasClosedInscription = tournament.inscription 
+    
+    const tournament = await this.tournamentRepository.findOne({where:{id}})
+    console.log(tournament);
+    
+    const tournamentHasClosedInscription = 'cerradas'//tournament.inscription 
+    
     if(tournament){
       if(tournamentHasClosedInscription === 'cerradas'){
         if(tournament.team.length){
-        const qTeams = tournament.team.length + 1;
-
+          const qTeams = tournament.team.length + 1;
+          if(qTeams === 16 || qTeams === 32 || qTeams === 64){
+              const teamsArray = tournament.team
+              let orderIterator = 0
+              teamsArray.map((team) => team.order = orderIterator++)
+              console.log(teamsArray);
+              
+            }
+          }
         }
       }
     }
   }
 
 
-}

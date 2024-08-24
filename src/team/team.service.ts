@@ -10,6 +10,8 @@ import { Team } from './entities/team.entity';
 import { In, Repository } from 'typeorm';
 import { TournamentService } from 'src/tournament/tournament.service';
 import { User } from 'src/user/entities/user.entity';
+import * as data from '../seed/team.json';
+import { skipLast } from 'rxjs';
 
 @Injectable()
 export class TeamService {
@@ -19,13 +21,15 @@ export class TeamService {
     @Inject()
     private tournamentService: TournamentService,
     @InjectRepository(User)
-    private userService: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
   async newTeam(tournamentId: string, TeamDto: TeamDto) {
     const tournament = await this.tournamentService.getTournament(tournamentId);
-    const players = await this.userService.find({ where: { id: In(TeamDto.players) } });
+    const players = await this.userRepository.find({
+      where: { id: In(TeamDto.players) },
+    });
     for (const user of TeamDto.players) {
-      const users = await this.userService.findOne({ where: { id: user } });
+      const users = await this.userRepository.findOne({ where: { id: user } });
       const userHaveTeam = users.team;
       if (userHaveTeam) {
         throw new BadRequestException(
@@ -68,4 +72,35 @@ export class TeamService {
       return tournament.team;
     }
   }
+
+  async preload() {
+    const user = await this.userRepository.find();
+    for (const team of data) {
+      const exist = await this.teamRepository.findOne({
+        where: { name: team.name },
+      });
+
+      for (let i = 0; i <= user.length; i += 1) {
+        const slicedPlayers = user.slice(i, i + 2);
+        const newTeam = {
+          name: team.name,
+          players: slicedPlayers,
+        };
+        if (!exist) {
+          await this.teamRepository.save(newTeam);
+        } else {
+          continue;
+        }
+      }
+    }
+    return { message: 'Equipos precargados correctamente' };
+  }
 }
+
+// const newTeam = new Team()
+// newTeam.name = team.name;
+// newTeam.user[0] = user[contador];
+// newTeam.user[1] = user[contador+1];
+
+// await this.teamRepository.save(newTeam);
+// contador +=2;

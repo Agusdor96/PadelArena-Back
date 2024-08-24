@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import * as data from '../seed/users.json';
 
 @Injectable()
 export class UserService {
@@ -37,5 +38,16 @@ constructor(
         throw new NotFoundException("No se encuentra usuario con el id proporcionado")
       }
     return user;
+  }
+
+  async preload(){
+    for(const user of data){
+      const exist = await this.userRepository.findOne({where: {email: user.email}})
+      if(!exist) await this.userRepository.save(user);
+      else{
+        continue;
+      }
+    }
+    return {message: "Usuarios precargados correctamente"};
   }
 }
