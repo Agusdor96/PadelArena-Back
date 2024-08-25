@@ -41,8 +41,14 @@ constructor(
   }
 
   async preload(){
+    const checkUserDb = await this.userRepository.find()
+    if(checkUserDb.length > 0){
+      return {message: "Los usuarios ya estan cargados en la Base de datos"}
+    }
+    
     for(const user of data){
       const exist = await this.userRepository.findOne({where: {email: user.email}})
+
       if(!exist) await this.userRepository.save(user);
       else{
         continue;
