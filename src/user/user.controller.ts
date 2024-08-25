@@ -14,20 +14,22 @@ export class UserController {
 
 
   @Get()
+  // @Roles(RoleEnum.ADMIN)
+  // @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(PasswordInterceptor)
   getUsers() {
     return this.userService.getAllUsers();
   }
 
   @Get('category/:categoryId')
+  // @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getUsersBy(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
     return this.userService.getUsersByCategory(categoryId);
   }
 
   @Get(':id')
-  @Roles(RoleEnum.ADMIN)
-  @UseGuards(AuthGuard, RolesGuard)
+  // @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUserById(id);

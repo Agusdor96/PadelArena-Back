@@ -9,6 +9,7 @@ export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
   @Post(':tournamentId')
+  // @UseGuards(AuthGuard)
   newTeam(@Param('tournamentId', ParseUUIDPipe) tournamentId: string, @Body() TeamDto: TeamDto) {
     return this.teamService.newTeam(tournamentId, TeamDto);
   }
@@ -19,9 +20,9 @@ export class TeamController {
   }
 
   @Get(':tournamentId')
+  // @Roles(RoleEnum.ADMIN)
+  // @UseGuards(AuthGuard, RolesGuard)
   getAllTeams(@Param('tournamentId', ParseUUIDPipe) tournamentId:string) {
     return this.teamService.findAllTeamsByTournament(tournamentId);
   }
-
-
 }

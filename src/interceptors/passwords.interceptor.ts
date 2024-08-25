@@ -12,7 +12,7 @@ intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | 
                     return notPasswordUser;
                 })
             } else{
-                const {password, passwordConfirm, ...partialUser} = data
+                const {password, passwordConfirm, role, ...partialUser} = data
                 return partialUser;
             }
         })

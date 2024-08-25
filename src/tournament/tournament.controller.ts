@@ -10,6 +10,8 @@ export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
 
   @Post('/new')
+  // @Roles(RoleEnum.ADMIN)
+  // @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(new TransformTime())
   async create(@Body() createTournamentDto: CreateTournamentDto) {
       await this.tournamentService.create(createTournamentDto);
