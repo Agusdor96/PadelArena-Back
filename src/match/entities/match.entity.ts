@@ -16,15 +16,12 @@ export class Match {
     @Column()
     time: string
 
-    @Column()
-    orderTeam: number
-
     @ManyToMany(()=>Team, team=> team.match)
     teams: Team[]
 
     @ManyToOne(()=> Tournament, tournament=> tournament.matches)
     tournament: Tournament
 
-    @Column()
-    teamWinner: string
+    @Column({nullable:true})
+    teamWinner?: string
 }

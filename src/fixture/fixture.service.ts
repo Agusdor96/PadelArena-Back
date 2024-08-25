@@ -22,23 +22,37 @@ export class FixtureService {
     tournament: Tournament,
   ) {
     const tournamentHasClosedInscription = tournament.inscription 
-    const qTeams = tournament.team.length + 1;
+    const qTeams = tournament.team.length;
+    console.log(qTeams);
+    
     const teamsArray = tournament.team.sort((team)=> team.order)
-    if(qTeams === 16 || qTeams === 32 || qTeams === 64){
+    if(qTeams === 2 || qTeams === 16 || qTeams === 32 || qTeams === 64){
         if(tournamentHasClosedInscription === 'cerradas'){
+          const stage = 
+          qTeams === 2 ? 'final' :
+          qTeams === 16 ? 'octavos' :
+          qTeams === 32 ? 'dieciseisavos' :
+          qTeams === 64 ? 'treintaidosavos' : '';
           for (let i = 1; i < teamsArray.length + 1; i += 2) {
-            
-            const teams = [teamsArray[i], teamsArray[i-1]];
-            teams.push()
+            const teams = [teamsArray[i-1], teamsArray[i]];
             const date = tournament.startDate;
             const time = tournament.startingTime;
-
-            console.log(date);
-            console.log(time);
-            console.log(teams);
-            
-            // await this.matchService.createMatch(date,time,teams)
+            await this.matchService.createMatch({date, time, teams, tournament})
           }
+            const matches = await this.matchService.getAllMatchesFromTournament(tournament.id)
+            const newRound = new Round();
+            newRound.stage = stage;
+            newRound.matches = matches;
+            console.log(newRound);
+            
+            const initialRound = await this.roundRepository.save(newRound);
+
+            const fixture = {
+              tournament: tournament,
+              round: [initialRound]
+            }
+            const newFixture = await this.fixtureRepository.save(fixture)
+            return {message: 'Fixture creado con exito', newFixture}
           }
       }else {
         throw new BadRequestException('El torneo no puede cerrarse ya que no cumple con la cantidad de equipos')
