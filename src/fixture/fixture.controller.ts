@@ -5,12 +5,12 @@ import { FixtureDto } from './dto/fixture.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags("FIXTURE")
-@Controller('tournament/fixture')
+@Controller('tournamentfixture')
 export class FixtureController {
   constructor(private readonly fixtureService: FixtureService) {}
-  @Post(':tournamentId')
-  create(@Param('tournamentId', ParseUUIDPipe) tournamentId:string, @Body() fixtureDto: FixtureDto) {
-    return this.fixtureService.createFixture(tournamentId, fixtureDto);
+  @Post(':id')
+  async create(@Param('id', ParseUUIDPipe) id:string, @Body() fixtureDto ?: FixtureDto) {
+    return await this.fixtureService.createFixture(id);
   }
 
 }

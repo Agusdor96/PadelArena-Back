@@ -2,7 +2,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { Fixture } from 'src/fixture/entities/fixture.entity';
 import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 import { InscriptionEnum, StatusEnum } from '../tournament.enum';
 
@@ -68,6 +68,7 @@ export class Tournament {
   category: Category
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
+  @JoinColumn({name: "Teams"})
   team: Team[]
 
   @OneToMany(() => Match, (match) => match.tournament, {nullable:true})
