@@ -93,7 +93,7 @@ constructor(
       relations: {
         team:true,
         matches:true,
-        
+        fixture:true,
         category: true
       }
     })

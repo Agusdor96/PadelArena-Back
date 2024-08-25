@@ -68,12 +68,12 @@ export class Tournament {
   category: Category
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
-  @JoinColumn({name: "Teams"})
   team: Team[]
 
   @OneToMany(() => Match, (match) => match.tournament, {nullable:true})
   matches: Match[]
 
   @OneToOne(() => Fixture, {nullable:true})
+  @JoinColumn({name:"fixture_id"})
   fixture: Fixture
 }
