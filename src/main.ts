@@ -20,8 +20,8 @@ async function bootstrap() {
 
   const categoryService = app.get(CategoryService)
   await categoryService.preloadCategories()
-  // const userService = app.get(UserService);
-  // await userService.preload();
+  const userService = app.get(UserService);
+  await userService.preloadUsers();
   // const teamService = app.get(TeamService);
   // await teamService.preload();
 
