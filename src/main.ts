@@ -8,6 +8,7 @@ import {UserService} from './user/user.service';
 import {TeamService} from './team/team.service';
 import { ValidationPipe } from '@nestjs/common';
 
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(

@@ -53,9 +53,7 @@ export class TeamService {
           if (statusInscription === 'abiertas') {
             for (const team of tournamentTeams) {
               if (
-                team.user[0] ||
-                team.user[1] === players[0] ||
-                team.user[0] === players[1]
+                (team.user[0] || team.user[1]) === (players[0] || players[1])
               )
                 throw new BadRequestException(
                   'El jugador ya se encuentra inscripto a un torneo pendiente o en progreso',
