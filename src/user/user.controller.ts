@@ -2,6 +2,9 @@ import { Controller, Get, Param, ParseUUIDPipe, UseGuards, UseInterceptors } fro
 import { UserService } from './user.service';
 import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RoleEnum } from './roles.enum';
 
 
 @Controller('users')
@@ -22,7 +25,8 @@ export class UserController {
   }
 
   @Get(':id')
-  // @UseGuards(AuthGuard)
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUserById(id);
