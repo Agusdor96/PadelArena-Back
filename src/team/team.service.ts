@@ -35,7 +35,7 @@ export class TeamService {
     
     if (tournament.inscription === 'abiertas') {
       const tournaments = await this.tournamentRepository.find({
-        where: { status: StatusEnum.PENDING || StatusEnum.IN_PROGRESS },
+        where: { status: StatusEnum.UPCOMING || StatusEnum.INPROGRESS },
         relations: { team: true },
       });
       

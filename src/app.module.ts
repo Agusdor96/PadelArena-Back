@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TournamentModule } from './tournament/tournament.module';
 import { AuthModule } from './auth/auth.module';
@@ -43,7 +41,7 @@ import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.mo
     PlayerStadisticsModule
 
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
