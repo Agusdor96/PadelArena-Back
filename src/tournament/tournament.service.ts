@@ -24,7 +24,6 @@ constructor(
         where: {
             name: createTournamentDto.name,
             category: { id: createTournamentDto.category },
-            status: In([StatusEnum.IN_PROGRESS, StatusEnum.PENDING]),
             startDate: createTournamentDto.startDate
         },
     });
@@ -32,6 +31,10 @@ constructor(
     
     if (existingTournament) {
       throw new BadRequestException("No se puede crear el torneo. Ya existe un torneo con el mismo nombre y categoría que está 'en progreso' o 'por comenzar'. Además, no se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
+    }
+
+    if (createTournamentDto.teamsQuantity !== 16 && createTournamentDto.teamsQuantity !== 32 && createTournamentDto.teamsQuantity !== 64) {
+      throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64")
     }
 
       const InitialMatches = createTournamentDto.teamsQuantity /2;
