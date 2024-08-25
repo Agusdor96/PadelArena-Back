@@ -41,7 +41,7 @@ export class User {
         category:Category
 
     @ManyToMany(()=> Team, team => team.user)
-        team: Team
+        team: Team[]
 
     @OneToOne(()=> PlayerStadistic)
     @JoinColumn({name: "player_stadistics"})

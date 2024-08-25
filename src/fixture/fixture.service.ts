@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FixtureDto } from './dto/fixture.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from 'src/tournament/entities/tournament.entity';
@@ -27,18 +27,17 @@ export class FixtureService {
     const tournamentHasClosedInscription = 'cerradas'//tournament.inscription 
     
     if(tournament){
-      if(tournamentHasClosedInscription === 'cerradas'){
+      const qTeams = tournament.team.length + 1;
+      const teamsArray = tournament.team
+      if(qTeams === 16 || qTeams === 32 || qTeams === 64){
         if(tournament.team.length){
-          const qTeams = tournament.team.length + 1;
-          if(qTeams === 16 || qTeams === 32 || qTeams === 64){
-              const teamsArray = tournament.team
-              let orderIterator = 0
-              teamsArray.map((team) => team.order = orderIterator++)
-              console.log(teamsArray);
-              
-            }
+          if(tournamentHasClosedInscription === 'cerradas'){
+          
           }
         }
+      }else {
+        throw new BadRequestException('El torneo no puede cerrarse ya que no cumple con la cantidad de equipos')
+      }
       }
     }
   }

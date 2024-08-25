@@ -1,4 +1,3 @@
-import { Fixture } from "src/fixture/entities/fixture.entity";
 import { Team } from "src/team/entities/team.entity";
 import { Tournament } from "src/tournament/entities/tournament.entity";
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";

@@ -27,21 +27,25 @@ export class TeamService {
     private tournamentRepository: Repository<Tournament>,
   ) {}
   async newTeam(tournamentId: string, TeamDto: TeamDto) {
-    const tournament = await this.tournamentService.getTournament(tournamentId);
+    const tournament = await this.tournamentRepository.findOne({where: {id:tournamentId},relations:{category:true}})
+    
     const players = await this.userRepository.find({
       where: { id: In(TeamDto.players) },
     });
+    
     if (tournament.inscription === 'abiertas') {
       const tournaments = await this.tournamentRepository.find({
         where: { status: StatusEnum.PENDING || StatusEnum.IN_PROGRESS },
         relations: { team: true },
       });
-
+      
       const tournamentMapped = tournaments.map((tournament) =>
-        tournament.team.some(() => players[0] || players[1]),
+        tournament.team.some((team)=> players.includes(team.user[0]) || players.includes(team.user[1]))
+        
       );
+      
 
-      const isTeamOnActiveTournament = tournamentMapped.some(() => true);
+      const isTeamOnActiveTournament = tournamentMapped.includes(true)
       if (isTeamOnActiveTournament) {
         throw new BadRequestException(
           'El jugador ya se encuentra inscripto a un torneo pendiente o en progreso');
@@ -60,6 +64,8 @@ export class TeamService {
         await this.teamRepository.save(team);
         return { message: 'Equipo creado con exito', team };
       }
+    }else{
+      throw new BadRequestException('Este torneo ya no se encuentra con sus incripciones abiertas')
     }
   }
 
