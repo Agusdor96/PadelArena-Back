@@ -63,7 +63,7 @@ constructor(
         tournament.startingTime = createTournamentDto.startTime;
         tournament.finishTime = createTournamentDto.endTime;
         tournament.playingDay = createTournamentDto.playingDays;
-        tournament.status = StatusEnum.PENDING;
+        tournament.status = StatusEnum.UPCOMING;
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
         tournament.matchDuration = createTournamentDto.matchDuration;
         tournament.description = createTournamentDto.description;
@@ -93,7 +93,7 @@ constructor(
       relations: {
         team:true,
         matches:true,
-        fixture:true,
+        
         category: true
       }
     })

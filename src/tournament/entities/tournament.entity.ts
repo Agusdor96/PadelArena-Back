@@ -35,7 +35,7 @@ export class Tournament {
   @Column({
     type: 'enum',
     enum: StatusEnum,
-    default: StatusEnum.PENDING
+    default: StatusEnum.UPCOMING
   })
   status: StatusEnum
 
