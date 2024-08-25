@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as Bcrypt from 'bcrypt'
+import { Category } from 'src/category/entities/category.entity';
 import { CredentialsDto, UserDto } from 'src/user/dto/user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -10,8 +11,8 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AuthService {
   constructor (
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(User)private userRepository: Repository<User>,
+    @InjectRepository(Category) private categoryRepository:Repository<Category>,
     private readonly JWTservice: JwtService
   ) {}
 
@@ -39,17 +40,26 @@ export class AuthService {
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }
 
-  async signUpUser(UserDto: UserDto) {
-    const emailAlreadyExist = await this.userRepository.findOne({where:{email:UserDto.email}})
-    if(!emailAlreadyExist){
-        const encryptedPassword = await Bcrypt.hash(UserDto.password, 10)
-        const newUser = await this.userRepository.save({...UserDto, password: encryptedPassword})
-        const {password, passwordConfirm,  ...user} = newUser
-        console.log(newUser.id);
+  async signUpUser(userDto: UserDto) {
+    const emailAlreadyExist = await this.userRepository.findOne({where:{email:userDto.email}})
+    const category = await this.categoryRepository.findOne({where: {name:userDto.category}});
+
+    if(emailAlreadyExist){
+      throw new BadRequestException('El email provisto ya está registrado')
+    } else if(!category){
+          throw new BadRequestException("Debes inscribirte dentro de una de las categorias definidas")
+      }
+
+      const encryptedPassword = await Bcrypt.hash(userDto.password, 10)
+      
+      const newUser = {
+        ...userDto,
+        category: category
+      }
+
+      const user = await this.userRepository.save({...newUser, password: encryptedPassword})
+      const {password, passwordConfirm, role, ...desestructuredUser} = user
         
-        return {message: 'Usuario creado con exito', user}
-    }else{
-      throw new BadRequestException('El email provisto ya está registrado');
-    }
+      return {message: 'Usuario creado con exito', desestructuredUser}
   }
 }

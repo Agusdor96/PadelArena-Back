@@ -20,10 +20,10 @@ async function bootstrap() {
 
   const categoryService = app.get(CategoryService)
   await categoryService.preloadCategories()
-  const userService = app.get(UserService);
-  await userService.preload();
-  const teamService = app.get(TeamService);
-  await teamService.preload();
+  // const userService = app.get(UserService);
+  // await userService.preload();
+  // const teamService = app.get(TeamService);
+  // await teamService.preload();
 
 //Swagger config
 const swaggerConfig = new DocumentBuilder()
