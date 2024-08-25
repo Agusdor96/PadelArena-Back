@@ -32,7 +32,7 @@ export class FixtureService {
       if(qTeams === 16 || qTeams === 32 || qTeams === 64){
         if(tournament.team.length){
           if(tournamentHasClosedInscription === 'cerradas'){
-          
+            
           }
         }
       }else {
