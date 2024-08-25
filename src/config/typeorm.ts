@@ -15,7 +15,6 @@ const config = {
   logging: false,
   synchronize: true,
   dropSchema: process.env.DROP_SCHEMA === 'true'
-
 };
 
 export default registerAs('typeorm', () => config);

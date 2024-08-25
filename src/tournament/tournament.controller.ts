@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors, Put, UseGuards } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { TransformTime } from 'src/interceptors/dateTime.interceptor';
@@ -30,5 +30,10 @@ export class TournamentController {
   @Get(':id')
   getOneTournament(@Param('id', ParseUUIDPipe) id: string) {
     return this.tournamentService.getTournament(id);
+  }
+
+  @Put('closeInscriptions/:id')
+  changeInscriptionStatus(@Param('id', ParseUUIDPipe) id: string) {
+    return this.tournamentService.changeInscriptionStatus(id)
   }
 }
