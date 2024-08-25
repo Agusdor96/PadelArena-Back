@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { config as dotenvConfig } from 'dotenv';
-import { DataSource, DataSourceOptions } from 'typeorm';
+// import { DataSource, DataSourceOptions } from 'typeorm';
 
 dotenvConfig({ path: '.env.development' });
 
@@ -15,7 +15,10 @@ const config = {
   logging: false,
   synchronize: true,
   dropSchema: process.env.DROP_SCHEMA === 'true'
+
 };
 
 export default registerAs('typeorm', () => config);
-export const connectionSource = new DataSource(config as DataSourceOptions);
+// export const connectionSource = new DataSource(config as DataSourceOptions);
+
+

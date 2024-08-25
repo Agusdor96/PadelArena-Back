@@ -18,7 +18,7 @@ export class Category {
         description:string
 
     @OneToMany(() => Team, (team) => team.category, {nullable:true})
-        team: Team
+        team: Team[]
 
     @OneToMany(() => Tournament, (tournaments)=> tournaments.category, {nullable:true} )
         tournaments: Tournament

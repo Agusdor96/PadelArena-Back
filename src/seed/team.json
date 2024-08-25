@@ -1,38 +1,82 @@
 [
-    {
-      "name": "Team Alpha",
-      "players": [
-        "a4b1c9b1-4b8d-4a2a-8c9f-12b4a5a9c7f3",
-        "b2d3f5e7-4e9b-4c7d-9a5e-9b2a7c8d5e7f"
-      ]
-    },
-    {
-      "name": "Team Beta",
-      "players": [
-        "c3e7f9b1-8f1d-4c9a-9f3a-1b4c7d5e9f7d",
-        "d4f9a3b2-9b8d-4e7c-a1b4-9d5c7f3e1b7f"
-      ]
-    },
-    {
-      "name": "Team Gamma",
-      "players": [
-        "e5a3b7f2-9c8d-4a3f-8b1c-2e7d4c9f5a7b",
-        "f6b9c3e7-1d8a-4f9b-9e2d-3b7d1c5a2f9e"
-      ]
-    },
-    {
-      "name": "Team Delta",
-      "players": [
-        "g7c1d9f2-3a8b-4e1c-8d7f-4b9f5a3e7c1b",
-        "h8d7e3a2-2f9b-4d1a-9c8d-5e3a7b1f4c9e"
-      ]
-    },
-    {
-      "name": "Team Epsilon",
-      "players": [
-        "i9e1f3a2-4b7d-4c8a-9d1f-6a7c9b5e3d7f",
-        "j1f7b9e3-5d9c-4a2f-8b3d-7c1e9f4a6d3b"
-      ]
-    }
-  ]
-  
+  {
+    "name": "Team Alpha",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Beta",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Gamma",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Delta",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Epsilon",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Zeta",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Eta",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Theta",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Iota",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Kappa",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Lambda",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Mu",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Nu",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Xi",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Omicron",
+    "user": [],
+    "order": 0
+  },
+  {
+    "name": "Team Pi",
+    "user": [],
+    "order": 0
+  }
+]

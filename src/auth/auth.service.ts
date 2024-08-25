@@ -45,6 +45,8 @@ export class AuthService {
         const encryptedPassword = await Bcrypt.hash(UserDto.password, 10)
         const newUser = await this.userRepository.save({...UserDto, password: encryptedPassword})
         const {password, passwordConfirm,  ...user} = newUser
+        console.log(newUser.id);
+        
         return {message: 'Usuario creado con exito', user}
     }else{
       throw new BadRequestException('El email provisto ya está registrado');
