@@ -22,7 +22,6 @@ constructor(
 
       const existingTournament = await this.tournamentRepository.findOne({
         where: {
-            name: createTournamentDto.name,
             category: { id: createTournamentDto.category },
             startDate: createTournamentDto.startDate
         },
@@ -30,7 +29,7 @@ constructor(
     
     
     if (existingTournament) {
-      throw new BadRequestException("No se puede crear el torneo. Ya existe un torneo con el mismo nombre y categoría que está 'en progreso' o 'por comenzar'. Además, no se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
+      throw new BadRequestException("No se puede crear el torneo. No se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
     }
 
     if (createTournamentDto.teamsQuantity !== 16 && createTournamentDto.teamsQuantity !== 32 && createTournamentDto.teamsQuantity !== 64) {
