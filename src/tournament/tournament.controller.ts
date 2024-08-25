@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors } fr
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { TransformTime } from 'src/interceptors/dateTime.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("TOURNAMENT")
 @Controller('tournament')
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
@@ -23,5 +25,4 @@ export class TournamentController {
   getOneTournament(@Param('id', ParseUUIDPipe) id: string) {
     return this.tournamentService.getTournament(id);
   }
-
 }

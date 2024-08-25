@@ -1,7 +1,8 @@
 import { Controller, Get,  Param, ParseUUIDPipe } from '@nestjs/common';
 import { MatchService } from './match.service';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags("MATCH")
 @Controller('tournament-match')
 export class MatchController {
   constructor(private readonly matchService: MatchService) {}

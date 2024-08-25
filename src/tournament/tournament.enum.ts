@@ -4,7 +4,7 @@ export enum InscriptionEnum {
 }
 
 export enum StatusEnum {
-    PENDING = "por comenzar",
-    IN_PROGRESS = "en progreso",
-    COMPLETED = "finalizado"
+    UPCOMING = "por comenzar",
+    INPROGRESS = "en progreso",
+    FINISHED = "finalizado"
 }
