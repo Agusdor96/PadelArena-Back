@@ -77,7 +77,11 @@ constructor(
   }
 
   async getAllTournaments() {
-    const tournaments = await this.tournamentRepository.find()
+    const tournaments = await this.tournamentRepository.find({
+      relations:{
+        category:true
+      }
+    })
     if(!tournaments.length){
       throw new NotFoundException("No hay torneos creados")
     }
