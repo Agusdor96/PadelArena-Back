@@ -16,10 +16,8 @@ export class MatchService {
   //   @Inject() private tournamentService: TournamentService,
   ) {}
 
-  async createMatch(createMatchDto: MatchDto) {
-    const teamEntity = createMatchDto.teams;
-
-    for (const teamName of teamEntity) {
+  async createMatch({date, time, teams, tournament}) {
+    for (const teamName of teams) {
       const teams = await this.teamRepository.find({
         where: {
           name: teamName.name,
@@ -32,9 +30,10 @@ export class MatchService {
         );
       } else {
         const newMatch = {
-          date: createMatchDto.date,
-          time: createMatchDto.time,
-          teams: createMatchDto.teams,
+          date: date,
+          time: time,
+          teams: teams,
+          tournament: tournament
         };
         return await this.matchRepository.save(newMatch);
       }
@@ -42,8 +41,7 @@ export class MatchService {
   }
 
   async getAllMatchesFromTournament(tournamentId: string) {
-    const tournament = await this.tournamentRepository.findOne({where: {id: tournamentId}})
-    // const tournament = await this.tournamentService.getTournament(tournamentId);
+    const tournament = await this.tournamentRepository.findOne({where: {id: tournamentId},relations:{matches:true}})
     const matches = tournament.matches;
 
     if (!matches.length) {

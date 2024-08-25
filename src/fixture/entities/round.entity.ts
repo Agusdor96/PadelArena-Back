@@ -16,8 +16,8 @@ export class Round {
     @ManyToOne(()=> Match)
     matches: Match[]
     
-    @Column('text', {array: true})
-    winners: string[]
+    @Column('text', {array: true, nullable: true})
+    winners?: string[]
 
     @ManyToOne(() => Fixture, (fixture) => fixture.round)
     fixture: Fixture

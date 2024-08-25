@@ -5,7 +5,7 @@ import { loggerGlobal } from './middleware/logger.middleware';
 import { CategoryService } from './category/category.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {UserService} from './user/user.service';
-import {TeamService} from './team/team.service';
+// import {TeamService} from './team/team.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,8 +16,8 @@ async function bootstrap() {
   await categoryService.preloadCategories()
   const userService = app.get(UserService);
   await userService.preload();
-  const teamService = app.get(TeamService);
-  await teamService.preload();
+  // const teamService = app.get(TeamService);
+  // await teamService.preload();
 
 //Swagger config
 const swaggerConfig = new DocumentBuilder()
