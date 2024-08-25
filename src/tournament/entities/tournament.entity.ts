@@ -35,7 +35,7 @@ export class Tournament {
   @Column({
     type: 'enum',
     enum: StatusEnum,
-    default: StatusEnum.PENDING
+    default: StatusEnum.UPCOMING
   })
   status: StatusEnum
 
@@ -68,12 +68,12 @@ export class Tournament {
   category: Category
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
-  @JoinColumn({name: "Teams"})
   team: Team[]
 
   @OneToMany(() => Match, (match) => match.tournament, {nullable:true})
   matches: Match[]
 
   @OneToOne(() => Fixture, {nullable:true})
+  @JoinColumn({name:"fixture_id"})
   fixture: Fixture
 }
