@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNotEmpty, IsOptional} from "class-validator"
+import { IsArray, IsDate, IsNotEmpty, IsOptional, MaxLength, MinLength} from "class-validator"
 import { Team } from "src/team/entities/team.entity"
 
 export class MatchDto {
@@ -12,6 +12,8 @@ export class MatchDto {
 
     @IsArray()
     @IsNotEmpty()
+    @MinLength(2)
+    @MaxLength(2)
     teams: Team[]
 
     @IsOptional()

@@ -1,16 +1,18 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
 import { In, Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
-import { StatusEnum } from './tournament.enum';
+import { InscriptionEnum, StatusEnum } from './tournament.enum';
+import { FixtureService } from 'src/fixture/fixture.service';
 
 @Injectable()
 export class TournamentService {
 constructor(
   @InjectRepository(Tournament) private tournamentRepository: Repository<Tournament>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
+  @Inject() private fixtureService: FixtureService
 ){}
 
   async create(createTournamentDto: CreateTournamentDto) {
@@ -102,5 +104,11 @@ constructor(
     }
   
     return tournament;
+  }
+
+  async changeInscriptionStatus(id:string){
+    const tournament = await this.getTournament(id);
+    await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
+    return await this.fixtureService.createFixture(tournament)
   }
 }
