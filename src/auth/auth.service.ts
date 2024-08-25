@@ -17,28 +17,28 @@ export class AuthService {
 
   async signInUser(credentials: CredentialsDto) {
     const userExist = await this.userRepository.findOne({where:{email:credentials.email}})
-    const passwordComparation = Bcrypt.compare(
-      credentials.password, 
-      userExist.password
-    )
-    if(userExist){
-      if(passwordComparation){
-        const userPayload = {
-          sub: userExist.id,
-          id: userExist.id,
-          email: userExist.email,
-          roles: ['user']  //cambiar esto tambien cuando esten listo los guardianes
-        }
-        const token = this.JWTservice.sign(userPayload);
-        const {password, ...userClean} = userExist
-        return {message: 'Inicio de sesion realizado con exito', token, userClean}
-      }else{
+      if(!userExist){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
-    }else {
-      throw new BadRequestException('Email o contraseña incorrectos')
-    }
+
+    const passwordComparation = Bcrypt.compare(credentials.password, userExist.password)
+      if(!passwordComparation){
+        throw new BadRequestException('Email o contraseña incorrectos')
+      }
+      
+      const userPayload = {
+        sub: userExist.id,
+        id: userExist.id,
+        email: userExist.email,
+        role: userExist.role 
+      }
+
+        const token = this.JWTservice.sign(userPayload);
+        const {password, ...userClean} = userExist
+
+      return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }
+
   async signUpUser(UserDto: UserDto) {
     const emailAlreadyExist = await this.userRepository.findOne({where:{email:UserDto.email}})
     if(!emailAlreadyExist){

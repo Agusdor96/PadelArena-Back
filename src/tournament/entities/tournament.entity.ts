@@ -58,7 +58,7 @@ export class Tournament {
   @Column("text", { array: true, nullable: true })
   gallery: string[]
 
-  @Column({ type: "text", nullable: false, default: "default-image-url" })
+  @Column({type: 'text', nullable: false, default: '/images/default-image.jpg'})
   tournamentFlyer: string
 
   @Column()
