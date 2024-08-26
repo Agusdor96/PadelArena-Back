@@ -2,81 +2,97 @@
   {
     "name": "Team Alpha",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Beta",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Gamma",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Delta",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Epsilon",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Zeta",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Eta",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Theta",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Iota",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Kappa",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Lambda",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Mu",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Nu",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Xi",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Omicron",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   },
   {
     "name": "Team Pi",
     "user": [],
-    "order": 0
+    "order": 0,
+    "category":null
   }
 ]

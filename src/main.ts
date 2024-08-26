@@ -23,8 +23,8 @@ async function bootstrap() {
   await categoryService.preloadCategories()
   const userService = app.get(UserService);
   await userService.preloadUsers();
-  // const teamService = app.get(TeamService);
-  // await teamService.preload();
+  const teamService = app.get(TeamService);
+  await teamService.preloadTeams();
 
 //Swagger config
 const swaggerConfig = new DocumentBuilder()
