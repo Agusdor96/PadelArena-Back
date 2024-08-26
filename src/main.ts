@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {UserService} from './user/user.service';
 import {TeamService} from './team/team.service';
 import { ValidationPipe } from '@nestjs/common';
+import { TournamentService } from './tournament/tournament.service';
 
 
 async function bootstrap() {
@@ -23,8 +24,10 @@ async function bootstrap() {
   await categoryService.preloadCategories()
   const userService = app.get(UserService);
   await userService.preloadUsers();
-  const teamService = app.get(TeamService);
-  await teamService.preloadTeams();
+  const tournamentService = app.get(TournamentService);
+  await tournamentService.preloadTournaments()
+  // const teamService = app.get(TeamService);
+  // await teamService.preloadTeams();
 
 //Swagger config
 const swaggerConfig = new DocumentBuilder()

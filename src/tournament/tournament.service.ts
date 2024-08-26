@@ -6,6 +6,7 @@ import { In, Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
+import * as data from "../seed/tournaments.json"
 
 @Injectable()
 export class TournamentService {
@@ -15,7 +16,7 @@ constructor(
   @Inject() private fixtureService: FixtureService
 ){}
 
-  async create(createTournamentDto: CreateTournamentDto) {
+  async create(createTournamentDto) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
       if(!category){
@@ -113,5 +114,38 @@ constructor(
     const tournament = await this.getTournament(id);
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
     return await this.fixtureService.createFixture(tournament)
+  }
+
+  async preloadTournaments(){
+    const categoriesFromDb = await this.categoryRepository.find()
+    const tournamentsFromDb = await this.tournamentRepository.find()
+    if(!categoriesFromDb){
+      throw new BadRequestException("Debes precargar las categorias antes que los torneos")
+    }else if(tournamentsFromDb.length > 0){
+      throw new BadRequestException("Ya hay torneos en la base de datos")
+    }
+
+    for(const tournament of data){
+      const tournamentCategory = await this.categoryRepository.findOne({
+        where:{
+          name:tournament.category
+        }})
+
+      if(!tournamentCategory){
+        throw new BadRequestException("El torneo debe tener una categoria definida")
+      }
+      const startTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.startTime}:00.000Z`);
+        const endTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.endTime}:00.000Z`);
+
+        const newTournament = {
+            ...tournament,
+            startTime: startTime,
+            endTime: endTime,
+            category: tournamentCategory.id
+        };
+
+      await this.create(newTournament)
+        return {message: "Torneos cargados con exito"}
+    }
   }
 }
