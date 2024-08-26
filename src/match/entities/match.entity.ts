@@ -1,4 +1,3 @@
-import { Fixture } from "src/fixture/entities/fixture.entity";
 import { Team } from "src/team/entities/team.entity";
 import { Tournament } from "src/tournament/entities/tournament.entity";
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -23,9 +22,6 @@ export class Match {
     @ManyToOne(()=> Tournament, tournament=> tournament.matches)
     tournament: Tournament
 
-    @ManyToOne(() => Fixture, fixture => fixture.matches)
-    fixture: Fixture
-
-    @Column()
-    teamWinner: string
+    @Column({nullable:true})
+    teamWinner?: string
 }

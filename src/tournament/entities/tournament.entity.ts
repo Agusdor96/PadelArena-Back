@@ -2,7 +2,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { Fixture } from 'src/fixture/entities/fixture.entity';
 import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 import { InscriptionEnum, StatusEnum } from '../tournament.enum';
 
@@ -35,7 +35,7 @@ export class Tournament {
   @Column({
     type: 'enum',
     enum: StatusEnum,
-    default: StatusEnum.PENDING
+    default: StatusEnum.UPCOMING
   })
   status: StatusEnum
 
@@ -58,7 +58,7 @@ export class Tournament {
   @Column("text", { array: true, nullable: true })
   gallery: string[]
 
-  @Column({ type: "text", nullable: false, default: "default-image-url" })
+  @Column({type: 'text', nullable: false, default: '/images/default-image.jpg'})
   tournamentFlyer: string
 
   @Column()
@@ -74,5 +74,6 @@ export class Tournament {
   matches: Match[]
 
   @OneToOne(() => Fixture, {nullable:true})
+  @JoinColumn({name:"fixture_id"})
   fixture: Fixture
 }
