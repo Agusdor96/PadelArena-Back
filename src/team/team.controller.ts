@@ -15,7 +15,7 @@ export class TeamController {
   @Post(':tournamentId')
   // @UseGuards(AuthGuard)
   newTeam(@Param('tournamentId', ParseUUIDPipe) tournamentId: string, @Body() TeamDto: TeamDto) {
-    return this.teamService.newTeam(tournamentId, TeamDto);
+    return this.teamService.teamInscription(tournamentId, TeamDto);
   }
   
   @Get('oneTeam/:id')

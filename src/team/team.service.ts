@@ -26,7 +26,7 @@ export class TeamService {
     @InjectRepository(Tournament)
     private tournamentRepository: Repository<Tournament>,
   ) {}
-  async newTeam(tournamentId: string, TeamDto: TeamDto) {
+  async teamInscription(tournamentId: string, TeamDto: TeamDto) {
     const tournament = await this.tournamentRepository.findOne({
       where: { id: tournamentId },
       relations: { category: true, team: { user: true } },
@@ -110,7 +110,7 @@ export class TeamService {
     if(!tournamentFromDb.length){
       throw new BadRequestException("Debes precargar los torneos antes que los equipos")
     }
-    
+
     let orderTeam = 0;
     const users = await this.userRepository.find({relations: ["category"]});
 
@@ -123,14 +123,24 @@ export class TeamService {
           relations: { user: true },
         });
 
-        if (!teamExist) {
+        if (teamExist) {
+          continue;
+        }
+
         const user1 = users[i - 1];
         const user2 = users[i];
-
+        
         if (user1.category && user2.category && user1.category.id === user2.category.id) {
           data[teamIndex].user = [user1, user2];
           data[teamIndex].order = orderTeam;
           data[teamIndex].category = user1.category;
+
+          const teamTournament = await this.tournamentRepository.findOne({where: {category: user1.category}})
+          if(!teamTournament){
+            throw new NotFoundException("No se encuentran torneos para esa categoria")
+          }
+
+          data[teamIndex].tournament = teamTournament
           orderTeam++;
 
           await this.teamRepository.save(data[teamIndex]);
@@ -139,7 +149,6 @@ export class TeamService {
         }
       }
     }
+    return { message: 'Equipos precargados correctamente' };
   }
-  return { message: 'Equipos precargados correctamente' };
-}
 }
