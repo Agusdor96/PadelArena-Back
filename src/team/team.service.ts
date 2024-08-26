@@ -106,6 +106,11 @@ export class TeamService {
   }
 
   async preloadTeams() {
+    const tournamentFromDb = await this.tournamentRepository.find()
+    if(!tournamentFromDb.length){
+      throw new BadRequestException("Debes precargar los torneos antes que los equipos")
+    }
+    
     let orderTeam = 0;
     const users = await this.userRepository.find({relations: ["category"]});
 

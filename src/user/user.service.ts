@@ -43,6 +43,10 @@ constructor(
   }
 
   async preloadUsers(){
+    const categoriesFromDb = await this.categoryRepository.find()
+    if(!categoriesFromDb.length){
+      throw new BadRequestException("Debes precargar las categorias antes que los usuarios")
+    }
     const checkUserDb = await this.userRepository.find()
     if(checkUserDb.length > 0){
       return {message: "Ya hay usuarios cargados en la Base de datos"}

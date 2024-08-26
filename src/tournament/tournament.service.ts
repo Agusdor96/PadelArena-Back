@@ -118,7 +118,7 @@ constructor(
 
   async preloadTournaments(){
     const categoriesFromDb = await this.categoryRepository.find()
-    if(!categoriesFromDb){
+    if(!categoriesFromDb.length){
       throw new BadRequestException("Debes precargar las categorias antes que los torneos")
     }
 
