@@ -44,9 +44,7 @@ export class FixtureService {
             newRound.stage = stage;
             newRound.matches = matches;
             console.log(newRound);
-            
             const initialRound = await this.roundRepository.save(newRound);
-
             const fixture = {
               tournament: tournament,
               round: [initialRound]
@@ -57,7 +55,5 @@ export class FixtureService {
       }else {
         throw new BadRequestException('El torneo no puede cerrarse ya que no cumple con la cantidad de equipos')
       }
-      }
     }
-
-
+  }
