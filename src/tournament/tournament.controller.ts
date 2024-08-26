@@ -18,7 +18,7 @@ export class TournamentController {
   // @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(new TransformTime())
   async create(@Body() createTournamentDto: CreateTournamentDto) {
-      await this.tournamentService.create(createTournamentDto);
+      await this.tournamentService.createTournament(createTournamentDto);
     return {message:"Torneo creado con exito", createTournamentDto};
   }
 

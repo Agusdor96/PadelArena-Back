@@ -16,7 +16,7 @@ constructor(
   @Inject() private fixtureService: FixtureService
 ){}
 
-  async create(createTournamentDto) {
+  async createTournament(createTournamentDto) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
       if(!category){
@@ -118,11 +118,8 @@ constructor(
 
   async preloadTournaments(){
     const categoriesFromDb = await this.categoryRepository.find()
-    const tournamentsFromDb = await this.tournamentRepository.find()
     if(!categoriesFromDb){
       throw new BadRequestException("Debes precargar las categorias antes que los torneos")
-    }else if(tournamentsFromDb.length > 0){
-      throw new BadRequestException("Ya hay torneos en la base de datos")
     }
 
     for(const tournament of data){
@@ -134,7 +131,15 @@ constructor(
       if(!tournamentCategory){
         throw new BadRequestException("El torneo debe tener una categoria definida")
       }
-      const startTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.startTime}:00.000Z`);
+      const existingTournament = await this.tournamentRepository.findOne({
+        where: {
+            name: tournament.name, 
+        }
+      });
+      if(existingTournament){
+        continue;
+      }
+        const startTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.startTime}:00.000Z`);
         const endTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.endTime}:00.000Z`);
 
         const newTournament = {
@@ -144,8 +149,8 @@ constructor(
             category: tournamentCategory.id
         };
 
-      await this.create(newTournament)
-        return {message: "Torneos cargados con exito"}
+      await this.createTournament(newTournament)
     }
+    return {message: "Torneos cargados con exito"}
   }
 }
