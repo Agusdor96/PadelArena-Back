@@ -26,8 +26,8 @@ async function bootstrap() {
   await userService.preloadUsers();
   const tournamentService = app.get(TournamentService);
   await tournamentService.preloadTournaments()
-  // const teamService = app.get(TeamService);
-  // await teamService.preloadTeams();
+  const teamService = app.get(TeamService);
+  await teamService.preloadTeams();
 
 //Swagger config
 const swaggerConfig = new DocumentBuilder()
