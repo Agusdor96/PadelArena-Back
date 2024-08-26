@@ -9,8 +9,6 @@ export class TeamDto {
 
     @IsArray()
     @IsDefined()
-    @MaxLength(2)
-    @MinLength(2)
     players: string[]
 
 }

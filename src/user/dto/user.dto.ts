@@ -1,5 +1,5 @@
 import { PickType } from "@nestjs/mapped-types";
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID, Length, Matches } from "class-validator";
 
 export class UserDto {
   @IsNotEmpty()
@@ -42,6 +42,11 @@ export class UserDto {
   @Length(3, 50)
   @IsString()
   address: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 50, { message: 'El nombre debe tener entre 2 y 50 caracteres' })
+  category: string;
 
   @IsOptional()
   @Length(3, 50)

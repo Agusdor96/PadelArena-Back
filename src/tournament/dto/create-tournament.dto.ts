@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString, IsUUID, Length, Min } from "class-validator";
+import { IsArray, IsDate, IsDateString, IsNotEmpty, IsNumber, IsString, IsUUID, Length, Min } from "class-validator";
 
 
 export class CreateTournamentDto {
@@ -6,7 +6,7 @@ export class CreateTournamentDto {
     @IsString()
     name: string;
 
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     startDate: Date;
     
@@ -19,13 +19,8 @@ export class CreateTournamentDto {
     endTime: string;
     
     @IsNotEmpty()
-    @IsString()
-    @Length(1,7)
+    @IsArray()
     playingDays: string[];
-    
-    @IsNotEmpty()
-    @IsString()
-    status: string;
 
     @IsNotEmpty()
     @IsNumber()

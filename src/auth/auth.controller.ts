@@ -16,8 +16,8 @@ export class AuthController {
 
   @HttpCode(201)
   @Post('/signup')
-  SignUp (@PasswordsCompare() UserDto:UserDto) {
-    return this.authService.signUpUser(UserDto)
+  signUp (@PasswordsCompare() userDto:UserDto) {
+    return this.authService.signUpUser(userDto)
   }
 }
 

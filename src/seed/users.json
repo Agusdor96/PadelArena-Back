@@ -1,5 +1,5 @@
 [
-  {
+    {
       "name": "John",
       "lastName": "Doe",
       "email": "john.doe@example.com",
@@ -9,9 +9,10 @@
       "country": "United States",
       "city": "New York",
       "address": "123 Main St",
-      "profileImg": "https://example.com/profile/john.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/john.jpg",
+      "category": "Primera"
+    },
+    {
       "name": "Jane",
       "lastName": "Smith",
       "email": "jane.smith@example.com",
@@ -21,9 +22,10 @@
       "country": "United Kingdom",
       "city": "London",
       "address": "456 Elm St",
-      "profileImg": "https://example.com/profile/jane.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/jane.jpg",
+      "category": "Segunda"
+    },
+    {
       "name": "Alice",
       "lastName": "Johnson",
       "email": "alice.johnson@example.com",
@@ -33,9 +35,10 @@
       "country": "Canada",
       "city": "Toronto",
       "address": "789 Maple Ave",
-      "profileImg": "https://example.com/profile/alice.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/alice.jpg",
+      "category": "Tercera"
+    },
+    {
       "name": "Bob",
       "lastName": "Brown",
       "email": "bob.brown@example.com",
@@ -45,9 +48,10 @@
       "country": "Australia",
       "city": "Sydney",
       "address": "101 Pine St",
-      "profileImg": "https://example.com/profile/bob.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/bob.jpg",
+      "category": "Cuarta"
+    },
+    {
       "name": "Charlie",
       "lastName": "Williams",
       "email": "charlie.williams@example.com",
@@ -57,9 +61,10 @@
       "country": "Germany",
       "city": "Berlin",
       "address": "202 Oak St",
-      "profileImg": "https://example.com/profile/charlie.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/charlie.jpg",
+      "category": "Quinta"
+    },
+    {
       "name": "Diana",
       "lastName": "Miller",
       "email": "diana.miller@example.com",
@@ -69,9 +74,10 @@
       "country": "France",
       "city": "Paris",
       "address": "303 Birch St",
-      "profileImg": "https://example.com/profile/diana.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/diana.jpg",
+      "category": "Primera"
+    },
+    {
       "name": "Eve",
       "lastName": "Wilson",
       "email": "eve.wilson@example.com",
@@ -81,9 +87,10 @@
       "country": "Italy",
       "city": "Rome",
       "address": "404 Cedar St",
-      "profileImg": "https://example.com/profile/eve.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/eve.jpg",
+      "category": "Segunda"
+    },
+    {
       "name": "Frank",
       "lastName": "Jones",
       "email": "frank.jones@example.com",
@@ -91,11 +98,12 @@
       "passwordConfirm": "password123",
       "phone": "8901234567",
       "country": "Spain",
-      "city": "Rome",
+      "city": "Madrid",
       "address": "505 Spruce St",
-      "profileImg": "https://example.com/profile/frank.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/frank.jpg",
+      "category": "Tercera"
+    },
+    {
       "name": "Grace",
       "lastName": "Taylor",
       "email": "grace.taylor@example.com",
@@ -105,9 +113,10 @@
       "country": "Portugal",
       "city": "Lisbon",
       "address": "606 Fir St",
-      "profileImg": "https://example.com/profile/grace.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/grace.jpg",
+      "category": "Cuarta"
+    },
+    {
       "name": "Hank",
       "lastName": "Anderson",
       "email": "hank.anderson@example.com",
@@ -117,9 +126,10 @@
       "country": "Netherlands",
       "city": "Amsterdam",
       "address": "707 Willow St",
-      "profileImg": "https://example.com/profile/hank.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/hank.jpg",
+      "category": "Quinta"
+    },
+    {
       "name": "Ivy",
       "lastName": "Thomas",
       "email": "ivy.thomas@example.com",
@@ -129,9 +139,10 @@
       "country": "Belgium",
       "city": "Brussels",
       "address": "808 Maple St",
-      "profileImg": "https://example.com/profile/ivy.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/ivy.jpg",
+      "category": "Primera"
+    },
+    {
       "name": "Jack",
       "lastName": "Martinez",
       "email": "jack.martinez@example.com",
@@ -141,9 +152,10 @@
       "country": "Sweden",
       "city": "Stockholm",
       "address": "909 Pine St",
-      "profileImg": "https://example.com/profile/jack.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/jack.jpg",
+      "category": "Segunda"
+    },
+    {
       "name": "Kim",
       "lastName": "Lee",
       "email": "kim.lee@example.com",
@@ -153,9 +165,10 @@
       "country": "Norway",
       "city": "Oslo",
       "address": "1010 Oak St",
-      "profileImg": "https://example.com/profile/kim.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/kim.jpg",
+      "category": "Tercera"
+    },
+    {
       "name": "Liam",
       "lastName": "White",
       "email": "liam.white@example.com",
@@ -165,9 +178,10 @@
       "country": "Denmark",
       "city": "Copenhagen",
       "address": "1111 Birch St",
-      "profileImg": "https://example.com/profile/liam.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/liam.jpg",
+      "category": "Cuarta"
+    },
+    {
       "name": "Mia",
       "lastName": "Harris",
       "email": "mia.harris@example.com",
@@ -177,9 +191,10 @@
       "country": "Finland",
       "city": "Helsinki",
       "address": "1212 Cedar St",
-      "profileImg": "https://example.com/profile/mia.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/mia.jpg",
+      "category": "Quinta"
+    },
+    {
       "name": "Noah",
       "lastName": "Clark",
       "email": "noah.clark@example.com",
@@ -189,9 +204,10 @@
       "country": "Switzerland",
       "city": "Zurich",
       "address": "1313 Fir St",
-      "profileImg": "https://example.com/profile/noah.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/noah.jpg",
+      "category": "Primera"
+    },
+    {
       "name": "Olivia",
       "lastName": "Lewis",
       "email": "olivia.lewis@example.com",
@@ -201,9 +217,10 @@
       "country": "Austria",
       "city": "Vienna",
       "address": "1414 Willow St",
-      "profileImg": "https://example.com/profile/olivia.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/olivia.jpg",
+      "category": "Segunda"
+    },
+    {
       "name": "Paul",
       "lastName": "Walker",
       "email": "paul.walker@example.com",
@@ -213,9 +230,10 @@
       "country": "Ireland",
       "city": "Dublin",
       "address": "1515 Maple St",
-      "profileImg": "https://example.com/profile/paul.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/paul.jpg",
+      "category": "Tercera"
+    },
+    {
       "name": "Quinn",
       "lastName": "Young",
       "email": "quinn.young@example.com",
@@ -225,160 +243,176 @@
       "country": "Greece",
       "city": "Athens",
       "address": "1616 Pine St",
-      "profileImg": "https://example.com/profile/quinn.jpg"
-  },
-  {
+      "profileImg": "https://example.com/profile/quinn.jpg",
+      "category": "Cuarta"
+    },
+    {
       "name": "Rachel",
       "lastName": "King",
       "email": "rachel.king@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
-      "phone": "0123456780",
-      "country": "Turkey",
-      "city": "Istanbul",
-      "address": "1717 Birch St",
-      "profileImg": "https://example.com/profile/rachel.jpg"
-  },
-  {
-      "name": "Steve",
-      "lastName": "Adams",
-      "email": "steve.adams@example.com",
+      "phone": "0123456782",
+      "country": "Czech Republic",
+      "city": "Prague",
+      "address": "1717 Oak St",
+      "profileImg": "https://example.com/profile/rachel.jpg",
+      "category": "Quinta"
+    },
+    {
+      "name": "Sam",
+      "lastName": "Garcia",
+      "email": "sam.garcia@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "1234567892",
       "country": "Poland",
       "city": "Warsaw",
-      "address": "1818 Cedar St",
-      "profileImg": "https://example.com/profile/steve.jpg"
-  },
-  {
+      "address": "1818 Birch St",
+      "profileImg": "https://example.com/profile/sam.jpg",
+      "category": "Primera"
+    },
+    {
       "name": "Tina",
-      "lastName": "Scott",
-      "email": "tina.scott@example.com",
+      "lastName": "Martinez",
+      "email": "tina.martinez@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "2345678903",
-      "country": "Czech Republic",
-      "city": "Prague",
-      "address": "1919 Fir St",
-      "profileImg": "https://example.com/profile/tina.jpg"
-  },
-  {
-      "name": "Ursula",
-      "lastName": "Baker",
-      "email": "ursula.baker@example.com",
+      "country": "Hungary",
+      "city": "Budapest",
+      "address": "1919 Cedar St",
+      "profileImg": "https://example.com/profile/tina.jpg",
+      "category": "Segunda"
+    },
+    {
+      "name": "Uma",
+      "lastName": "Robinson",
+      "email": "uma.robinson@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "3456789014",
-      "country": "Hungary",
-      "city": "Budapest",
-      "address": "2020 Maple St",
-      "profileImg": "https://example.com/profile/ursula.jpg"
-  },
-  {
+      "country": "Turkey",
+      "city": "Istanbul",
+      "address": "2020 Fir St",
+      "profileImg": "https://example.com/profile/uma.jpg",
+      "category": "Tercera"
+    },
+    {
       "name": "Victor",
       "lastName": "Gonzalez",
       "email": "victor.gonzalez@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "4567890125",
-      "country": "Romania",
-      "city": "Bucharest",
-      "address": "2121 Oak St",
-      "profileImg": "https://example.com/profile/victor.jpg"
-  },
-  {
+      "country": "Argentina",
+      "city": "Buenos Aires",
+      "address": "2121 Willow St",
+      "profileImg": "https://example.com/profile/victor.jpg",
+      "category": "Cuarta"
+    },
+    {
       "name": "Wendy",
-      "lastName": "Mitchell",
-      "email": "wendy.mitchell@example.com",
+      "lastName": "Perez",
+      "email": "wendy.perez@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "5678901236",
-      "country": "Slovakia",
-      "city": "Bratislava",
-      "address": "2222 Birch St",
-      "profileImg": "https://example.com/profile/wendy.jpg"
-  },
-  {
+      "country": "Brazil",
+      "city": "Rio de Janeiro",
+      "address": "2222 Maple St",
+      "profileImg": "https://example.com/profile/wendy.jpg",
+      "category": "Quinta"
+    },
+    {
       "name": "Xander",
-      "lastName": "Carter",
-      "email": "xander.carter@example.com",
+      "lastName": "Thompson",
+      "email": "xander.thompson@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "6789012347",
-      "country": "Ukraine",
-      "city": "Kyiv",
-      "address": "2323 Cedar St",
-      "profileImg": "https://example.com/profile/xander.jpg"
-  },
-  {
+      "country": "Chile",
+      "city": "Santiago",
+      "address": "2323 Pine St",
+      "profileImg": "https://example.com/profile/xander.jpg",
+      "category": "Primera"
+    },
+    {
       "name": "Yara",
-      "lastName": "James",
-      "email": "yara.james@example.com",
+      "lastName": "Lopez",
+      "email": "yara.lopez@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "7890123458",
-      "country": "Bulgaria",
-      "city": "Sofia",
-      "address": "2424 Fir St",
-      "profileImg": "https://example.com/profile/yara.jpg"
-  },
-  {
-      "name": "Zach",
-      "lastName": "Morris",
-      "email": "zach.morris@example.com",
+      "country": "Colombia",
+      "city": "Bogota",
+      "address": "2424 Oak St",
+      "profileImg": "https://example.com/profile/yara.jpg",
+      "category": "Segunda"
+    },
+    {
+      "name": "Zane",
+      "lastName": "Martinez",
+      "email": "zane.martinez@example.com",
       "password": "password123",
       "passwordConfirm": "password123",
       "phone": "8901234569",
-      "country": "Serbia",
-      "city": "Belgrade",
-      "address": "2525 Oak St",
-      "profileImg": "https://example.com/profile/zach.jpg"
-  },
-  {
-    "name": "Pepito",
-    "lastName": "Morris",
-    "email": "pepito.morris@example.com",
-    "password": "password123",
-    "passwordConfirm": "password123",
-    "phone": "8901234569",
-    "country": "Serbia",
-    "city": "Belgrade",
-    "address": "2525 Oak St",
-    "profileImg": "https://example.com/profile/zach.jpg"
-},
-{
-    "name": "Juancho",
-    "lastName": "Morris",
-    "email": "juancho.morris@example.com",
-    "password": "password123",
-    "passwordConfirm": "password123",
-    "phone": "8901234569",
-    "country": "Serbia",
-    "city": "Belgrade",
-    "address": "2525 Oak St",
-    "profileImg": "https://example.com/profile/zach.jpg"
-},{
-    "name": "Agustin",
-    "lastName": "Morris",
-    "email": "agustin.morris@example.com",
-    "password": "password123",
-    "passwordConfirm": "password123",
-    "phone": "8901234569",
-    "country": "Serbia",
-    "city": "Belgrade",
-    "address": "2525 Oak St",
-    "profileImg": "https://example.com/profile/zach.jpg"
-},{
-    "name": "Ana",
-    "lastName": "Morris",
-    "email": "ana.morris@example.com",
-    "password": "password123",
-    "passwordConfirm": "password123",
-    "phone": "8901234569",
-    "country": "Serbia",
-    "city": "Belgrade",
-    "address": "2525 Oak St",
-    "profileImg": "https://example.com/profile/zach.jpg"
-}
-]
+      "country": "Peru",
+      "city": "Lima",
+      "address": "2525 Birch St",
+      "profileImg": "https://example.com/profile/zane.jpg",
+      "category": "Tercera"
+    },
+    {
+      "name": "Amelia",
+      "lastName": "Rodriguez",
+      "email": "amelia.rodriguez@example.com",
+      "password": "password123",
+      "passwordConfirm": "password123",
+      "phone": "9012345670",
+      "country": "Mexico",
+      "city": "Mexico City",
+      "address": "2626 Cedar St",
+      "profileImg": "https://example.com/profile/amelia.jpg",
+      "category": "Cuarta"
+    },
+    {
+      "name": "Brian",
+      "lastName": "Hernandez",
+      "email": "brian.hernandez@example.com",
+      "password": "password123",
+      "passwordConfirm": "password123",
+      "phone": "0123456783",
+      "country": "Uruguay",
+      "city": "Montevideo",
+      "address": "2727 Fir St",
+      "profileImg": "https://example.com/profile/brian.jpg",
+      "category": "Quinta"
+    },
+    {
+      "name": "Clara",
+      "lastName": "Martinez",
+      "email": "clara.martinez@example.com",
+      "password": "password123",
+      "passwordConfirm": "password123",
+      "phone": "1234567893",
+      "country": "Venezuela",
+      "city": "Caracas",
+      "address": "2828 Willow St",
+      "profileImg": "https://example.com/profile/clara.jpg",
+      "category": "Primera"
+    },
+    {
+      "name": "Daniel",
+      "lastName": "Ramirez",
+      "email": "daniel.ramirez@example.com",
+      "password": "password123",
+      "passwordConfirm": "password123",
+      "phone": "2345678904",
+      "country": "Ecuador",
+      "city": "Quito",
+      "address": "2929 Maple St",
+      "profileImg": "https://example.com/profile/daniel.jpg",
+      "category": "Primera"
+    }
+  ]

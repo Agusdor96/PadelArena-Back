@@ -105,24 +105,41 @@ export class TeamService {
     }
   }
 
-  async preload() {
+  async preloadTeams() {
+    const tournamentFromDb = await this.tournamentRepository.find()
+    if(!tournamentFromDb.length){
+      throw new BadRequestException("Debes precargar los torneos antes que los equipos")
+    }
+    
     let orderTeam = 0;
-    const users = await this.userRepository.find();
+    const users = await this.userRepository.find({relations: ["category"]});
+
     for (let i = 1; i < users.length + 1; i += 2) {
-      const teamIndex = (i - 1) / 2;
+      const teamIndex = Math.floor(i / 2)
+
       if (teamIndex < data.length) {
         const teamExist = await this.teamRepository.findOne({
           where: { name: data[teamIndex].name },
           relations: { user: true },
         });
+
         if (!teamExist) {
-          data[teamIndex].user = [users[i - 1], users[i]];
+        const user1 = users[i - 1];
+        const user2 = users[i];
+
+        if (user1.category && user2.category && user1.category.id === user2.category.id) {
+          data[teamIndex].user = [user1, user2];
           data[teamIndex].order = orderTeam;
+          data[teamIndex].category = user1.category;
           orderTeam++;
+
           await this.teamRepository.save(data[teamIndex]);
+        } else {
+          throw new BadRequestException(`Los usuarios ${user1.id} y ${user2.id} no tienen la misma categoría y no se pueden asignar al mismo equipo.`)
         }
       }
     }
-    return { message: 'Equipos precargados correctamente' };
   }
+  return { message: 'Equipos precargados correctamente' };
+}
 }
