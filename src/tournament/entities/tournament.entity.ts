@@ -2,7 +2,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { Fixture } from 'src/fixture/entities/fixture.entity';
 import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 import { InscriptionEnum, StatusEnum } from '../tournament.enum';
 

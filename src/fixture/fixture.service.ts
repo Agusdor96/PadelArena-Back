@@ -6,6 +6,8 @@ import { Fixture } from './entities/fixture.entity';
 import { Round } from './entities/round.entity';
 import { MatchService } from 'src/match/match.service';
 import { Match } from 'src/match/entities/match.entity';
+import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics.service';
+
 
 @Injectable()
 export class FixtureService {
@@ -20,15 +22,18 @@ export class FixtureService {
     private matchRepository: Repository<Match>,
     @Inject()
     private matchService: MatchService,
+    @Inject()
+    private playerStatsService: PlayerStadisticsService
   ) {}
   async createFixture(tournamentID: string) {
     const tournament = await this.tournamentRepository.findOne({
       where: { id: tournamentID },
       relations: { team: true, matches: true, fixture: true, category: true },
     });
+
     const tournamentHasClosedInscription = tournament.inscription;
     if (tournamentHasClosedInscription === 'cerradas') {
-        const round = await this.createRound(tournament)
+        const round = await this.createRound(tournamentID)
         const fixture = new Fixture()
         const newFixture = await this.fixtureRepository.save(fixture)
 
@@ -39,33 +44,37 @@ export class FixtureService {
         return { message: 'Fixture creado con exito', newFixture };
       } else {
       throw new BadRequestException(
-        'El torneo no puede cerrarse ya que no cumple con la cantidad de equipos',
+        'Las inscripciones de este torneo deben estar cerradas',
       );
     }
   }
 
-  async uploadWinners (matchId: string, winnerId: string) {
-    const match = await this.matchRepository.findOne({where: {id:matchId}, relations: {teams:true}})
+  async uploadWinners ({matchId}, winnerId: string) {
+    const match = await this.matchRepository.findOne({where: {id:matchId}, relations: {teams: {user:true}, round: true, tournament:true}})
     const teamsIds = match.teams.map(team => team.id)
     const teamIdInMatch = teamsIds.includes(winnerId)
     if(match){
       if(teamIdInMatch) {
         await this.matchRepository.update(matchId, {teamWinner: winnerId})
-        const round = await this.roundRepository.findOne({where: {id: match.round.id}})
+        await this.playerStatsService.addStats(teamsIds, winnerId)
+        
+        const round = await this.roundRepository.findOne({where: {id: match.round.id},relations: {matches:true}})
+        
         if(round.stage === 'final') {
           return {message: 'Final definida', winner: winnerId}
         }else {
           const allMatchesFromThatRound = round.matches
           const notAllMatchesHasWinner = allMatchesFromThatRound.map(match => {
             const hasWinner = match.teamWinner
-            if(hasWinner.length){
+            if(hasWinner !== null){
               return true
             }else return false
           }).includes(false)
+          
           if(notAllMatchesHasWinner){
             return {message: 'Partido definido con exito'}
-          }else {
-            await this.createRound(match.tournament)
+          }else {            
+            return await this.createRound(match.tournament.id)
           }
         }
         
@@ -75,17 +84,24 @@ export class FixtureService {
     }else {
       throw new NotFoundException('No fue posible encontrar el partido')
     }
-    
-    
+
   }
-  async createRound (tournament: TournamentEntity) {
-    const qTeams = tournament.team.length;
-    const teamsArray = tournament.team.sort((team) => team.order);
+
+  async createRound (tournamentID: string) {
+    const tournament = await this.tournamentRepository.findOne({
+      where: { id: tournamentID },
+      relations: { team: true, matches: true, fixture: true, category: true },
+    });
+    
+    const allTeamsArray = tournament.team.sort(team => team.order)
+    
+    const teamsArray = allTeamsArray.filter(team => team.ableForPlay === true)
     const qteamsArray = [2, 4, 8, 16, 32, 64]
-    const includerVerify = qteamsArray.includes(qTeams)
+    const includerVerify = qteamsArray.includes(teamsArray.length)
+    
     if (includerVerify) {
       let stage = ''
-          switch(qTeams) {
+          switch(teamsArray.length) {
             case 2:
               stage = 'final'
               break
@@ -107,6 +123,7 @@ export class FixtureService {
             default:
               stage = 'Ronda no valida'
           }
+          
         for (let i = 1; i < teamsArray.length + 1; i += 2) {
           if (i < teamsArray.length) {
             const teams = [teamsArray[i - 1], teamsArray[i]];
@@ -118,21 +135,25 @@ export class FixtureService {
               teams,
               tournament,
             });
-            
           }
         }
         const matches = await this.matchService.getAllMatchesFromTournament(
           tournament.id,
         );
-      
+        const matchesNotPlayed = matches.filter(match => match.teamWinner === null)
         const newRound = new Round();
         newRound.stage = stage;
-        newRound.matches = matches;
+        newRound.matches = matchesNotPlayed;
+        if(!tournament.fixture) {
+          const round = await this.roundRepository.save(newRound);
+          return round
+        }
+        newRound.fixture = tournament.fixture
         const round = await this.roundRepository.save(newRound);
         return round
       }else {
           throw new BadRequestException(
-            'Las inscripciones de este torneo deben estar cerradas',
+            'El torneo no puede cerrarse ya que no cumple con la cantidad de equipos',
           );
         }
   }
