@@ -1,5 +1,5 @@
 import { Team } from "src/team/entities/team.entity";
-import { Tournament } from "src/tournament/entities/tournament.entity";
+import { TournamentEntity } from "src/tournament/entities/tournament.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
@@ -20,8 +20,8 @@ export class Category {
     @OneToMany(() => Team, (team) => team.category, {nullable:true})
         team: Team[]
 
-    @OneToMany(() => Tournament, (tournaments)=> tournaments.category, {nullable:true} )
-        tournaments: Tournament
+    @OneToMany(() => TournamentEntity, (tournaments)=> tournaments.category, {nullable:true} )
+        tournaments: TournamentEntity
 
     @OneToMany(()=> User, (user)=> user.category, {nullable:true})
         users: User[]

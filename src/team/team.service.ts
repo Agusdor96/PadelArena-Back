@@ -11,7 +11,7 @@ import { In, Repository } from 'typeorm';
 import { TournamentService } from 'src/tournament/tournament.service';
 import { User } from 'src/user/entities/user.entity';
 import * as data from '../seed/team.json';
-import { Tournament } from 'src/tournament/entities/tournament.entity';
+import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { StatusEnum } from 'src/tournament/tournament.enum';
 
 @Injectable()
@@ -23,8 +23,8 @@ export class TeamService {
     private tournamentService: TournamentService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(Tournament)
-    private tournamentRepository: Repository<Tournament>,
+    @InjectRepository(TournamentEntity)
+    private tournamentRepository: Repository<TournamentEntity>,
   ) {}
   async teamInscription(tournamentId: string, TeamDto: TeamDto) {
     const tournament = await this.tournamentRepository.findOne({

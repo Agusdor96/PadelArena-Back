@@ -51,7 +51,6 @@ constructor(
     if(checkUserDb.length > 0){
       return {message: "Ya hay usuarios cargados en la Base de datos"}
     }
-    
     for(const user of data){
       const userCategory = await this.categoryRepository.findOne({where:{name:user.category}})
       if(!userCategory){
@@ -59,7 +58,7 @@ constructor(
       }
       const userFromDb = await this.userRepository.findOne({where: {email: user.email}})
       if(!userFromDb){
-        await this.userRepository.save({...user, category:userCategory});
+        await this.userRepository.save({...user, category:categoriesFromDb[0]});
       } 
     }
     return {message: "Usuarios precargados correctamente"};

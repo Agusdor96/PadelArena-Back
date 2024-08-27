@@ -1,5 +1,6 @@
+import { Round } from "src/fixture/entities/round.entity";
 import { Team } from "src/team/entities/team.entity";
-import { Tournament } from "src/tournament/entities/tournament.entity";
+import { TournamentEntity } from "src/tournament/entities/tournament.entity";
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
 
@@ -19,9 +20,12 @@ export class Match {
     @ManyToMany(()=>Team, team=> team.match)
     teams: Team[]
 
-    @ManyToOne(()=> Tournament, tournament=> tournament.matches)
-    tournament: Tournament
+    @ManyToOne(()=> TournamentEntity, tournament=> tournament.matches)
+    tournament: TournamentEntity
 
     @Column({nullable:true})
     teamWinner?: string
+
+    @ManyToOne(()=> Round, (round)=>round.matches)
+    round: Round
 }

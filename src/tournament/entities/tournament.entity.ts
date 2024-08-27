@@ -10,7 +10,7 @@ import { InscriptionEnum, StatusEnum } from '../tournament.enum';
  @Entity({
      name: 'TOURNAMENT'
  })
-export class Tournament {
+export class TournamentEntity {
   @PrimaryGeneratedColumn('uuid')
   id:string = uuid()
 

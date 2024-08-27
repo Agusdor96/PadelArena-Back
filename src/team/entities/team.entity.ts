@@ -1,6 +1,6 @@
 import { Category } from "src/category/entities/category.entity";
 import { Match } from "src/match/entities/match.entity";
-import { Tournament } from "src/tournament/entities/tournament.entity";
+import { TournamentEntity } from "src/tournament/entities/tournament.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
@@ -26,8 +26,8 @@ export class Team {
     @JoinTable({name: "TEAM_USERS"})
         user:User[]
 
-    @ManyToOne(() => Tournament, (tournament) => tournament.team)
-        tournament:Tournament
+    @ManyToOne(() => TournamentEntity, (tournament) => tournament.team)
+        tournament:TournamentEntity
     
     @ManyToMany(()=> Match, (match)=> match.teams)
     @JoinTable({name: "TEAM_MATCH"})

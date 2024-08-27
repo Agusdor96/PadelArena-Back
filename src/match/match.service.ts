@@ -4,15 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
 import { Repository } from 'typeorm';
 import { Team } from 'src/team/entities/team.entity';
-import { Tournament } from 'src/tournament/entities/tournament.entity';
+import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 
 @Injectable()
 export class MatchService {
   constructor(
     @InjectRepository(Match) private matchRepository: Repository<Match>,
     @InjectRepository(Team) private teamRepository: Repository<Team>,
-    @InjectRepository(Tournament)
-    private tournamentRepository :Repository<Tournament>,
+    @InjectRepository(TournamentEntity)
+    private tournamentRepository :Repository<TournamentEntity>,
   //   @Inject() private tournamentService: TournamentService,
   ) {}
 
