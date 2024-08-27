@@ -9,15 +9,20 @@ import { ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @HttpCode(201)
+  @Post('/signup')
+  signUp (@PasswordsCompare() userDto:UserDto) {
+    return this.authService.signUpUser(userDto)
+  }
+
+  @HttpCode(201)
   @Post('/signin')
   signIn(@Body() credentials:CredentialsDto) {
     return this.authService.signInUser(credentials)
   }
 
-  @HttpCode(201)
-  @Post('/signup')
-  signUp (@PasswordsCompare() userDto:UserDto) {
-    return this.authService.signUpUser(userDto)
+  @Post("google")
+  signGoogle(@Body() googleUser){
+    return this.authService.authGoogle(googleUser);
   }
 }
 
