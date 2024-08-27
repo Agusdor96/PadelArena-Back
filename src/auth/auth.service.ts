@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
@@ -84,9 +84,10 @@ export class AuthService {
 
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
     } else if(!userFromDb){
-      
+      return {
+        googleUser,
+        message: "Usuario no registrado. Se necesitan mas datos para completar el proceso"
+      }
     }
-
-
   }
 }
