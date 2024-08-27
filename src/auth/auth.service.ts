@@ -45,10 +45,9 @@ export class AuthService {
       if(!userExist){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
-      console.log(userExist);
       
     const passwordComparation = await bcrypt.compare(credentials.password, userExist.password)
-    console.log(passwordComparation);
+
     
       if(!passwordComparation){
         throw new BadRequestException('Email o contraseña incorrectos')
@@ -67,7 +66,27 @@ export class AuthService {
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }
 
-  authGoogle(googleUser: any) {
-    throw new Error('Method not implemented.');
+  async authGoogleSign(googleUser: any) {
+    const {email, image, name} = googleUser;
+
+    const userFromDb = await this.userRepository.findOne({where:{email:email}})
+    if(userFromDb){
+
+      const userPayload = {
+        sub: userFromDb.id,
+        id: userFromDb.id,
+        email: userFromDb.email,
+        role: userFromDb.role 
+      }
+
+        const token = this.JWTservice.sign(userPayload);
+        const {password, ...userClean} = userFromDb
+
+      return {message: 'Inicio de sesion realizado con exito', token, userClean}
+    } else if(!userFromDb){
+      
+    }
+
+
   }
 }

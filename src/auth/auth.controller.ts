@@ -22,7 +22,7 @@ export class AuthController {
 
   @Post("google")
   signGoogle(@Body() googleUser){
-    return this.authService.authGoogle(googleUser);
+    return this.authService.authGoogleSign(googleUser);
   }
 }
 
