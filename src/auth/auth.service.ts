@@ -27,7 +27,7 @@ export class AuthService {
           throw new BadRequestException("Debes inscribirte dentro de una de las categorias definidas")
       }
 
-      const encryptedPassword = await Bcrypt.hash(userDto.password, 10)
+      const encryptedPassword = await bcrypt.hash(userDto.password, 10)
       
       const newUser = {
         ...userDto,
@@ -45,8 +45,11 @@ export class AuthService {
       if(!userExist){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
-
-    const passwordComparation = bcrypt.compare(credentials.password, userExist.password)
+      console.log(userExist);
+      
+    const passwordComparation = await bcrypt.compare(credentials.password, userExist.password)
+    console.log(passwordComparation);
+    
       if(!passwordComparation){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
