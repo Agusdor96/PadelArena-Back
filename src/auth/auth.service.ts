@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
 import { Category } from 'src/category/entities/category.entity';
+import { GoogleUserDto } from 'src/user/dto/googleUser.dto';
 import { CredentialsDto, UserDto } from 'src/user/dto/user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -66,7 +67,7 @@ export class AuthService {
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }
 
-  async authGoogleSign(googleUser: any) {
+  async authGoogleSign(googleUser:GoogleUserDto) {
     const {email, image, name} = googleUser;
 
     const userFromDb = await this.userRepository.findOne({where:{email:email}})

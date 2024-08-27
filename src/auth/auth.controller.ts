@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { PasswordsCompare } from 'src/decorators/EqualPasswords';
 import { CredentialsDto, UserDto } from 'src/user/dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { GoogleUserDto } from 'src/user/dto/googleUser.dto';
+import { SwaggerGoogleAuth } from 'src/decorators/AuthSwagger.decorator';
 
 @ApiTags("AUTH")
 @Controller('auth')
@@ -21,7 +23,8 @@ export class AuthController {
   }
 
   @Post("google")
-  signGoogle(@Body() googleUser){
+  @SwaggerGoogleAuth()
+  signGoogle(@Body() googleUser:GoogleUserDto){
     return this.authService.authGoogleSign(googleUser);
   }
 }
