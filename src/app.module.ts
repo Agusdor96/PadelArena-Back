@@ -12,6 +12,7 @@ import { MatchModule } from './match/match.module';
 import { FixtureModule } from './fixture/fixture.module';
 import { FileModule } from './file/file.module';
 import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.module';
+import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.mo
     TournamentModule,
     FixtureModule,
     FileModule,
-    PlayerStadisticsModule
+    PlayerStadisticsModule,
+    MercadoPagoModule
 
   ],
   controllers: [],
