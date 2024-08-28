@@ -4,10 +4,10 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as data from '../seed/users.json';
 import { Category } from 'src/category/entities/category.entity';
+import { GoogleUserDto } from './dto/googleUser.dto';
 
 @Injectable()
 export class UserService {
-  
 constructor(
   @InjectRepository(User) private userRepository:Repository<User>,
   @InjectRepository(Category) private categoryRepository:Repository<Category>
@@ -32,6 +32,23 @@ constructor(
       throw new NotFoundException("No se encuentran jugadores en la categoria proporcionada")
     }
     return usersFromOneCategory;
+  }
+
+  async createNewUser(googleUser: GoogleUserDto) {
+    const {email} = googleUser;
+    const nameParts = googleUser.name.split(" ")
+    const name = nameParts[0]
+    const lastName = nameParts.slice(1).join(" ")
+    
+    const user = {
+      name,
+      lastName,
+      email,
+    }
+    await this.userRepository.save(user)
+    const createdUser = await this.userRepository.findOne({where:{email:email}})
+    const {password, ...withoutPassword} = createdUser;
+    return{message: "El usuario ha sido creado con existo", createdUser}
   }
 
   async getUserById(id: string): Promise<User> {

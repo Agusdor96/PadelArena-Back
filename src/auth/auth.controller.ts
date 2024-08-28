@@ -11,18 +11,18 @@ import { SwaggerGoogleAuth } from 'src/decorators/AuthSwagger.decorator';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @HttpCode(201)
-  @Post('/signup')
+  @Post('/local-signup')
   signUp (@PasswordsCompare() userDto:UserDto) {
     return this.authService.signUpUser(userDto)
   }
 
   @HttpCode(201)
-  @Post('/signin')
+  @Post('/local-signin')
   signIn(@Body() credentials:CredentialsDto) {
     return this.authService.signInUser(credentials)
   }
 
-  @Post("google")
+  @Post("google-sign")
   @SwaggerGoogleAuth()
   signGoogle(@Body() googleUser:GoogleUserDto){
     return this.authService.authGoogleSign(googleUser);
