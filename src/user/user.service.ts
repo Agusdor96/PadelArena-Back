@@ -92,7 +92,7 @@ constructor(
       }
       const userFromDb = await this.userRepository.findOne({where: {email: user.email}})
       if(!userFromDb){
-        await this.userRepository.save({...user, category:categoriesFromDb[0]});
+        await this.userRepository.save({...user, category: userCategory});
       } 
     }
     return {message: "Usuarios precargados correctamente"};
