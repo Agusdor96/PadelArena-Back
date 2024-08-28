@@ -54,19 +54,19 @@ constructor(
   }
 
   async updateUserCategory(userId: string, modifyCategory:UpdateUserCategoryDto) {
-    const user = await this.userRepository.findOneBy({id:userId})
-    console.log("1", user);
-    
+    const user = await this.userRepository.findOne({where: {id:userId}, relations: {category:true}})
     if(!user) throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+    if(user.category.id === modifyCategory.category) throw new BadRequestException("La categoria seleccionada es la que esta asignada actualmente")
+    
     const newCategory = await this.categoryRepository.findOne({where: {id:modifyCategory.category}})
-    console.log("2", newCategory);
+    
     const newUserCategory = {
       ...user,
       category: newCategory
     }
 
     await this.userRepository.update(userId, newUserCategory)
-    const updatedUser = await this.userRepository.findOneBy({id:userId})
+    const updatedUser = await this.userRepository.findOne({where:{id:userId}, relations:{category:true}})
     
     console.log("3", updatedUser);
     return {message: "La categoria del usuario se actualizo correctamente", updatedUser}
