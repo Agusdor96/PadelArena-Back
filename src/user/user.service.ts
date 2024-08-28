@@ -6,6 +6,7 @@ import * as data from '../seed/users.json';
 import { Category } from 'src/category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 
 @Injectable()
 export class UserService {
@@ -52,17 +53,39 @@ constructor(
     return{message: "El usuario ha sido creado con existo", createdUser}
   }
 
+  async updateUserCategory(userId: string, modifyCategory:UpdateUserCategoryDto) {
+    const user = await this.userRepository.findOneBy({id:userId})
+    console.log("1", user);
+    
+    if(!user) throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+    const newCategory = await this.categoryRepository.findOne({where: {id:modifyCategory.category}})
+    console.log("2", newCategory);
+    const newUserCategory = {
+      ...user,
+      category: newCategory
+    }
+
+    await this.userRepository.update(userId, newUserCategory)
+    const updatedUser = await this.userRepository.findOneBy({id:userId})
+    
+    console.log("3", updatedUser);
+    return {message: "La categoria del usuario se actualizo correctamente", updatedUser}
+  }  
+
  async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
     const userToUpdate = await this.userRepository.findOneBy({id:userId})
     if(!userToUpdate){
       throw new NotFoundException("No se encontro usuario con el Id proporcionado")
     }
+    
+    
     const category = await this.categoryRepository.findOne({where:{name:modifiedUser.category}})
+    
     const updatedUser = {
       ...modifiedUser,
       category: category
     }
-
+    
      await this.userRepository.update(userId, updatedUser)
      const newUser = await this.userRepository.findOneBy({id:userId})
      return {message:"La informacion del usuario se actualizo correctamente", newUser}
