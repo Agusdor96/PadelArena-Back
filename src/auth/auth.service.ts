@@ -76,24 +76,23 @@ export class AuthService {
     const lastName = nameParts.slice(1).join(" ")
     
     
-    const userFromDb = await this.userRepository.findOne({where:{email:email}})
+    const googleUserFromDb = await this.userRepository.findOne({where:{email:email}})
   
-    if(userFromDb){
-      if(userFromDb.name !== name || userFromDb.lastName !== lastName){
+    if(googleUserFromDb){
+      if(googleUserFromDb.name !== name || googleUserFromDb.lastName !== lastName){
         throw new BadRequestException("Nombre o Apellido no corresponde al email asociado")
       }
       const userPayload = {
-        sub: userFromDb.id,
-        id: userFromDb.id,
-        email: userFromDb.email,
-        role: userFromDb.role 
+        sub: googleUserFromDb.id,
+        id: googleUserFromDb.id,
+        email: googleUserFromDb.email,
+        role: googleUserFromDb.role 
       }
 
         const token = this.JWTservice.sign(userPayload);
-        const {password, ...userClean} = userFromDb
 
-      return {message: 'Inicio de sesion realizado con exito', token, userClean}
-    } else if(!userFromDb){
+      return {message: 'Inicio de sesion realizado con exito', token, googleUserFromDb}
+    } else if(!googleUserFromDb){
 
         const newUser = await this.userService.createNewUser(googleUser)
         const newGoogleUser = newUser.createdUser
