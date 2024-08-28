@@ -90,12 +90,13 @@ export class AuthService {
       }
 
         const token = this.JWTservice.sign(userPayload);
+        const { password, role, ...googleUserWithoutPassword} = googleUserFromDb
 
-      return {message: 'Inicio de sesion realizado con exito', token, googleUserFromDb}
+      return {message: 'Inicio de sesion realizado con exito', token, googleUserWithoutPassword}
     } else if(!googleUserFromDb){
 
         const newUser = await this.userService.createNewUser(googleUser)
-        const newGoogleUser = newUser.createdUser
+        const newGoogleUser = newUser.withoutPassword
 
         if(newGoogleUser){
           const userPayload = {
@@ -108,10 +109,6 @@ export class AuthService {
 
           return {message: 'Registro e inicio de sesion realizado con exito', token, newGoogleUser}
         }
-      // return {
-      //   googleUser,
-      //   message: "Usuario no registrado. Se necesitan mas datos para completar el proceso"
-      // }
     }
   }
 }

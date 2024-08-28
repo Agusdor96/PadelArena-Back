@@ -15,9 +15,11 @@ intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | 
                     return notPasswordUser;
                 })
             } else{
-                console.log("2", data)
+               
                 const {password, passwordConfirm, role, ...partialUser} = data
+                
                 return partialUser;
+                
             }
         })
     ) 

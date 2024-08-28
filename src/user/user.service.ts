@@ -50,7 +50,7 @@ constructor(
     await this.userRepository.save(user)
     const createdUser = await this.userRepository.findOne({where:{email:email}})
     const {password, ...withoutPassword} = createdUser;
-    return{message: "El usuario ha sido creado con existo", createdUser}
+    return{message: "El usuario ha sido creado con existo", withoutPassword}
   }
 
   async updateUserCategory(userId: string, modifyCategory:UpdateUserCategoryDto) {
@@ -68,7 +68,7 @@ constructor(
     await this.userRepository.update(userId, newUserCategory)
     const updatedUser = await this.userRepository.findOne({where:{id:userId}, relations:{category:true}})
     
-    return {message: "La categoria del usuario se actualizo correctamente", updatedUser}
+    return updatedUser;
   }  
 
  async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
@@ -87,7 +87,7 @@ constructor(
     
      await this.userRepository.update(userId, updatedUser)
      const newUser = await this.userRepository.findOneBy({id:userId})
-     return {message:"La informacion del usuario se actualizo correctamente", newUser}
+     return newUser;
   }
 
   async getUserById(id: string): Promise<User> {
