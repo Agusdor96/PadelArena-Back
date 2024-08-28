@@ -11,11 +11,11 @@ export class Match {
     @PrimaryGeneratedColumn('uuid')
     id: string = uuid()
 
-    @Column()
-    date: string
+    @Column({nullable: true})
+    date?: string
 
-    @Column()
-    time: string
+    @Column({nullable: true})
+    time?: string
 
     @ManyToMany(()=>Team)
     @JoinTable({name: "TEAM_MATCH"})

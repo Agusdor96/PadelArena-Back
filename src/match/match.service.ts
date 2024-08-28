@@ -15,7 +15,7 @@ export class MatchService {
   //   @Inject() private tournamentService: TournamentService,
   ) {}
 
-  async createMatch({date, time, teams, tournament}) {
+  async createMatch({ teams, tournament}) {
     
     for (const teamName of teams) {
       const teamsFinder = await this.teamRepository.findOne({
@@ -29,8 +29,6 @@ export class MatchService {
         );
       } }
       const newMatch = {
-          date,
-          time,
           tournament
         };
         const match = await this.matchRepository.save(newMatch);

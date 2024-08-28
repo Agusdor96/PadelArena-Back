@@ -27,7 +27,7 @@ export class PlayerStadisticsService {
     const teamLooser = teams.filter((team) => team.id !== winnerId);
 
     const playersWinners = teamWinner[0].user;
-
+  
     const playersLoosers = teamLooser[0].user;
 
     teamLooser[0].ableForPlay = false;
