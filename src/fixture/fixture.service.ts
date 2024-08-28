@@ -12,7 +12,7 @@ import { Round } from './entities/round.entity';
 import { MatchService } from 'src/match/match.service';
 import { Match } from 'src/match/entities/match.entity';
 import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics.service';
-import { DateTime } from 'luxon';
+// import { DateTime } from 'luxon';
 
 
 @Injectable()
@@ -114,8 +114,8 @@ export class FixtureService {
     const includerVerify = qteamsArray.includes(teamsArray.length);
 
     if (includerVerify) {
-        const durationPerMatch = tournament.matchDuration;
-        const closingTime = tournament.finishTime; // Hora de cierre del club
+        // const durationPerMatch = tournament.matchDuration;
+        // const closingTime = tournament.finishTime; // Hora de cierre del club
 
         let stage = '';
         switch (teamsArray.length) {
@@ -186,4 +186,4 @@ export class FixtureService {
         );
       }
 }
-
+}
