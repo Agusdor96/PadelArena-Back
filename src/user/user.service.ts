@@ -68,7 +68,6 @@ constructor(
     await this.userRepository.update(userId, newUserCategory)
     const updatedUser = await this.userRepository.findOne({where:{id:userId}, relations:{category:true}})
     
-    console.log("3", updatedUser);
     return {message: "La categoria del usuario se actualizo correctamente", updatedUser}
   }  
 
