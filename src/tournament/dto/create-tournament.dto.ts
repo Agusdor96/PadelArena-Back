@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsDateString, IsNotEmpty, IsNumber, IsString, IsUUID, Length, Min } from "class-validator";
+import { IsArray, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Length, Min } from "class-validator";
 
 
 export class CreateTournamentDto {
@@ -39,6 +39,7 @@ export class CreateTournamentDto {
     description: string;
 
     @IsNotEmpty()
+    @IsOptional()
     tournamentFlyer: string;
 
     @IsNotEmpty()
