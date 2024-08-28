@@ -22,7 +22,7 @@ export class AuthService {
 
   async signUpUser(userDto: UserDto) {
     const emailAlreadyExist = await this.userRepository.findOne({where:{email:userDto.email}})
-    const category = await this.categoryRepository.findOne({where: {name:userDto.category}});
+    const category = await this.categoryRepository.findOne({where: {id:userDto.category}});
 
     if(emailAlreadyExist){
       throw new BadRequestException('El email provisto ya está registrado')
