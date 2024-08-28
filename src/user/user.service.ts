@@ -59,7 +59,7 @@ constructor(
     if(user.category.id === modifyCategory.category) throw new BadRequestException("La categoria seleccionada es la que esta asignada actualmente")
     
     const newCategory = await this.categoryRepository.findOne({where: {id:modifyCategory.category}})
-    
+    if(!newCategory) throw new NotFoundException("No se encuentra categoria con el id proporcionado")
     const newUserCategory = {
       ...user,
       category: newCategory
