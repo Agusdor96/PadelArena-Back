@@ -4,17 +4,18 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as data from '../seed/users.json';
 import { Category } from 'src/category/entities/category.entity';
+import { GoogleUserDto } from './dto/googleUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UserService {
-  
 constructor(
   @InjectRepository(User) private userRepository:Repository<User>,
   @InjectRepository(Category) private categoryRepository:Repository<Category>
 ){}
 
   async getAllUsers():Promise<User[]> {
-    const users:User[] = await this.userRepository.find()
+    const users:User[] = await this.userRepository.find({relations:{category:true}})
     if(!users.length) {
       throw new NotFoundException("No se encontraron usuarios")
     }
@@ -32,6 +33,39 @@ constructor(
       throw new NotFoundException("No se encuentran jugadores en la categoria proporcionada")
     }
     return usersFromOneCategory;
+  }
+
+  async createNewUser(googleUser: GoogleUserDto) {
+    const {email} = googleUser;
+    const nameParts = googleUser.name.split(" ")
+    const name = nameParts[0]
+    const lastName = nameParts.slice(1).join(" ")
+    
+    const user = {
+      name,
+      lastName,
+      email,
+    }
+    await this.userRepository.save(user)
+    const createdUser = await this.userRepository.findOne({where:{email:email}})
+    const {password, ...withoutPassword} = createdUser;
+    return{message: "El usuario ha sido creado con existo", createdUser}
+  }
+
+ async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
+    const userToUpdate = await this.userRepository.findOneBy({id:userId})
+    if(!userToUpdate){
+      throw new NotFoundException("No se encontro usuario con el Id proporcionado")
+    }
+    const category = await this.categoryRepository.findOne({where:{name:modifiedUser.category}})
+    const updatedUser = {
+      ...modifiedUser,
+      category: category
+    }
+
+     await this.userRepository.update(userId, updatedUser)
+     const newUser = await this.userRepository.findOneBy({id:userId})
+     return {message:"La informacion del usuario se actualizo correctamente", newUser}
   }
 
   async getUserById(id: string): Promise<User> {
