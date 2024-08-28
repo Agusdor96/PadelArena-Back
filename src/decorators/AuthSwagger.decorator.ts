@@ -5,10 +5,10 @@ export function SwaggerGoogleAuth() {
     return applyDecorators(
         ApiOperation({
             
-            summary: "User registration",
-            description:"Allows a new user to signUp providing all the required fields by LoginUserDto which is an extension from CreateUserDto. In this instance users password will be hashed for secutiry."
+            summary: "Registro de usuario con google",
+            description:"Permite a un nuevo jugador registrarse en la plataforma a partir de su cuenta de google."
         }),
-        ApiResponse({status:201, description: "user registered succesfully with id:userId"}),
-        ApiResponse({status: 400, description: "Bad Request"})
+        ApiResponse({status:201, description: "usuario registrado con exito"}),
+        ApiResponse({status: 400, description: "El nombre no corresponde al email asociado"})
     )
 }

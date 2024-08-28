@@ -4,8 +4,6 @@ import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
 
 export class GoogleUserDto{
 
-
-
 @ApiProperty({ description: 'User name', example: 'Matias Lopez' })
 @IsNotEmpty()
 @IsString()
@@ -17,6 +15,6 @@ name:string;
 @IsEmail()
 @IsString()
 email:string;
-
-image:File
+@ApiProperty({ description: 'User image', example: 'url de la imagen' })
+image:string
 }

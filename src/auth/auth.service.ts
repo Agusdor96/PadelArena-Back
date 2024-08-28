@@ -68,11 +68,20 @@ export class AuthService {
   }
 
   async authGoogleSign(googleUser:GoogleUserDto) {
-    const {email, image, name} = googleUser;
-
+    const {email} = googleUser;
+    const nameParts = googleUser.name.split(" ")
+    const name = nameParts[0]
+    const lastName = nameParts.slice(1).join(" ")
+    console.log(lastName);
+    
     const userFromDb = await this.userRepository.findOne({where:{email:email}})
-    if(userFromDb){
+    console.log(userFromDb);
+    
+    if(userFromDb.name !== name || userFromDb.lastName !== lastName){
+      throw new BadRequestException("Nombre o Apellido no corresponde al email asociado")
+    }
 
+    if(userFromDb){
       const userPayload = {
         sub: userFromDb.id,
         id: userFromDb.id,
@@ -83,7 +92,7 @@ export class AuthService {
         const token = this.JWTservice.sign(userPayload);
         const {password, ...userClean} = userFromDb
 
-      return {message: 'Inicio de sesion realizado con exito', token, userClean}
+      return {message: '2 Inicio de sesion realizado con exito', token, userClean}
     } else if(!userFromDb){
       return {
         googleUser,
