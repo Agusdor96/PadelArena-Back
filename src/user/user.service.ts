@@ -15,7 +15,7 @@ constructor(
 ){}
 
   async getAllUsers():Promise<User[]> {
-    const users:User[] = await this.userRepository.find()
+    const users:User[] = await this.userRepository.find({relations:{category:true}})
     if(!users.length) {
       throw new NotFoundException("No se encontraron usuarios")
     }
