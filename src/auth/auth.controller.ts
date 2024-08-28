@@ -12,7 +12,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @HttpCode(201)
   @Post('/local-signup')
-  signUp (@PasswordsCompare() userDto:UserDto) {
+  signUp (
+    @PasswordsCompare()
+    @Body() userDto:UserDto) {
     return this.authService.signUpUser(userDto)
   }
 
