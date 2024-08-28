@@ -1,6 +1,5 @@
-import { Match } from "src/match/entities/match.entity";
-import { Tournament } from "src/tournament/entities/tournament.entity";
-import {  Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TournamentEntity } from "src/tournament/entities/tournament.entity";
+import {  Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Round } from "./round.entity";
 
@@ -11,9 +10,10 @@ export class Fixture {
     @PrimaryGeneratedColumn('uuid')
     id:string = uuid();
 
-    @OneToOne(() => Tournament)
-    tournament: Tournament
+    @OneToOne(() => TournamentEntity)
+    tournament: TournamentEntity
 
     @OneToMany(() => Round, (round) => round.fixture)
     round: Round[]
 }
+

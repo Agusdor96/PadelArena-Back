@@ -1,43 +1,42 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { MatchDto } from './dto/match.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
 import { Repository } from 'typeorm';
 import { Team } from 'src/team/entities/team.entity';
-import { Tournament } from 'src/tournament/entities/tournament.entity';
+import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 
 @Injectable()
 export class MatchService {
   constructor(
     @InjectRepository(Match) private matchRepository: Repository<Match>,
     @InjectRepository(Team) private teamRepository: Repository<Team>,
-    @InjectRepository(Tournament)
-    private tournamentRepository :Repository<Tournament>,
+    @InjectRepository(TournamentEntity)
+    private tournamentRepository :Repository<TournamentEntity>,
   //   @Inject() private tournamentService: TournamentService,
   ) {}
 
-  async createMatch({date, time, teams, tournament}) {
+  async createMatch({ teams, tournament}) {
+    
     for (const teamName of teams) {
-      const teams = await this.teamRepository.find({
+      const teamsFinder = await this.teamRepository.findOne({
         where: {
           name: teamName.name,
         },
       });
-
-      if (!teams.length) {
+      if (!teamsFinder) {
         throw new NotFoundException(
-          'No se encontraron equipos con esos nombres',
+          'No se encontró un equipo con el nombre: ', teamName.name
         );
-      } else {
-        const newMatch = {
-          date: date,
-          time: time,
-          teams: teams,
-          tournament: tournament
+      } }
+      const newMatch = {
+          tournament
         };
-        return await this.matchRepository.save(newMatch);
-      }
-    }
+        const match = await this.matchRepository.save(newMatch);
+        match.teams = [teams[0], teams[1]]
+        await this.matchRepository.save(match)
+        return match
+      
+    
   }
 
   async getAllMatchesFromTournament(tournamentId: string) {

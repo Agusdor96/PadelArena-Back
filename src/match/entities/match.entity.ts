@@ -1,6 +1,7 @@
+import { Round } from "src/fixture/entities/round.entity";
 import { Team } from "src/team/entities/team.entity";
-import { Tournament } from "src/tournament/entities/tournament.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TournamentEntity } from "src/tournament/entities/tournament.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
 
 @Entity({
@@ -10,18 +11,22 @@ export class Match {
     @PrimaryGeneratedColumn('uuid')
     id: string = uuid()
 
-    @Column()
-    date: string
+    @Column({nullable: true})
+    date?: string
 
-    @Column()
-    time: string
+    @Column({nullable: true})
+    time?: string
 
-    @ManyToMany(()=>Team, team=> team.match)
+    @ManyToMany(()=>Team)
+    @JoinTable({name: "TEAM_MATCH"})
     teams: Team[]
 
-    @ManyToOne(()=> Tournament, tournament=> tournament.matches)
-    tournament: Tournament
+    @ManyToOne(()=> TournamentEntity, tournament=> tournament.matches)
+    tournament: TournamentEntity
 
     @Column({nullable:true})
     teamWinner?: string
+
+    @ManyToOne(()=> Round, (round)=>round.matches)
+    round: Round
 }

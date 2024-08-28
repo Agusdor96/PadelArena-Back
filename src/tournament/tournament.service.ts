@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tournament } from './entities/tournament.entity';
+import { TournamentEntity } from './entities/tournament.entity';
 import { In, Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
@@ -11,7 +11,7 @@ import * as data from "../seed/tournaments.json"
 @Injectable()
 export class TournamentService {
 constructor(
-  @InjectRepository(Tournament) private tournamentRepository: Repository<Tournament>,
+  @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
   @Inject() private fixtureService: FixtureService
 ){}
@@ -58,7 +58,7 @@ constructor(
       const endDate = new Date(createTournamentDto.startDate);
       endDate.setDate(endDate.getDate() + tournamentDuration);
 
-      const tournament = new Tournament();
+      const tournament = new TournamentEntity();
         tournament.name = createTournamentDto.name;
         tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
@@ -90,7 +90,7 @@ constructor(
     }
     return tournaments;
   }
-
+  
   async getTournament(id: string) {
     const tournament = await this.tournamentRepository.findOne({
       where: {
@@ -113,7 +113,7 @@ constructor(
   async changeInscriptionStatus(id:string){
     const tournament = await this.getTournament(id);
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
-    return await this.fixtureService.createFixture(tournament)
+    return await this.fixtureService.createFixture(tournament.id)
   }
 
   async preloadTournaments(){

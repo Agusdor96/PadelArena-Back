@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tournament } from 'src/tournament/entities/tournament.entity';
+import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { FileRepository } from './file.repository';
@@ -8,8 +8,8 @@ import { FileRepository } from './file.repository';
 @Injectable()
 export class FileService {
   constructor(
-    @InjectRepository(Tournament)
-    private tournamentRepostory: Repository<Tournament>,
+    @InjectRepository(TournamentEntity)
+    private tournamentRepostory: Repository<TournamentEntity>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private fileRepository: FileRepository,
@@ -39,7 +39,7 @@ export class FileService {
         .secure_url;
       const imgArray = tournament.gallery
       const arrayUpdated = {tournamentNewImg, ...imgArray}
-      const tournamentUpdated:Tournament = {
+      const tournamentUpdated:TournamentEntity = {
         gallery: arrayUpdated,
         ...tournament
       }
