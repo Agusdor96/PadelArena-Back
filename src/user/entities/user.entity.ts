@@ -20,22 +20,22 @@ export class User {
     @Column({ type: "varchar", length: 50, unique: true, nullable: false })
         email:string;
 
-    @Column({ type: "text", nullable: false })
+    @Column({ type: "text", nullable: true })
         password:string
 
-    @Column({type: "bigint"})
+    @Column({type: "bigint", nullable: true})
         phone:string
 
-    @Column({ type: "varchar", length: 50})
+    @Column({ type: "varchar", length: 50, nullable: true})
         country:string
 
-    @Column({ type: "varchar", length: 50})
+    @Column({ type: "varchar", length: 50, nullable: true})
         city:string
 
-    @Column('text')
+    @Column('text', {nullable: true})
         address:string
 
-    @Column({ type: "text", nullable: false, default: "default-image-url" })
+    @Column({ type: "text", nullable: true, default: "default-image-url" })
         profileImg?: string
 
     @Column({
@@ -45,13 +45,13 @@ export class User {
     })
         role:RoleEnum
 
-    @ManyToOne(()=> Category, (category) => category.users)
+    @ManyToOne(()=> Category, (category) => category.users, {nullable: true})
         category:Category
 
-    @ManyToMany(()=> Team, team => team.user)
+    @ManyToMany(()=> Team, team => team.user, {nullable: true})
         team: Team[]
 
-    @OneToOne(()=> PlayerStadistic)
+    @OneToOne(()=> PlayerStadistic, {nullable: true})
     @JoinColumn({name: "player_stadistics"})
         playerStadistic: PlayerStadistic
 }
