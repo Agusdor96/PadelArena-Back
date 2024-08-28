@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import * as data from '../seed/users.json';
 import { Category } from 'src/category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UserService {
@@ -49,6 +50,22 @@ constructor(
     const createdUser = await this.userRepository.findOne({where:{email:email}})
     const {password, ...withoutPassword} = createdUser;
     return{message: "El usuario ha sido creado con existo", createdUser}
+  }
+
+ async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
+    const userToUpdate = await this.userRepository.findOneBy({id:userId})
+    if(!userToUpdate){
+      throw new NotFoundException("No se encontro usuario con el Id proporcionado")
+    }
+    const category = await this.categoryRepository.findOne({where:{name:modifiedUser.category}})
+    const updatedUser = {
+      ...modifiedUser,
+      category: category
+    }
+
+     await this.userRepository.update(userId, updatedUser)
+     const newUser = await this.userRepository.findOneBy({id:userId})
+     return {message:"La informacion del usuario se actualizo correctamente", newUser}
   }
 
   async getUserById(id: string): Promise<User> {
