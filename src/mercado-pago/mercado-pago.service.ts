@@ -28,7 +28,7 @@ export class MercadoPagoService {
       items: [
         {
           title: tournament.name,
-          quantity: Number(req.quantity),
+          quantity: 1,
           unit_price: tournament.price,
           description: tournament.description,
           currency_id: 'ARS',
