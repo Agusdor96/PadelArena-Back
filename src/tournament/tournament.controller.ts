@@ -7,6 +7,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags("TOURNAMENT")
 @Controller('tournament')
@@ -18,22 +19,8 @@ export class TournamentController {
   // @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(new TransformTime())
   async create(
-    @Body() createTournamentDto: CreateTournamentDto,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({
-            maxSize: 500000,
-            message: 'La imagen no puede pesar mas de 500kb',
-          }),
-          new FileTypeValidator({
-            fileType: /(jpg|jpeg|png|webp)$/,
-          }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,) {
-      await this.tournamentService.createTournament(createTournamentDto);
+    @Body() createTournamentDto: CreateTournamentDto,file?: Express.Multer.File,) {
+    return  await this.tournamentService.createTournament(createTournamentDto, file);
   }
 
   @Get()

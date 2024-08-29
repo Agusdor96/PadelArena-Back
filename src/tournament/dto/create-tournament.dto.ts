@@ -31,7 +31,7 @@ export class CreateTournamentDto {
     @ApiProperty({ description: 'Cantidad de equipos que participan en el torneo', example: '16' })
     @IsNotEmpty()
     @IsNumber()
-    @Min(16)
+    @Min(16, {message: "La cantidad de equipos no puede ser menor a 16"})
         teamsQuantity: number;
 
     @ApiProperty({ description: 'La duracion de juego de los partidoa que se quiera establecer en minutos', example: '60' })

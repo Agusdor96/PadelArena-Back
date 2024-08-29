@@ -46,40 +46,39 @@ constructor(
         throw new BadRequestException("Se esta recibiendo un campo vacio dentro de playing days, debes completarlo")
       }
     }
+    
+    const startTime = new Date(createTournamentDto.startTime);
+    const endTime = new Date(createTournamentDto.endTime);
+    if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
+      throw new BadRequestException("Las fechas de inicio o fin no son válidas.");
+  }
 
-      const InitialMatches = createTournamentDto.teamsQuantity /2;
-      const startTime = new Date(createTournamentDto.startTime);
-      const endTime = new Date(createTournamentDto.endTime);
-      const availableHoursPerDay = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-      const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
+    const availableHoursPerDay = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+    const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
+    const totalMatches = createTournamentDto.teamsQuantity - 1;
+    const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
+    const endDate = new Date(createTournamentDto.startDate);
+    endDate.setDate(endDate.getDate() + tournamentDuration);
 
-      let qMatchRounds = InitialMatches;
-      const totalMatches = createTournamentDto.teamsQuantity - 1;
-
-      const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
-
-      const endDate = new Date(createTournamentDto.startDate);
-      endDate.setDate(endDate.getDate() + tournamentDuration);
-
-      const tournament = new TournamentEntity();
-        tournament.name = createTournamentDto.name;
-        tournament.startDate = createTournamentDto.startDate;
-        tournament.endDate = endDate;
-        tournament.startingTime = createTournamentDto.startTime;
-        tournament.finishTime = createTournamentDto.endTime;
-        tournament.playingDay = createTournamentDto.playingDays;
-        tournament.status = StatusEnum.UPCOMING;
-        tournament.teamsQuantity = createTournamentDto.teamsQuantity;
-        tournament.matchDuration = createTournamentDto.matchDuration;
-        tournament.description = createTournamentDto.description;
-        tournament.courtsAvailable = createTournamentDto.courts;
-        tournament.category = category;
+    const tournament = new TournamentEntity();
+      tournament.name = createTournamentDto.name;
+      tournament.startDate = createTournamentDto.startDate;
+      tournament.endDate = endDate;
+      tournament.startingTime = createTournamentDto.startTime;
+      tournament.finishTime = createTournamentDto.endTime;
+      tournament.playingDay = createTournamentDto.playingDays;
+      tournament.status = StatusEnum.UPCOMING;
+      tournament.teamsQuantity = createTournamentDto.teamsQuantity;
+      tournament.matchDuration = createTournamentDto.matchDuration;
+      tournament.description = createTournamentDto.description;
+      tournament.courtsAvailable = createTournamentDto.courts;
+      tournament.category = category;
         
-      if(file){
-          tournament.tournamentFlyer = await this.fileService.uploadImageToCloudinary(file)
-      }
-      const newTournament = await this.tournamentRepository.save(tournament);
-      return newTournament;
+    if(file){
+      tournament.tournamentFlyer = await this.fileService.uploadImageToCloudinary(file)
+    }
+    const newTournament = await this.tournamentRepository.save(tournament);
+    return newTournament;
   }
 
   async getAllTournaments() {
