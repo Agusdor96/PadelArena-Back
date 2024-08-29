@@ -1,30 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { Request } from 'express';
 import { Preference } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
+import { dataPaymentDto } from './dtos/dataPayment.dto';
 
 @Injectable()
 export class MercadoPagoService {
-  async mpConnections(req: any) {
+  async mpConnections(req: dataPaymentDto) {
     
     const body = {
       items: [
         {
           title: req.title,
           quantity: Number(req.quantity),
-          unit_price: Number(req.price),
+          unit_price: Number(req.unit_price),
           currency_id: 'ARS',
-          id: '',
+          id: ''
         },
       ],
       back_urls: {
-        success: 'https://padelarena.vercel.app/',
-        failure: 'https://padelarena.vercel.app/tournaments',
-        pending: 'https://padelarena.vercel.app/login'
+        success: req.successUrl,
+        failure: req.failureUrl,
+        pending: req.pendingUrl
+        //  
       },
       auto_return: "approved"
     };
     const preference = await new Preference(client).create({ body })
+    const prefId = preference.id
     
     return {redirectUrl: preference.init_point}
   }
