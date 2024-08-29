@@ -56,6 +56,7 @@ export class UserDto {
   @ApiProperty({ description: 'Categoria del jugador', example: 'c468029f-e9c2-4176-8ab4-357aeae441a7' })
   @IsNotEmpty()
   @IsString()
+  @IsUUID()
   category: string;
 
   @ApiProperty({ description: 'Imagen de perfil del jugador', example: 'data:image/png' })

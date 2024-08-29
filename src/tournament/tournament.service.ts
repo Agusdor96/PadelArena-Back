@@ -16,13 +16,11 @@ constructor(
   @Inject() private fixtureService: FixtureService
 ){}
 
-  async createTournament(createTournamentDto) {
+  async createTournament(createTournamentDto:any) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
-      if(!category){
-          throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
-      }
-
+      if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
+      
       const existingTournament = await this.tournamentRepository.findOne({
         where: {
             category: { id: createTournamentDto.category },
@@ -30,13 +28,20 @@ constructor(
         },
     });
     
-    
     if (existingTournament) {
       throw new BadRequestException("No se puede crear el torneo. No se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
     }
 
     if (createTournamentDto.teamsQuantity !== 16 && createTournamentDto.teamsQuantity !== 32 && createTournamentDto.teamsQuantity !== 64) {
       throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64")
+    }
+    if(createTournamentDto.matchDuration < 30) throw new BadRequestException("La duracion de los partidos no puede ser menor a 30 minutos")
+    if(createTournamentDto.courts < 1) throw new BadRequestException("No puedes crear un torneo si no tienes canchas disponibles, (courts=0)")
+    if(!createTournamentDto.playingDays.length) throw new BadRequestException("Para crear un torneo se debe seleccionar al menos un dia de juego")
+    for(let i = 0; i <= createTournamentDto.playingDays.length; i++){
+      if(createTournamentDto.playingDays[i] === ""){
+        throw new BadRequestException("Se esta recibiendo un campo vacio dentro de playing days, debes completarlo")
+      }
     }
 
       const InitialMatches = createTournamentDto.teamsQuantity /2;
@@ -46,13 +51,9 @@ constructor(
       const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
       let qMatchRounds = InitialMatches;
-      let totalMatches = 0;
-      while(qMatchRounds > 1 ){
-        totalMatches += qMatchRounds;
-        qMatchRounds /= 2;
-      }
-      totalMatches +=1;
-  
+      const totalMatches = createTournamentDto.teamsQuantity - 1;
+
+    
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
       const endDate = new Date(createTournamentDto.startDate);

@@ -9,13 +9,10 @@ intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | 
         map((data)=> {
             if(Array.isArray(data)){
                 return data.map((user)=>{
-                    console.log("1", data);
-                    
                     const {password, ...notPasswordUser} = user;
                     return notPasswordUser;
                 })
             } else{
-               
                 const {password, passwordConfirm, role, ...partialUser} = data
                 
                 return partialUser;
