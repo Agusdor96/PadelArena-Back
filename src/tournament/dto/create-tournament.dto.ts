@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Length, Min } from "class-validator";
+import { IsArray, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Length, Matches, Min } from "class-validator";
 
 
 export class CreateTournamentDto {
@@ -15,12 +15,12 @@ export class CreateTournamentDto {
 
     @ApiProperty({ description: 'Horario de apertura del club donde se desarrollara el torneo', example: '09:00' })
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty() 
         startTime: string;
 
     @ApiProperty({ description: 'Horario de apertura del club donde se desarrollara el torneo', example: '17:00' })
-    @IsString()
     @IsNotEmpty()
+    @IsString()
         endTime: string;
 
     @ApiProperty({ description: 'Dias en los que se desarrollara el torneo', example: ' ["Lunes", "Miércoles", "Viernes"]' })
@@ -49,11 +49,10 @@ export class CreateTournamentDto {
         description: string;
 
     @ApiProperty({ description: 'Alguna imagen de portada', example: '/images/default-image.jpg' })
-    @IsNotEmpty()
     @IsOptional()
         tournamentFlyer: string;
 
-    @ApiProperty({ description: 'El id de alguna de las 5 categorias de padel amateur definidas ', example: 'Cuarta' })
+    @ApiProperty({ description: 'El id de alguna de las 5 categorias de padel amateur definidas ', example: '8678bcb6-b5c8-457b-af77-e4a084b72793' })
     @IsNotEmpty()
     @IsUUID()
         category: string;
