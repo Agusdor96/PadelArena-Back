@@ -72,6 +72,7 @@ constructor(
         tournament.tournamentFlyer = createTournamentDto.tournamentFlyer;
         tournament.courtsAvailable = createTournamentDto.courts;
         tournament.category = category;
+        tournament.price = createTournamentDto.price;
     
       const newTournament = await this.tournamentRepository.save(tournament);
 

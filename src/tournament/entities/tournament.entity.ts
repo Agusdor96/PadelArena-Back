@@ -76,4 +76,7 @@ export class TournamentEntity {
   @OneToOne(() => Fixture, {nullable:true})
   @JoinColumn({name:"fixture_id"})
   fixture: Fixture
+
+  @Column()
+  price: number
 }

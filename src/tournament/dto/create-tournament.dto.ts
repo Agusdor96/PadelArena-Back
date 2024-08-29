@@ -44,4 +44,8 @@ export class CreateTournamentDto {
     @IsNotEmpty()
     @IsUUID()
     category: string;
+
+    @IsNotEmpty()
+    @IsNumber()
+    price: number;
 }

@@ -1,10 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Preference } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PaymentDetail } from './entities/paymentDetail.entity';
+import { Repository } from 'typeorm';
+import { PaymentDetailDto } from './dtos/paymentDetail.dto';
+import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
+import { Team } from 'src/team/entities/team.entity';
 
 @Injectable()
 export class MercadoPagoService {
+  
+  constructor(
+    @InjectRepository(PaymentDetail)
+    private paymentDetailRepository: Repository<PaymentDetail>,
+    @InjectRepository(TournamentEntity)
+    private tournamentRepository: Repository<TournamentEntity>,
+    @InjectRepository(Team)
+    private teamRepsoitory: Repository<Team>
+
+  ){}
   async mpConnections(req: dataPaymentDto) {
     
     const body = {
@@ -21,15 +37,38 @@ export class MercadoPagoService {
         success: req.successUrl,
         failure: req.failureUrl,
         pending: req.pendingUrl
-        //  
       },
       auto_return: "approved"
     };
     const preference = await new Preference(client).create({ body })
     const prefId = preference.id
-    
+    await this.paymentDetailRepository.save({preferenceId: prefId})
     return {redirectUrl: preference.init_point}
   }
 
-  
+  async feedbackPayment(paymentDetails: PaymentDetailDto) {
+    if(paymentDetails.status !== 'approved') {
+      throw new BadRequestException('El estado del pago debe ser aprobado')
+    }
+    const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
+    const tournament = await this.tournamentRepository.findOne({where: {id: paymentDetails.tournament}})
+    const team = await this.teamRepsoitory.findOne({where: {id: paymentDetails.team}})
+    const pay = {
+      ...payDetail,
+      payment_id: paymentDetails.payment,
+      external_reference: paymentDetails.external_reference,
+      marchant_order_id: paymentDetails.marchant_order_id,
+      status: paymentDetails.status,
+      tournament: tournament,
+      team: team
+    }
+
+    const paymentDetailComplete = await this.paymentDetailRepository.save(pay)
+    return {
+      message: 'Registro de pago ralizado con exito', 
+      Payment: paymentDetailComplete.payment_id,
+      Status: paymentDetailComplete.status,
+      MarchantOrder: paymentDetailComplete.marchant_order_id
+    }
+  }
 }
