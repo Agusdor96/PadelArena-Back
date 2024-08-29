@@ -40,8 +40,9 @@ export class MercadoPagoService {
         failure: `${req.host}/${req.tournament}`,
         pending: `${req.host}/${req.tournament}`
       },
-      auto_return: "approved"
-    };
+      auto_return: "approved",
+      notification_url: req.notification_url
+      };
     const preference = await new Preference(client).create({ body })
 
     const prefId = {
