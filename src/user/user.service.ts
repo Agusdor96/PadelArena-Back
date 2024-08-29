@@ -59,7 +59,7 @@ constructor(
     if(!user) throw new NotFoundException("No se encuentra usuario con el id proporcionado")
     if(user.category.id === modifyCategory.category) throw new BadRequestException("La categoria seleccionada es la que esta asignada actualmente")
     if(!uuidValidate(modifyCategory.category)) throw new BadRequestException("Debes proporcionar un id de tipo UUID correcto")
-      
+
     const newCategory = await this.categoryRepository.findOne({where: {id:modifyCategory.category}})
     if(!newCategory) throw new NotFoundException("No se encuentra categoria con el id proporcionado")
     const newUserCategory = {
@@ -94,7 +94,7 @@ constructor(
   }
 
   async getUserById(id: string): Promise<User> {
-    const user = await this.userRepository.findOneBy({id:id})
+    const user = await this.userRepository.findOne({where:{id}, relations:{category:true}})
       if(!user){
         throw new NotFoundException("No se encuentra usuario con el id proporcionado")
       }
