@@ -7,6 +7,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
+import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
 export class TournamentService {
@@ -112,7 +113,11 @@ constructor(
   }
 
   async changeInscriptionStatus(id:string){
+    if (!uuidValidate(id)) throw new BadRequestException("Debes proporcionar un id de tipo UUID valido")
+      
     const tournament = await this.getTournament(id);
+    if(!tournament) throw new NotFoundException("No se encontro ningun torneo con el id proporcionado")
+
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
     return await this.fixtureService.createFixture(tournament.id)
   }

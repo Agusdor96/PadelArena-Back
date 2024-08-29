@@ -14,7 +14,7 @@ export class FileService {
     private userRepository: Repository<User>,
     private fileRepository: FileRepository,
   ) {}
-  async UpdateTournamentPrincipalImage(id: string, file: Express.Multer.File) {
+  async UpdateTournamentFlyer(id: string, file: Express.Multer.File) {
     const tournament = await this.tournamentRepostory.findOne({
       where: { id },
     });
@@ -28,7 +28,7 @@ export class FileService {
     }
   }
 
-  async UploadTournamentMultimedia(id: string, file: Express.Multer.File) {
+  async uploadTournamentMultimedia(id: string, file: Express.Multer.File) {
     const tournament = await this.tournamentRepostory.findOne({
       where: { id },
     });
@@ -48,7 +48,7 @@ export class FileService {
     }
   }
 
-  async UpdateProfileImage(id:string, file: Express.Multer.File) {
+  async updateUserProfileImage(id:string, file: Express.Multer.File) {
     const user = await this.userRepository.findOne({
       where: { id },
     });

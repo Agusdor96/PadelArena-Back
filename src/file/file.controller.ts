@@ -38,7 +38,7 @@ export class FileController {
     )
     file: Express.Multer.File,
   ) {
-    return this.fileService.UploadTournamentMultimedia(id, file);
+    return this.fileService.uploadTournamentMultimedia(id, file);
   }
 
   @Put('update-flyer/:id')
@@ -59,11 +59,11 @@ export class FileController {
     )
     file: Express.Multer.File,
   ) {
-    return this.fileService.UpdateTournamentPrincipalImage(id, file)
+    return this.fileService.UpdateTournamentFlyer(id, file)
   }
 
   @Put('update-profile-image/:id')
-  updateProfileImage(
+  updateUserProfileImage(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
       new ParseFilePipe({
@@ -80,6 +80,6 @@ export class FileController {
     )
     file: Express.Multer.File,
   ) {
-    return this.fileService.UpdateProfileImage(id, file)
+    return this.fileService.updateUserProfileImage(id, file)
   }
 }
