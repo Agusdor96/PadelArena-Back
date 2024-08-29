@@ -58,7 +58,6 @@ constructor(
     const user = await this.userRepository.findOne({where: {id:userId}, relations: {category:true}})
     if(!user) throw new NotFoundException("No se encuentra usuario con el id proporcionado")
     if(user.category.id === modifyCategory.category) throw new BadRequestException("La categoria seleccionada es la que esta asignada actualmente")
-    if(!uuidValidate(modifyCategory.category)) throw new BadRequestException("Debes proporcionar un id de tipo UUID correcto")
 
     const newCategory = await this.categoryRepository.findOne({where: {id:modifyCategory.category}})
     if(!newCategory) throw new NotFoundException("No se encuentra categoria con el id proporcionado")
@@ -78,7 +77,6 @@ constructor(
     if(!userToUpdate){
       throw new NotFoundException("No se encontro usuario con el Id proporcionado")
     }
-    if(!uuidValidate(modifiedUser.category)) throw new BadRequestException("Debes proporcionar un id de tipo UUID correcto")
     
     const category = await this.categoryRepository.findOne({where:{id:modifiedUser.category}})
     if (!category)throw new NotFoundException("No se encontro categoria por el id proporcionado")
