@@ -22,13 +22,15 @@ export class MercadoPagoService {
 
   ){}
   async mpConnections(req: dataPaymentDto) {
+    const tournament = await this.tournamentRepository.findOne({where: {id: req.tournament}})
     
     const body = {
       items: [
         {
-          title: req.title,
+          title: tournament.name,
           quantity: Number(req.quantity),
-          unit_price: Number(req.unit_price),
+          unit_price: tournament.price,
+          description: tournament.description,
           currency_id: 'ARS',
           id: ''
         },
@@ -41,25 +43,24 @@ export class MercadoPagoService {
       auto_return: "approved"
     };
     const preference = await new Preference(client).create({ body })
-    const prefId = preference.id
-    await this.paymentDetailRepository.save({preferenceId: prefId})
+
+    const prefId = {
+      preferenceId: preference.id,
+      tournament: tournament
+    }
+
+    await this.paymentDetailRepository.save(prefId)
     return {redirectUrl: preference.init_point}
   }
 
   async feedbackPayment(paymentDetails: PaymentDetailDto) {
-    if(paymentDetails.status !== 'approved') {
-      throw new BadRequestException('El estado del pago debe ser aprobado')
-    }
     const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
-    const tournament = await this.tournamentRepository.findOne({where: {id: paymentDetails.tournament}})
     const team = await this.teamRepsoitory.findOne({where: {id: paymentDetails.team}})
     const pay = {
       ...payDetail,
       payment_id: paymentDetails.payment,
       external_reference: paymentDetails.external_reference,
       marchant_order_id: paymentDetails.marchant_order_id,
-      status: paymentDetails.status,
-      tournament: tournament,
       team: team
     }
 
