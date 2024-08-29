@@ -23,7 +23,6 @@ export class MercadoPagoService {
   ){}
   async mpConnections(req: dataPaymentDto) {
     const tournament = await this.tournamentRepository.findOne({where: {id: req.tournament}})
-    
     const body = {
       items: [
         {
@@ -41,7 +40,6 @@ export class MercadoPagoService {
         pending: `${req.host}/${req.tournament}`
       },
       auto_return: "approved",
-      notification_url: req.notification_url
       };
     const preference = await new Preference(client).create({ body })
 
