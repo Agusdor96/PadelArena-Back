@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, ExecutionContext, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
 import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 import { ApiTags } from '@nestjs/swagger';

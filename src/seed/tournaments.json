@@ -11,7 +11,7 @@
     "description": "El torneo de verano más esperado con un premio de 5000€. ¡Prepárate para la competición!",
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Primera",
-    "price": 12000
+    "price": 30
   },
   {
     "name": "Autumn Padel Challenge",
@@ -25,7 +25,7 @@
     "description": "Desafío de padel otoñal con un premio de 7500€. ¡Compite con los mejores!",
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Segunda",
-    "price": 12000
+    "price": 30
   },
   {
     "name": "Winter Padel League",
@@ -39,7 +39,7 @@
     "description": "Liga de invierno con un premio de 3000€. ¡No dejes pasar esta oportunidad!",
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Tercera",
-    "price": 12000
+    "price": 30
   },
   {
     "name": "Spring Padel Open",
@@ -53,7 +53,7 @@
     "description": "Torneo de primavera con un premio de 6000€. ¡Demuestra tu talento en la pista!",
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Cuarta",
-    "price": 12000
+    "price": 30
   },
   {
     "name": "Padel Masters Cup",
@@ -67,6 +67,6 @@
     "description": "Copa de maestros de padel con un premio de 10000€. ¡Sólo para los mejores!",
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Quinta",
-    "price": 12000
+    "price": 30
   }
 ]
