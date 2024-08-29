@@ -24,8 +24,8 @@ export class CreateTournamentDto {
         endTime: string;
 
     @ApiProperty({ description: 'Dias en los que se desarrollara el torneo', example: ' ["Lunes", "Miércoles", "Viernes"]' })
-    @IsNotEmpty()
     @IsArray()
+    @IsNotEmpty()
         playingDays: string[];
 
     @ApiProperty({ description: 'Cantidad de equipos que participan en el torneo', example: '16' })
