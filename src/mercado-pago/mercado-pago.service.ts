@@ -36,9 +36,9 @@ export class MercadoPagoService {
         },
       ],
       back_urls: {
-        success: req.successUrl,
-        failure: req.failureUrl,
-        pending: req.pendingUrl
+        success: `${req.host}/${req.tournament}`,
+        failure: `${req.host}/${req.tournament}`,
+        pending: `${req.host}/${req.tournament}`
       },
       auto_return: "approved"
     };
