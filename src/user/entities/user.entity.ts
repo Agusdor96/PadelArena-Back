@@ -3,13 +3,14 @@ import { PlayerStadistic } from "src/player-stadistics/entities/player-stadistic
 import { Team } from "src/team/entities/team.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RoleEnum } from "../roles.enum";
+import {v4 as uuid} from 'uuid';
 
 @Entity({
     name: "USERS"  
 })
 export class User {
     @PrimaryGeneratedColumn("uuid")
-    id:string;
+    id:string = uuid()
 
     @Column({type: "varchar", length: 50, nullable:false})
         name:string;
