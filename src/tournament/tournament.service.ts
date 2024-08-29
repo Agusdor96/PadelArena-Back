@@ -8,16 +8,18 @@ import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
+import { FileService } from 'src/file/file.service';
 
 @Injectable()
 export class TournamentService {
 constructor(
   @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
-  @Inject() private fixtureService: FixtureService
+  @Inject() private fixtureService: FixtureService,
+  @Inject() private fileService: FileService,
 ){}
 
-  async createTournament(createTournamentDto:any) {
+  async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
       if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
@@ -54,7 +56,6 @@ constructor(
       let qMatchRounds = InitialMatches;
       const totalMatches = createTournamentDto.teamsQuantity - 1;
 
-    
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
       const endDate = new Date(createTournamentDto.startDate);
@@ -71,14 +72,14 @@ constructor(
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
         tournament.matchDuration = createTournamentDto.matchDuration;
         tournament.description = createTournamentDto.description;
-        tournament.tournamentFlyer = createTournamentDto.tournamentFlyer;
         tournament.courtsAvailable = createTournamentDto.courts;
         tournament.category = category;
-    
+        
+      if(file){
+          tournament.tournamentFlyer = await this.fileService.uploadImageToCloudinary(file)
+      }
       const newTournament = await this.tournamentRepository.save(tournament);
-
       return newTournament;
-    
   }
 
   async getAllTournaments() {
@@ -114,7 +115,7 @@ constructor(
 
   async changeInscriptionStatus(id:string){
     if (!uuidValidate(id)) throw new BadRequestException("Debes proporcionar un id de tipo UUID valido")
-      
+
     const tournament = await this.getTournament(id);
     if(!tournament) throw new NotFoundException("No se encontro ningun torneo con el id proporcionado")
 

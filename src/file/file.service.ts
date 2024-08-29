@@ -14,6 +14,12 @@ export class FileService {
     private userRepository: Repository<User>,
     private fileRepository: FileRepository,
   ) {}
+
+  async uploadImageToCloudinary(file: Express.Multer.File): Promise<string> {
+    const uploadedImage = await this.fileRepository.uploadImage(file);
+    return uploadedImage.secure_url;
+  }
+
   async UpdateTournamentFlyer(id: string, file: Express.Multer.File) {
     const tournament = await this.tournamentRepostory.findOne({
       where: { id },
@@ -21,8 +27,7 @@ export class FileService {
     if (!tournament) {
       throw new NotFoundException('No fue posible encontrar el torneo');
     } else {
-      const tournamentFlyer = (await this.fileRepository.uploadImage(file))
-        .secure_url;
+      const tournamentFlyer = await this.uploadImageToCloudinary(file);
       await this.tournamentRepostory.update(id, { tournamentFlyer });
       return { message: 'Imagen actualizada con exito con exito' };
     }
@@ -35,8 +40,7 @@ export class FileService {
     if (!tournament) {
       throw new NotFoundException('No fue posible encontrar el torneo');
     } else {
-      const tournamentNewImg = (await this.fileRepository.uploadImage(file))
-        .secure_url;
+      const tournamentNewImg = await this.uploadImageToCloudinary(file)
       const imgArray = tournament.gallery
       const arrayUpdated = {tournamentNewImg, ...imgArray}
       const tournamentUpdated:TournamentEntity = {
@@ -55,8 +59,7 @@ export class FileService {
     if (!user) {
       throw new NotFoundException('No fue posible encontrar al usuario');
     } else {
-      const profilePhoto = (await this.fileRepository.uploadImage(file))
-        .secure_url;
+      const profilePhoto = await this.uploadImageToCloudinary(file)
       await this.userRepository.update(id, { profileImg: profilePhoto });
       return { message: 'Foto de perfil actualizada con exito con exito' };
     }

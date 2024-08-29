@@ -11,5 +11,6 @@ import { CloudinaryConnection } from 'src/config/cloudinary';
   imports: [TypeOrmModule.forFeature([User, TournamentEntity])],
   controllers: [FileController],
   providers: [FileService, FileRepository, CloudinaryConnection],
+  exports:[FileService]
 })
 export class FileModule {}
