@@ -14,11 +14,14 @@ import { MatchService } from 'src/match/match.service';
 import { Match } from 'src/match/entities/match.entity';
 import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics.service';
 import { PlayerStadistic } from 'src/player-stadistics/entities/player-stadistic.entity';
+import { FileService } from 'src/file/file.service';
+import { FileModule } from 'src/file/file.module';
+import { FileRepository } from 'src/file/file.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Team, TournamentEntity, User, Category, Fixture, Round, Match, PlayerStadistic])],
+  imports: [TypeOrmModule.forFeature([Team, TournamentEntity, User, Category, Fixture, Round, Match, PlayerStadistic]), FileModule],
   controllers: [TeamController],
-  providers: [TeamService, TournamentService, FixtureService, MatchService, PlayerStadisticsService],
+  providers: [TeamService, TournamentService, FixtureService, MatchService, PlayerStadisticsService, FileService, FileRepository],
   exports:[TeamService]
 })
 export class TeamModule {}
