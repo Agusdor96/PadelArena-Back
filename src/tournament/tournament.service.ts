@@ -7,29 +7,29 @@ import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
+import { validate as uuidValidate } from 'uuid';
+import { FileService } from 'src/file/file.service';
 
 @Injectable()
 export class TournamentService {
 constructor(
   @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
-  @Inject() private fixtureService: FixtureService
+  @Inject() private fixtureService: FixtureService,
+  @Inject() private fileService: FileService,
 ){}
 
-  async createTournament(createTournamentDto) {
+  async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
-      if(!category){
-          throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
-      }
-
+      if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
+      
       const existingTournament = await this.tournamentRepository.findOne({
         where: {
             category: { id: createTournamentDto.category },
             startDate: createTournamentDto.startDate
         },
     });
-    
     
     if (existingTournament) {
       throw new BadRequestException("No se puede crear el torneo. No se pueden crear dos torneos de la misma categoría con la misma fecha de inicio.");
@@ -112,7 +112,11 @@ constructor(
   }
 
   async changeInscriptionStatus(id:string){
+    if (!uuidValidate(id)) throw new BadRequestException("Debes proporcionar un id de tipo UUID valido")
+
     const tournament = await this.getTournament(id);
+    if(!tournament) throw new NotFoundException("No se encontro ningun torneo con el id proporcionado")
+
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
     return await this.fixtureService.createFixture(tournament.id)
   }

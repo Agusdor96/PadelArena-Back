@@ -13,6 +13,8 @@ import { User } from 'src/user/entities/user.entity';
 import * as data from '../seed/team.json';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { StatusEnum } from 'src/tournament/tournament.enum';
+import { validate as uuidValidate } from 'uuid';
+
 
 @Injectable()
 export class TeamService {
@@ -27,57 +29,68 @@ export class TeamService {
     private tournamentRepository: Repository<TournamentEntity>,
   ) {}
   async teamInscription(tournamentId: string, TeamDto: TeamDto) {
+    const [newPlayer1, newPlayer2] = TeamDto.players;
+    if (!uuidValidate(newPlayer1) || !uuidValidate(newPlayer2)) throw new BadRequestException("Debes proporcionar id de tipo UUID correctos")
+
     const tournament = await this.tournamentRepository.findOne({
       where: { id: tournamentId },
       relations: { category: true, team: { user: true } },
     });
+    if(!tournament) throw new NotFoundException("No se encuentra torneo con el id proporcionado")
 
     const players = await this.userRepository.find({
-      where: { id: In(TeamDto.players) },
+      where: { id: In(TeamDto.players) }, relations:{category:true},
     });
-    const tournaments = await this.tournamentRepository.find({
+    if (players.length < 2) throw new BadRequestException('Jugadores no encontrados con los ids proporcionados')
+
+    const [player1, player2] = players
+    if(player1.category.id !== player2.category.id) throw new BadRequestException("La categoria de los jugadores debe ser la misma para poder inscribirse al torneo")
+     
+    if(tournament.category.id !== player1.category.id) throw new BadRequestException("No se puede inscribir un equipo a un torneo que no es de la misma categoria")
+
+    if(tournament.inscription === "cerradas" || tournament.status === StatusEnum.FINISHED || tournament.status === StatusEnum.INPROGRESS){
+      throw new BadRequestException("Ya no se pueden inscribir equipos a este torneo")
+    }
+    
+    
+    for (const team of tournament.team) {
+      if (team.name == TeamDto.name) throw new BadRequestException('El equipo ya existe con ese nombre');
+      const [player1, player2] = team.user
+      
+      const samePlayers = (player1.id === newPlayer1 || player1.id === newPlayer2) ||
+                          (player2.id === newPlayer1 || player2.id === newPlayer2);
+      if (samePlayers) {
+        throw new BadRequestException('Uno o ambos jugadores ya están inscritos en este torneo con un equipo diferente');
+      }
+    }
+
+    const onGoingTournaments = await this.tournamentRepository.find({
       where: { status: StatusEnum.UPCOMING || StatusEnum.INPROGRESS },
       relations: { team: { user: true } },
     });
-
-    if (!players) {
-      throw new BadRequestException('Jugadores no encontrados');
-    } else {
-      if (tournament.inscription === 'abiertas') {
-        for (const team of tournament.team) {
-          if (team.name == TeamDto.name) throw new BadRequestException('El equipo ya existe con ese nombre');
+    
+    for (const tournament of onGoingTournaments) {
+      for(const team of tournament.team){
+        const [player1, player2] = team.user
+        if (
+          [player1.id, player2.id].includes(newPlayer1) ||
+          [player1.id, player2.id].includes(newPlayer2)
+        ) {
+          throw new BadRequestException('Uno o ambos jugadores ya están inscritos en un torneo que no ha finalizado');
         }
-        for (const tournament of tournaments) {
-          const tournamentTeams = tournament.team;
-          const statusInscription = tournament.inscription;
-          if (statusInscription === 'abiertas') {
-            for (const team of tournamentTeams) {
-              if (
-                (team.user[0] || team.user[1]) === (players[0] || players[1])
-              )
-                throw new BadRequestException(
-                  'El jugador ya se encuentra inscripto a un torneo pendiente o en progreso',
-                );
-            }
-          }
-        }
-
-        const teams = await this.teamRepository.find();
-        const team = {
-          name: TeamDto.name,
-          category: tournament.category,
-          user: players,
-          tournament: tournament,
-          order: teams.length,
-        };
-        await this.teamRepository.save(team);
-        return { message: 'Equipo creado con exito', team };
-      } else {
-        throw new BadRequestException(
-          'Este torneo ya no se encuentra con sus incripciones abiertas',
-        );
       }
     }
+
+    const teams = await this.teamRepository.find();
+      const team = {
+        name: TeamDto.name,
+        category: tournament.category,
+        user: players,
+        tournament: tournament,
+        order: teams.length,
+      };
+    await this.teamRepository.save(team);
+    return  team;    
   }
 
   async findOneTeam(id: string) {
@@ -152,3 +165,11 @@ export class TeamService {
     return { message: 'Equipos precargados correctamente' };
   }
 }
+
+// if (statusInscription === 'abiertas') {
+//   for (const team of tournamentTeams) {
+//     if (
+//       (team.user[0] || team.user[1]) === (players[0] || players[1])
+//     ) throw new BadRequestException('El jugador ya se encuentra inscripto a un torneo pendiente o en progreso');
+//   }
+// }

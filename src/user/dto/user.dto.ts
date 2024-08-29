@@ -53,10 +53,10 @@ export class UserDto {
   @IsString()
   address: string;
 
-  @ApiProperty({ description: 'Categoria del jugador', example: 'Debe ser alguna de las categorias de Padel definidas: Primera, Segunda, Tercera, Cuarta, Quinta' })
+  @ApiProperty({ description: 'Categoria del jugador', example: 'c468029f-e9c2-4176-8ab4-357aeae441a7' })
   @IsNotEmpty()
   @IsString()
-  @Length(2, 50, { message: 'El nombre de la categoria debe tener entre 2 y 50 caracteres' })
+  @IsUUID()
   category: string;
 
   @ApiProperty({ description: 'Imagen de perfil del jugador', example: 'data:image/png' })

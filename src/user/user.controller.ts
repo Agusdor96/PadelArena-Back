@@ -8,6 +8,7 @@ import { RoleEnum } from './roles.enum';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { SwaggerUpdateUser } from 'src/decorators/UserSwagger.decorator';
+import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 
 @ApiTags("USERS")
 @Controller('users')
@@ -38,6 +39,15 @@ export class UserController {
     @Param("userId", ParseUUIDPipe)userId:string, 
     @Body()modifiedUser:UpdateUserDto){        
         return this.userService.updateUserProfile(userId, modifiedUser)
+      }
+
+  @Put("updateCategory/:userId")
+  // @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(PasswordInterceptor)
+  updateUserCategory(
+    @Param("userId", ParseUUIDPipe)userId:string, 
+    @Body()modifyCategory:UpdateUserCategoryDto){        
+      return this.userService.updateUserCategory(userId, modifyCategory)
       }
 
   @Get(':id')

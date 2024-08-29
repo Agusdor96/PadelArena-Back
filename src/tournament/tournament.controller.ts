@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors, Put, UseGuards, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { TransformTime } from 'src/interceptors/dateTime.interceptor';
@@ -7,6 +7,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags("TOURNAMENT")
 @Controller('tournament')
@@ -17,9 +18,9 @@ export class TournamentController {
   // @Roles(RoleEnum.ADMIN)
   // @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(new TransformTime())
-  async create(@Body() createTournamentDto: CreateTournamentDto) {
-      await this.tournamentService.createTournament(createTournamentDto);
-    return {message:"Torneo creado con exito", createTournamentDto};
+  async create(
+    @Body() createTournamentDto: CreateTournamentDto,file?: Express.Multer.File,) {
+    return  await this.tournamentService.createTournament(createTournamentDto, file);
   }
 
   @Get()

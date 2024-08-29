@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, ParseUUIDPipe } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,8 @@ import * as data from '../seed/users.json';
 import { Category } from 'src/category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { UpdateUserCategoryDto } from './dto/userCategory.dto';
+import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
 export class UserService {
@@ -49,27 +51,48 @@ constructor(
     await this.userRepository.save(user)
     const createdUser = await this.userRepository.findOne({where:{email:email}})
     const {password, ...withoutPassword} = createdUser;
-    return{message: "El usuario ha sido creado con existo", createdUser}
+    return{message: "El usuario ha sido creado con existo", withoutPassword}
   }
+
+  async updateUserCategory(userId: string, modifyCategory:UpdateUserCategoryDto) {
+    const user = await this.userRepository.findOne({where: {id:userId}, relations: {category:true}})
+    if(!user) throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+    if(user.category.id === modifyCategory.category) throw new BadRequestException("La categoria seleccionada es la que esta asignada actualmente")
+
+    const newCategory = await this.categoryRepository.findOne({where: {id:modifyCategory.category}})
+    if(!newCategory) throw new NotFoundException("No se encuentra categoria con el id proporcionado")
+    const newUserCategory = {
+      ...user,
+      category: newCategory
+    }
+
+    await this.userRepository.update(userId, newUserCategory)
+    const updatedUser = await this.userRepository.findOne({where:{id:userId}, relations:{category:true}})
+    
+    return updatedUser;
+  }  
 
  async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
     const userToUpdate = await this.userRepository.findOneBy({id:userId})
     if(!userToUpdate){
       throw new NotFoundException("No se encontro usuario con el Id proporcionado")
     }
-    const category = await this.categoryRepository.findOne({where:{name:modifiedUser.category}})
+    
+    const category = await this.categoryRepository.findOne({where:{id:modifiedUser.category}})
+    if (!category)throw new NotFoundException("No se encontro categoria por el id proporcionado")
+    
     const updatedUser = {
       ...modifiedUser,
       category: category
     }
-
+    
      await this.userRepository.update(userId, updatedUser)
      const newUser = await this.userRepository.findOneBy({id:userId})
-     return {message:"La informacion del usuario se actualizo correctamente", newUser}
+     return newUser;
   }
 
   async getUserById(id: string): Promise<User> {
-    const user = await this.userRepository.findOneBy({id:id})
+    const user = await this.userRepository.findOne({where:{id}, relations:{category:true}})
       if(!user){
         throw new NotFoundException("No se encuentra usuario con el id proporcionado")
       }
