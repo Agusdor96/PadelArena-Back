@@ -53,23 +53,24 @@ export class MercadoPagoService {
     return {redirectUrl: preference.init_point}
   }
 
-  async feedbackPayment(paymentDetails: PaymentDetailDto) {
-    const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
-    const team = await this.teamRepsoitory.findOne({where: {id: paymentDetails.team}})
-    const pay = {
-      ...payDetail,
-      payment_id: paymentDetails.payment,
-      external_reference: paymentDetails.external_reference,
-      marchant_order_id: paymentDetails.marchant_order_id,
-      team: team
-    }
+  async feedbackPayment(paymentDetails: any) {
+    // const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
+    // const team = await this.teamRepsoitory.findOne({where: {id: paymentDetails.team}})
+    // const pay = {
+    //   ...payDetail,
+    //   payment_id: paymentDetails.payment,
+    //   external_reference: paymentDetails.external_reference,
+    //   marchant_order_id: paymentDetails.marchant_order_id,
+    //   team: team
+    // }
 
-    const paymentDetailComplete = await this.paymentDetailRepository.save(pay)
-    return {
-      message: 'Registro de pago ralizado con exito', 
-      Payment: paymentDetailComplete.payment_id,
-      Status: paymentDetailComplete.status,
-      MarchantOrder: paymentDetailComplete.marchant_order_id
-    }
+    // const paymentDetailComplete = await this.paymentDetailRepository.save(pay)
+    // return {
+    //   message: 'Registro de pago ralizado con exito', 
+    //   Payment: paymentDetailComplete.payment_id,
+    //   Status: paymentDetailComplete.status,
+    //   MarchantOrder: paymentDetailComplete.marchant_order_id
+    // }
+    return paymentDetails
   }
 }
