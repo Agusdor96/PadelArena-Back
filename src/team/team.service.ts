@@ -57,11 +57,11 @@ export class TeamService {
       if (team.name == TeamDto.name) throw new BadRequestException('El equipo ya existe con ese nombre');
       const [player1, player2] = team.user
       
-    const samePlayers = (player1.id === newPlayer1 || player1.id === newPlayer2) &&
-                        (player2.id === newPlayer1 || player2.id === newPlayer2);
-    if (samePlayers) {
-        throw new BadRequestException('Los jugadores ya están inscritos en este torneo con un nombre de equipo diferente');
-    }
+      const samePlayers = (player1.id === newPlayer1 || player1.id === newPlayer2) ||
+                          (player2.id === newPlayer1 || player2.id === newPlayer2);
+      if (samePlayers) {
+        throw new BadRequestException('Uno o ambos jugadores ya están inscritos en este torneo con un equipo diferente');
+      }
     }
 
     const onGoingTournaments = await this.tournamentRepository.find({
