@@ -12,15 +12,20 @@ import {
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileDto } from './dto/file.dto';
 
 @ApiTags("FILE")
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Post('upload-galery/:id')
+  @Post('upload-tournamentGalery/:id')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({description: "Image to be uploaded",
+               type: FileDto,
+          })
   uploadMultimedia(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
@@ -41,7 +46,12 @@ export class FileController {
     return this.fileService.uploadTournamentMultimedia(id, file);
   }
 
-  @Put('update-flyer/:id')
+  @Put('update-tournamentFlyer/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({description: "Image to be uploaded",
+               type: FileDto,
+          })
   updateTournamentFlyer(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
@@ -62,7 +72,12 @@ export class FileController {
     return this.fileService.UpdateTournamentFlyer(id, file)
   }
 
-  @Put('update-profile-image/:id')
+  @Put('update-userProfileImage/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({description: "Image to be uploaded",
+               type: FileDto,
+          })
   updateUserProfileImage(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
