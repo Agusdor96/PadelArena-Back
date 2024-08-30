@@ -1,6 +1,5 @@
 import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
-import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { DEMO } from 'src/interceptors/demo.interceptor';

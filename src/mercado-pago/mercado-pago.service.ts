@@ -5,7 +5,6 @@ import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentDetail } from './entities/paymentDetail.entity';
 import { Repository } from 'typeorm';
-import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
 
@@ -42,9 +41,11 @@ export class MercadoPagoService {
         pending: `${req.host}/${req.tournament}`
       },
       auto_return: "approved",
+      additional_info: req.user
       };
     const preference = await new Preference(client).create({ body })
-
+    console.log(preference);
+    
     const prefId = {
       preferenceId: preference.id,
       tournament: tournament,
@@ -56,23 +57,22 @@ export class MercadoPagoService {
   }
 
   async feedbackPayment(paymentDetails: any) {
-    // const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
-    // const team = await this.teamRepsoitory.findOne({where: {id: paymentDetails.team}})
-    // const pay = {
-    //   ...payDetail,
-    //   payment_id: paymentDetails.payment,
-    //   external_reference: paymentDetails.external_reference,
-    //   marchant_order_id: paymentDetails.marchant_order_id,
-    //   team: team
-    // }
-
-    // const paymentDetailComplete = await this.paymentDetailRepository.save(pay)
-    // return {
-    //   message: 'Registro de pago ralizado con exito', 
-    //   Payment: paymentDetailComplete.payment_id,
-    //   Status: paymentDetailComplete.status,
-    //   MarchantOrder: paymentDetailComplete.marchant_order_id
-    // }
+    console.log(paymentDetails)
+    // preference.body;
+    // const payment = await mercadopago.payment.get(paymentDetails.id);
+    // const preferenceId = payment.body.preference_id;
+    const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
+    const pay = {
+      payment_id: paymentDetails.payment,
+      status: paymentDetails.status,
+      date_created: paymentDetails.date_created,
+      date_last_update: paymentDetails.date_last_update,
+      transaction_amount: paymentDetails.transaction_amount,
+      payment_method_id: paymentDetails.payment_method_id,
+      payment_type_id: paymentDetails.payment_type_id,
+    }
+    // const paymentDetailComplete = await this.paymentDetailRepository.update(payDetail.id, pay)
+    
     return paymentDetails
   }
 
