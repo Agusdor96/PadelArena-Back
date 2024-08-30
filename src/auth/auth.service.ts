@@ -44,7 +44,11 @@ export class AuthService {
   }
   
   async signInUser(credentials: CredentialsDto) {
-    const userExist = await this.userRepository.findOne({where:{email:credentials.email}, relations:{category:true}})
+    const userExist = await this.userRepository.findOne({
+      where:{
+        email:credentials.email
+      }, relations:{category:true}})
+      
       if(!userExist){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
