@@ -94,7 +94,7 @@ export class AuthService {
       }
 
         const token = this.JWTservice.sign(userPayload);
-        const { password, role, ...googleUserWithoutPassword} = googleUserFromDb
+        const { password, ...googleUserWithoutPassword} = googleUserFromDb
 
       return {message: 'Inicio de sesion realizado con exito', token, googleUserWithoutPassword}
     } else if(!googleUserFromDb){
