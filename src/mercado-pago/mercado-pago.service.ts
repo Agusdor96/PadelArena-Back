@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Preference} from 'mercadopago';
+import { Preference, Payment} from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,8 +10,6 @@ import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class MercadoPagoService {
-  
-  
   constructor(
     @InjectRepository(PaymentDetail)
     private paymentDetailRepository: Repository<PaymentDetail>,
@@ -19,9 +17,10 @@ export class MercadoPagoService {
     private tournamentRepository: Repository<TournamentEntity>,
     @InjectRepository(User)
     private userRepsoitory: Repository<User>
-
   ){}
   async mpConnections(req: dataPaymentDto) {
+    console.log('request',req);
+    
     const tournament = await this.tournamentRepository.findOne({where: {id: req.tournament}})
     const user = await this.userRepsoitory.findOne({where: { id: req.user}})
     const body = {
@@ -41,15 +40,16 @@ export class MercadoPagoService {
         pending: `${req.host}/${req.tournament}`
       },
       auto_return: "approved",
-      additional_info: req.user
+      external_reference: req.user
       };
     const preference = await new Preference(client).create({ body })
-    console.log(preference);
+    console.log('preference',preference);
     
     const prefId = {
       preferenceId: preference.id,
       tournament: tournament,
-      user: user
+      user: user,
+      external_reference: preference.external_reference
     }
 
     await this.paymentDetailRepository.save(prefId)
@@ -58,10 +58,9 @@ export class MercadoPagoService {
 
   async feedbackPayment(paymentDetails: any) {
     console.log(paymentDetails)
-    // preference.body;
-    // const payment = await mercadopago.payment.get(paymentDetails.id);
-    // const preferenceId = payment.body.preference_id;
-    const payDetail = await this.paymentDetailRepository.findOne({where: {preferenceId: paymentDetails.preference_id}})
+    const user = await this.userRepsoitory.findOne({where: {id: paymentDetails.additional_info}})
+    const payDetail = await this.paymentDetailRepository.findOne({where: {user: user}})
+
     const pay = {
       payment_id: paymentDetails.payment,
       status: paymentDetails.status,
@@ -71,9 +70,9 @@ export class MercadoPagoService {
       payment_method_id: paymentDetails.payment_method_id,
       payment_type_id: paymentDetails.payment_type_id,
     }
-    // const paymentDetailComplete = await this.paymentDetailRepository.update(payDetail.id, pay)
+    const paymentDetailComplete = await this.paymentDetailRepository.update(payDetail.id, pay)
     
-    return paymentDetails
+    return paymentDetailComplete
   }
 
   async getPreferenceByUserId(id: string) {

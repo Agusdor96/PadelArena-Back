@@ -13,6 +13,9 @@ export class PaymentDetail {
     @Column()
     preferenceId: string
 
+    @Column()
+    external_reference: string
+
     @Column({nullable:true})
     payment_id?: string
 
