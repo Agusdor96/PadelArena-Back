@@ -1,8 +1,8 @@
-import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
 import { ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
-import { DEMO } from 'src/interceptors/demo.interceptor';
+import { HeaderInterceptor } from 'src/interceptors/demo.interceptor';
 
 @ApiTags("MERCADO-PAGO")
 @Controller('mercado-pago')
@@ -14,10 +14,11 @@ export class MercadoPagoController {
     return this.mercadoPagoService.mpConnections(req)
   }
 
-  @UseInterceptors(DEMO)
-  @Post('feedback')
-  feedbackPayment (@Body() paymentDetails:any){
-    return this.mercadoPagoService.feedbackPayment(paymentDetails)
+  @HttpCode(200)
+  @UseInterceptors(HeaderInterceptor)
+  @Post('feedback/notification')
+  feedbackPayment (@Body() paymentDetails:any, @Query('data.id') id?:string){
+    return this.mercadoPagoService.feedbackPayment(paymentDetails, id)
   }
 
   @Get('preference/:id')

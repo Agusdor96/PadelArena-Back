@@ -2,12 +2,15 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nes
 import { Observable } from "rxjs";
 
 @Injectable()
-export class DEMO implements NestInterceptor{
+export class HeaderInterceptor implements NestInterceptor{
 intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
-    console.log(context.switchToHttp().getRequest());
+    const req = context.switchToHttp().getRequest()
     
-    return next.handle().pipe(
-        
-    ) 
+    req.body = {
+        xSignature: req.headers['x-signature'],
+        xRequestId: req.headers['x-request-id'],
+        ...req.body
+    }
+    return next.handle()
 }
 }
