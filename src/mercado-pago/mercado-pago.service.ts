@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Preference } from 'mercadopago';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Preference} from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,22 +7,24 @@ import { PaymentDetail } from './entities/paymentDetail.entity';
 import { Repository } from 'typeorm';
 import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
-import { Team } from 'src/team/entities/team.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class MercadoPagoService {
+  
   
   constructor(
     @InjectRepository(PaymentDetail)
     private paymentDetailRepository: Repository<PaymentDetail>,
     @InjectRepository(TournamentEntity)
     private tournamentRepository: Repository<TournamentEntity>,
-    @InjectRepository(Team)
-    private teamRepsoitory: Repository<Team>
+    @InjectRepository(User)
+    private userRepsoitory: Repository<User>
 
   ){}
   async mpConnections(req: dataPaymentDto) {
     const tournament = await this.tournamentRepository.findOne({where: {id: req.tournament}})
+    const user = await this.userRepsoitory.findOne({where: { id: req.user}})
     const body = {
       items: [
         {
@@ -45,7 +47,8 @@ export class MercadoPagoService {
 
     const prefId = {
       preferenceId: preference.id,
-      tournament: tournament
+      tournament: tournament,
+      user: user
     }
 
     await this.paymentDetailRepository.save(prefId)
@@ -71,5 +74,17 @@ export class MercadoPagoService {
     //   MarchantOrder: paymentDetailComplete.marchant_order_id
     // }
     return paymentDetails
+  }
+
+  async getPreferenceByUserId(id: string) {
+    const user = await this.userRepsoitory.findOne({where: {id}})
+    const preference  =await this.paymentDetailRepository.findOne({where: {user: user }})
+    if(!user){
+      throw new NotFoundException('No fue posible encontrar al usuario')
+    }
+    if(!preference){
+      throw new NotFoundException('Parece que el usuario no tiene ninguna preferencia ligada')
+    }
+    return preference
   }
 }

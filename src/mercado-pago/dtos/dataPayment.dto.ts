@@ -8,4 +8,8 @@ export class dataPaymentDto {
     @IsNotEmpty()
     @IsString()
     host: string
+
+    @IsNotEmpty()
+    @IsString()
+    user:string
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
 import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -19,5 +19,10 @@ export class MercadoPagoController {
   @Post('feedback')
   feedbackPayment (@Body() paymentDetails:any){
     return this.mercadoPagoService.feedbackPayment(paymentDetails)
+  }
+
+  @Get('preference/:id')
+  getPreferencebyUserId(@Param('id', ParseUUIDPipe) id:string ){
+    return this.mercadoPagoService.getPreferenceByUserId(id)
   }
 }

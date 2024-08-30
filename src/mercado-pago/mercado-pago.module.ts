@@ -4,10 +4,10 @@ import { MercadoPagoController } from './mercado-pago.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentDetail } from './entities/paymentDetail.entity';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
-import { Team } from 'src/team/entities/team.entity';
+import { User } from 'mercadopago';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentDetail, TournamentEntity, Team])],
+  imports: [TypeOrmModule.forFeature([PaymentDetail, TournamentEntity, User])],
   controllers: [MercadoPagoController],
   providers: [MercadoPagoService],
 })
