@@ -44,7 +44,7 @@ export class AuthService {
   }
   
   async signInUser(credentials: CredentialsDto) {
-    const userExist = await this.userRepository.findOne({where:{email:credentials.email}})
+    const userExist = await this.userRepository.findOne({where:{email:credentials.email}, relations:{category:true}})
       if(!userExist){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
@@ -65,6 +65,7 @@ export class AuthService {
 
         const token = this.JWTservice.sign(userPayload);
         const {password, ...userClean} = userExist
+console.log(userExist, userClean);
 
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }
