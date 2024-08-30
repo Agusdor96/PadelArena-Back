@@ -9,6 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { SwaggerUpdateUser } from 'src/decorators/UserSwagger.decorator';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
+import { AdminKeyDto } from './dto/adminKey.dto';
 
 @ApiTags("USERS")
 @Controller('users')
@@ -30,6 +31,15 @@ export class UserController {
   getUsersBy(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
     return this.userService.getUsersByCategory(categoryId);
   }
+
+  @Put("makeMeAdmin/:userId")
+  // @UseGuards(AuthGuard)
+  @UseInterceptors(PasswordInterceptor)
+  updateUserRole(
+    @Param("userId", ParseUUIDPipe)userId:string,
+    @Body()adminKey:AdminKeyDto){
+      return this.userService.updateUserRole(userId, adminKey)
+    }
 
   @Put("updateProfile/:userId")
   // @UseGuards(AuthGuard)

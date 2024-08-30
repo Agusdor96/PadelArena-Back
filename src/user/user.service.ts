@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, ParseUUIDPipe } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, ParseUUIDPipe } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -8,13 +8,19 @@ import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 import { validate as uuidValidate } from 'uuid';
+import { AdminKeyDto } from './dto/adminKey.dto';
+import { ConfigService } from '@nestjs/config';
+import { RoleEnum } from './roles.enum';
 
 @Injectable()
 export class UserService {
+  private readonly adminKey: string;
 constructor(
   @InjectRepository(User) private userRepository:Repository<User>,
-  @InjectRepository(Category) private categoryRepository:Repository<Category>
-){}
+  @InjectRepository(Category) private categoryRepository:Repository<Category>,
+  private readonly configService:ConfigService){
+    this.adminKey = this.configService.get<string>("ADMIN_KEY")
+  }
 
   async getAllUsers():Promise<User[]> {
     const users:User[] = await this.userRepository.find({relations:{category:true}})
@@ -89,6 +95,18 @@ constructor(
      await this.userRepository.update(userId, updatedUser)
      const newUser = await this.userRepository.findOneBy({id:userId})
      return newUser;
+  }
+
+async updateUserRole(userId: string, adminKey: AdminKeyDto) {
+    const user = await this.getUserById(userId)
+    if(!user)throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+    
+      user.role = RoleEnum.ADMIN
+    if(adminKey.secretKey !== this.adminKey)throw new ForbiddenException("La clave no es correcta")
+      
+      await this.userRepository.update(userId, user)
+      const { password, ...adminUser} = user
+    return adminUser;
   }
 
   async getUserById(id: string): Promise<User> {
