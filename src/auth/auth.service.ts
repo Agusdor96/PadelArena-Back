@@ -69,7 +69,6 @@ export class AuthService {
 
         const token = this.JWTservice.sign(userPayload);
         const {password, ...userClean} = userExist
-console.log(userExist, userClean);
 
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }
@@ -81,7 +80,7 @@ console.log(userExist, userClean);
     const lastName = nameParts.slice(1).join(" ")
     
     
-    const googleUserFromDb = await this.userRepository.findOne({where:{email:email}})
+    const googleUserFromDb = await this.userRepository.findOne({where:{email:email}, relations:{category:true}})
   
     if(googleUserFromDb){
       if(googleUserFromDb.name !== name || googleUserFromDb.lastName !== lastName){
