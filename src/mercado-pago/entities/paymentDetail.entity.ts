@@ -1,6 +1,6 @@
 import { TournamentEntity } from "src/tournament/entities/tournament.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity({
@@ -41,7 +41,7 @@ export class PaymentDetail {
     @JoinColumn({name: 'PAYMENTS-TOURNAMENT'})
     tournament: TournamentEntity
 
-    @OneToOne(()=> User)
+    @ManyToOne(()=> User)
     @JoinColumn({name: 'PAYMENTS-USER'})
     user: User
 
