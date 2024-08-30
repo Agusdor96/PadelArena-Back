@@ -104,8 +104,10 @@ async updateUserRole(userId: string, adminKey: AdminKeyDto) {
       user.role = RoleEnum.ADMIN
     if(adminKey.secretKey !== this.adminKey)throw new ForbiddenException("La clave no es correcta")
       
-      await this.userRepository.update(userId, user)
-      const { password, ...adminUser} = user
+    await this.userRepository.update(userId, user)
+    const userAdmin =  await this.getUserById(userId)
+
+    const { password, ...adminUser} = userAdmin
     return adminUser;
   }
 
