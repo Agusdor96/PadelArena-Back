@@ -19,10 +19,10 @@ export class MercadoPagoService {
     private userRepsoitory: Repository<User>
   ){}
   async mpConnections(req: dataPaymentDto) {
-    console.log('request',req);
     
     const tournament = await this.tournamentRepository.findOne({where: {id: req.tournament}})
     const user = await this.userRepsoitory.findOne({where: { id: req.user}})
+    
     const body = {
       items: [
         {
@@ -43,15 +43,14 @@ export class MercadoPagoService {
       external_reference: req.user
       };
     const preference = await new Preference(client).create({ body })
-    console.log('preference',preference);
-    
+
     const prefId = {
       preferenceId: preference.id,
       tournament: tournament,
       user: user,
       external_reference: preference.external_reference
     }
-
+    
     await this.paymentDetailRepository.save(prefId)
     return {redirectUrl: preference.init_point}
   }

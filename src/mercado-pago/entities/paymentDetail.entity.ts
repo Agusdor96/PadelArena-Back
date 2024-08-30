@@ -29,19 +29,20 @@ export class PaymentDetail {
     date_last_update?: string
 
     @Column({nullable:true})
-    transaction_amount: number
+    transaction_amount?: number
 
     @Column({nullable:true})
-    payment_method_id: string
+    payment_method_id?: string
 
     @Column({nullable:true})
-    payment_type_id:string
+    payment_type_id?:string
 
     @ManyToOne(()=> TournamentEntity)
     @JoinColumn({name: 'PAYMENTS-TOURNAMENT'})
     tournament: TournamentEntity
 
     @OneToOne(()=> User)
+    @JoinColumn({name: 'PAYMENTS-USER'})
     user: User
 
 }
