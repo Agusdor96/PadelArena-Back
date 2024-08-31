@@ -53,7 +53,7 @@ export class MercadoPagoService {
     }
     
     await this.paymentDetailRepository.save(prefId)
-    return {redirectUrl: preference.init_point}
+    return {redirectUrl: preference.sandbox_init_point}
   }
 
   async feedbackPayment(paymentDetails: any, id: string) {
