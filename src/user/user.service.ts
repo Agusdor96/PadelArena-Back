@@ -93,7 +93,7 @@ constructor(
     }
     
      await this.userRepository.update(userId, updatedUser)
-     const newUser = await this.userRepository.findOneBy({id:userId})
+     const newUser = await this.userRepository.findOne({where:{id:userId},relations:{category:true}})
      const {password, ...outPasswordUser} = newUser
      return outPasswordUser;
   }
