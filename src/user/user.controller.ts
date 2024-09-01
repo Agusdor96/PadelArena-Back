@@ -34,7 +34,6 @@ export class UserController {
 
   @Put("makeMeAdmin/:userId")
   // @UseGuards(AuthGuard)
-  @UseInterceptors(PasswordInterceptor)
   updateUserRole(
     @Param("userId", ParseUUIDPipe)userId:string,
     @Body()adminKey:AdminKeyDto){
@@ -43,7 +42,6 @@ export class UserController {
 
   @Put("updateProfile/:userId")
   // @UseGuards(AuthGuard)
-  @UseInterceptors(PasswordInterceptor)
   @SwaggerUpdateUser()
   updateUserProfile(
     @Param("userId", ParseUUIDPipe)userId:string, 
