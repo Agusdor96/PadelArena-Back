@@ -94,7 +94,8 @@ constructor(
     
      await this.userRepository.update(userId, updatedUser)
      const newUser = await this.userRepository.findOneBy({id:userId})
-     return newUser;
+     const {password, ...outPasswordUser} = newUser
+     return outPasswordUser;
   }
 
 async updateUserRole(userId: string, adminKey: AdminKeyDto) {

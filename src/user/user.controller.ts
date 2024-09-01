@@ -42,7 +42,6 @@ export class UserController {
 
   @Put("updateProfile/:userId")
   // @UseGuards(AuthGuard)
-  @UseInterceptors(PasswordInterceptor)
   @SwaggerUpdateUser()
   updateUserProfile(
     @Param("userId", ParseUUIDPipe)userId:string, 
