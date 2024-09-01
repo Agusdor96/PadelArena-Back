@@ -26,16 +26,7 @@ export class PaymentDetail {
     date_created?: string
 
     @Column({nullable:true})
-    date_last_update?: string
-
-    @Column({nullable:true})
     transaction_amount?: number
-
-    @Column({nullable:true})
-    payment_method_id?: string
-
-    @Column({nullable:true})
-    payment_type_id?:string
 
     @ManyToOne(()=> TournamentEntity)
     @JoinColumn({name: 'PAYMENTS-TOURNAMENT'})

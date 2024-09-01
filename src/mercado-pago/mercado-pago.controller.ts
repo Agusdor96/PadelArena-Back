@@ -16,8 +16,8 @@ export class MercadoPagoController {
 
   @HttpCode(200)
   @UseInterceptors(HeaderInterceptor)
-  @Get('feedback')
-  @Redirect('https://google.com')
+  @Get('feedback')@Redirect('https://google.com')
+  
   feedbackPayment (@Query('preference_id') preference: string, @Body() url : string){
     try {
       return this.mercadoPagoService.feedbackPayment(preference, url)

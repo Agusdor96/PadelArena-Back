@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Preference } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
@@ -24,7 +24,6 @@ export class MercadoPagoService {
       where: { id: req.tournament },
     });
     const user = await this.userRepsoitory.findOne({ where: { id: req.user } });
-
     const body = {
       items: [
         {
@@ -39,12 +38,11 @@ export class MercadoPagoService {
         //CAMBIAR A LINK DE DEPLOY CABEZAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         success:
           'https://q52vfbj3-3000.brs.devtunnels.ms/mercado-pago/feedback',
-        // success: `${req.host}/${req.tournament}`,
-        // failure: `${req.host}/${req.tournament}`,
-        // pending: `${req.host}/${req.tournament}`
+        failure: 'https://q52vfbj3-3000.brs.devtunnels.ms/mercado-pago/feedback',
       },
       auto_return: 'approved',
       external_reference: `user:${req.user}, tournament:${req.tournament}`,
+      binary_mode: true
     };
     const preference = await new Preference(client).create({ body });
     const prefId = {
@@ -61,7 +59,6 @@ export class MercadoPagoService {
   async feedbackPayment(preference: string, url: any) {
     const data = url.url.split('?');
     const dataArray = data[1].split('&');
-
     const payment_id = dataArray[2].split('=')[1];
     const status = dataArray[3].split('=')[1];
     const external_reference = dataArray[4].split('=')[1];
@@ -80,6 +77,7 @@ export class MercadoPagoService {
     if (payIncludesUser && payIncludesTournament) {
       const pay = {
         payment_id: payment_id,
+        date_created: String(new Date()),
         status: status,
         transaction_amount: payDetail.tournament.price,
       };
@@ -136,20 +134,3 @@ export class MercadoPagoService {
 //   throw new ForbiddenException('Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago')
 // }
 
-//5031 7557 3453 0604 123 11/25
-//TESTUSER1729053974
-//ckpw8VmZLr
-
-//[
-//   'collection_id=86406107703',
-//   'collection_status=approved',
-//   'payment_id=86406107703',
-//   'status=approved',
-//   'external_reference=user:58e4a0f2-0964-4280-b233-29b6db27638b,%20tournament:47ba07cb-4bca-4738-9fb6-7cb2cb8a2cbe',
-//   'payment_type=account_money',
-//   'merchant_order_id=22352003121',
-//   'preference_id=1967937891-32dd24d3-67f4-46ff-92f4-b5272b182a40',
-//   'site_id=MLA',
-//   'processing_mode=aggregator',
-//   'merchant_account_id=null'
-// ]
