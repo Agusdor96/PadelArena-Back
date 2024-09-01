@@ -49,7 +49,7 @@
       "city": "Sydney",
       "address": "101 Pine St",
       "profileImg": "https://example.com/profile/bob.jpg",
-      "category": "Cuarta"
+      "category": "Primera"
     },
     {
       "name": "Charlie",
@@ -114,7 +114,7 @@
       "city": "Lisbon",
       "address": "606 Fir St",
       "profileImg": "https://example.com/profile/grace.jpg",
-      "category": "Cuarta"
+      "category": "Primera"
     },
     {
       "name": "Hank",
@@ -179,7 +179,7 @@
       "city": "Copenhagen",
       "address": "1111 Birch St",
       "profileImg": "https://example.com/profile/liam.jpg",
-      "category": "Cuarta"
+      "category": "Primera"
     },
     {
       "name": "Mia",
@@ -244,7 +244,7 @@
       "city": "Athens",
       "address": "1616 Pine St",
       "profileImg": "https://example.com/profile/quinn.jpg",
-      "category": "Cuarta"
+      "category": "Primera"
     },
     {
       "name": "Rachel",
@@ -309,7 +309,7 @@
       "city": "Buenos Aires",
       "address": "2121 Willow St",
       "profileImg": "https://example.com/profile/victor.jpg",
-      "category": "Cuarta"
+      "category": "Primera"
     },
     {
       "name": "Wendy",
@@ -374,7 +374,7 @@
       "city": "Mexico City",
       "address": "2626 Cedar St",
       "profileImg": "https://example.com/profile/amelia.jpg",
-      "category": "Cuarta"
+      "category": "Primera"
     },
     {
       "name": "Brian",

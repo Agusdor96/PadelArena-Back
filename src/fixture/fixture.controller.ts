@@ -1,5 +1,5 @@
 
-import { Body, Controller, Param, ParseUUIDPipe, Put} from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Put} from '@nestjs/common';
 import { FixtureService } from './fixture.service';
 import { ApiTags } from '@nestjs/swagger';
 import { matchIdDTO } from './dto/matchId.dto';
@@ -12,6 +12,11 @@ export class FixtureController {
   @Put('matchWinner/:winnerId')
   addWinners (@Param('winnerId', ParseUUIDPipe) winnerId: string, @Body() matchId: matchIdDTO) {
     return this.fixtureService.uploadWinners(matchId, winnerId)
+  }
+
+  @Get("/:fixtureId")
+  getOneFixture(@Param("fixtureId", ParseUUIDPipe)fixtureId: string){
+    return this.fixtureService.getOneFixture(fixtureId)
   }
 
 }

@@ -112,6 +112,7 @@ export class FixtureService {
     const teamsArray = allTeamsArray.filter((team) => team.ableForPlay === true);
     const qteamsArray = [2, 4, 8, 16, 32, 64];
     const includerVerify = qteamsArray.includes(teamsArray.length);
+console.log(teamsArray.length);
 
     if (includerVerify) {
         // const durationPerMatch = tournament.matchDuration;
@@ -185,5 +186,12 @@ export class FixtureService {
             'El torneo no puede cerrarse ya que no cumple con la cantidad de equipos',
         );
       }
+}
+
+async getOneFixture(fixtureId: string) {
+  const fixture = await this.fixtureRepository.findOne({where: {id:fixtureId},relations: {round: {matches: {teams:true}}}})
+  if(!fixture) throw new NotFoundException("El torneo no tiene un fixture asociado o No se encuentra fixture con el id proporcionado")
+  
+  return fixture;  
 }
 }
