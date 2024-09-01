@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Preference } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
@@ -23,7 +23,13 @@ export class MercadoPagoService {
     const tournament = await this.tournamentRepository.findOne({
       where: { id: req.tournament },
     });
+    if(!tournament){
+      throw new NotFoundException('No se encontró el torneo')
+    }
     const user = await this.userRepsoitory.findOne({ where: { id: req.user } });
+    if(!user) {
+      throw new NotFoundException('No se encontró al usuario')
+    }
     const body = {
       items: [
         {
@@ -51,13 +57,12 @@ export class MercadoPagoService {
       user: user,
       external_reference: preference.external_reference,
     };
-
     await this.paymentDetailRepository.save(prefId);
     return { redirectUrl: preference.init_point };
   }
 
-  async feedbackPayment(preference: string, url: any) {
-    const data = url.url.split('?');
+  async feedbackPayment(preference: string, body: any) {
+    const data = body.url.split('?');
     const dataArray = data[1].split('&');
     const payment_id = dataArray[2].split('=')[1];
     const status = dataArray[3].split('=')[1];
@@ -87,6 +92,9 @@ export class MercadoPagoService {
       );
       
       return { message: payDetail };
+    }
+    else{
+      throw new BadRequestException('El usuario y torneo proporcionados no coinciden con ninguna referencia')
     }
   }
 
