@@ -44,7 +44,11 @@ export class AuthService {
   }
   
   async signInUser(credentials: CredentialsDto) {
-    const userExist = await this.userRepository.findOne({where:{email:credentials.email}})
+    const userExist = await this.userRepository.findOne({
+      where:{
+        email:credentials.email
+      }, relations:{category:true}})
+      
       if(!userExist){
         throw new BadRequestException('Email o contraseña incorrectos')
       }
@@ -76,7 +80,7 @@ export class AuthService {
     const lastName = nameParts.slice(1).join(" ")
     
     
-    const googleUserFromDb = await this.userRepository.findOne({where:{email:email}})
+    const googleUserFromDb = await this.userRepository.findOne({where:{email:email}, relations:{category:true}})
   
     if(googleUserFromDb){
       if(googleUserFromDb.name !== name || googleUserFromDb.lastName !== lastName){
@@ -90,7 +94,7 @@ export class AuthService {
       }
 
         const token = this.JWTservice.sign(userPayload);
-        const { password, role, ...googleUserWithoutPassword} = googleUserFromDb
+        const { password, ...googleUserWithoutPassword} = googleUserFromDb
 
       return {message: 'Inicio de sesion realizado con exito', token, googleUserWithoutPassword}
     } else if(!googleUserFromDb){
