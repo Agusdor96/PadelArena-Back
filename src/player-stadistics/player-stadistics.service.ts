@@ -23,52 +23,39 @@ export class PlayerStadisticsService {
     });
 
     const teamWinner = teams.filter((team) => team.id === winnerId);
-
     const teamLooser = teams.filter((team) => team.id !== winnerId);
-
     const playersWinners = teamWinner[0].user;
-  console.log("###", playersWinners, "###");
-  
-  const playersLoosers = teamLooser[0].user;
-  console.log(playersLoosers);
+    const playersLoosers = teamLooser[0].user;
 
     teamLooser[0].ableForPlay = false;
     await this.teamRepository.save(teamLooser[0]);
 
-    
-
     for (const player of playersWinners) {
       let playerStadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
-      console.log("winner", player);
+
       if(player.playerStadistic === null){
         const stat = await this.playerStadisticRepository.save({ won: 1 });
-        console.log("win", stat);
         player.playerStadistic = stat
         await this.userRepository.save(player)
       }
-      playerStadistic.won += 1;
-      const stat2 = await this.playerStadisticRepository.save(playerStadistic)
-      console.log("stat2 winner", stat2);
-      
-    }
 
+      playerStadistic.won += 1;
+      await this.playerStadisticRepository.save(playerStadistic)
+    }
 
     for (const player of playersLoosers) {
       const playerStadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
-      console.log("looser",player);
-     if(player.playerStadistic === null){
-
-       const stat = await this.playerStadisticRepository.save({loss: + 1});
-       console.log("loos", stat);
-       
+      
+      if(player.playerStadistic === null){
+       const stat = await this.playerStadisticRepository.save({loss: 1});
        player.playerStadistic = stat
        await this.userRepository.save(player)
       }
+      
       playerStadistic.loss += 1
       await this.playerStadisticRepository.save(playerStadistic);
-      
-
     }
+
     return { message: 'Estadisticas actualizadas con exito' };
   }
 }

@@ -112,7 +112,7 @@ export class FixtureService {
     const teamsArray = allTeamsArray.filter((team) => team.ableForPlay === true);
     const qteamsArray = [2, 4, 8, 16, 32, 64];
     const includerVerify = qteamsArray.includes(teamsArray.length);
-console.log(teamsArray.length);
+
 
     if (includerVerify) {
         // const durationPerMatch = tournament.matchDuration;
