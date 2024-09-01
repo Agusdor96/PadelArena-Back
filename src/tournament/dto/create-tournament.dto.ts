@@ -55,5 +55,9 @@ export class CreateTournamentDto {
     @ApiProperty({ description: 'El id de alguna de las 5 categorias de padel amateur definidas ', example: '8678bcb6-b5c8-457b-af77-e4a084b72793' })
     @IsNotEmpty()
     @IsUUID()
-        category: string;
+    category: string;
+
+    @IsNotEmpty()
+    @IsNumber()
+    price: number;
 }
