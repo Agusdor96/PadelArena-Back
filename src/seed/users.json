@@ -23,7 +23,7 @@
       "city": "London",
       "address": "456 Elm St",
       "profileImg": "https://example.com/profile/jane.jpg",
-      "category": "Segunda"
+      "category": "Primera"
     },
     {
       "name": "Alice",
@@ -36,7 +36,7 @@
       "city": "Toronto",
       "address": "789 Maple Ave",
       "profileImg": "https://example.com/profile/alice.jpg",
-      "category": "Tercera"
+      "category": "Primera"
     },
     {
       "name": "Bob",
@@ -62,7 +62,7 @@
       "city": "Berlin",
       "address": "202 Oak St",
       "profileImg": "https://example.com/profile/charlie.jpg",
-      "category": "Quinta"
+      "category": "Primera"
     },
     {
       "name": "Diana",
@@ -88,7 +88,7 @@
       "city": "Rome",
       "address": "404 Cedar St",
       "profileImg": "https://example.com/profile/eve.jpg",
-      "category": "Segunda"
+      "category": "Primera"
     },
     {
       "name": "Frank",
@@ -101,7 +101,7 @@
       "city": "Madrid",
       "address": "505 Spruce St",
       "profileImg": "https://example.com/profile/frank.jpg",
-      "category": "Tercera"
+      "category": "Primera"
     },
     {
       "name": "Grace",
@@ -127,7 +127,7 @@
       "city": "Amsterdam",
       "address": "707 Willow St",
       "profileImg": "https://example.com/profile/hank.jpg",
-      "category": "Quinta"
+      "category": "Primera"
     },
     {
       "name": "Ivy",
@@ -153,7 +153,7 @@
       "city": "Stockholm",
       "address": "909 Pine St",
       "profileImg": "https://example.com/profile/jack.jpg",
-      "category": "Segunda"
+      "category": "Primera"
     },
     {
       "name": "Kim",
@@ -166,7 +166,7 @@
       "city": "Oslo",
       "address": "1010 Oak St",
       "profileImg": "https://example.com/profile/kim.jpg",
-      "category": "Tercera"
+      "category": "Primera"
     },
     {
       "name": "Liam",
@@ -192,7 +192,7 @@
       "city": "Helsinki",
       "address": "1212 Cedar St",
       "profileImg": "https://example.com/profile/mia.jpg",
-      "category": "Quinta"
+      "category": "Primera"
     },
     {
       "name": "Noah",
@@ -218,7 +218,7 @@
       "city": "Vienna",
       "address": "1414 Willow St",
       "profileImg": "https://example.com/profile/olivia.jpg",
-      "category": "Segunda"
+      "category": "Primera"
     },
     {
       "name": "Paul",
@@ -231,7 +231,7 @@
       "city": "Dublin",
       "address": "1515 Maple St",
       "profileImg": "https://example.com/profile/paul.jpg",
-      "category": "Tercera"
+      "category": "Primera"
     },
     {
       "name": "Quinn",
@@ -257,7 +257,7 @@
       "city": "Prague",
       "address": "1717 Oak St",
       "profileImg": "https://example.com/profile/rachel.jpg",
-      "category": "Quinta"
+      "category": "Primera"
     },
     {
       "name": "Sam",
@@ -283,7 +283,7 @@
       "city": "Budapest",
       "address": "1919 Cedar St",
       "profileImg": "https://example.com/profile/tina.jpg",
-      "category": "Segunda"
+      "category": "Primera"
     },
     {
       "name": "Uma",
@@ -296,7 +296,7 @@
       "city": "Istanbul",
       "address": "2020 Fir St",
       "profileImg": "https://example.com/profile/uma.jpg",
-      "category": "Tercera"
+      "category": "Primera"
     },
     {
       "name": "Victor",
@@ -322,7 +322,7 @@
       "city": "Rio de Janeiro",
       "address": "2222 Maple St",
       "profileImg": "https://example.com/profile/wendy.jpg",
-      "category": "Quinta"
+      "category": "Primera"
     },
     {
       "name": "Xander",
@@ -348,7 +348,7 @@
       "city": "Bogota",
       "address": "2424 Oak St",
       "profileImg": "https://example.com/profile/yara.jpg",
-      "category": "Segunda"
+      "category": "Primera"
     },
     {
       "name": "Zane",
@@ -361,7 +361,7 @@
       "city": "Lima",
       "address": "2525 Birch St",
       "profileImg": "https://example.com/profile/zane.jpg",
-      "category": "Tercera"
+      "category": "Primera"
     },
     {
       "name": "Amelia",
@@ -387,7 +387,7 @@
       "city": "Montevideo",
       "address": "2727 Fir St",
       "profileImg": "https://example.com/profile/brian.jpg",
-      "category": "Quinta"
+      "category": "Primera"
     },
     {
       "name": "Clara",
