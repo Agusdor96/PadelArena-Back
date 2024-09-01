@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlayerStadistic } from './entities/player-stadistic.entity';
 import { In, Repository } from 'typeorm';
@@ -23,28 +23,50 @@ export class PlayerStadisticsService {
     });
 
     const teamWinner = teams.filter((team) => team.id === winnerId);
-
     const teamLooser = teams.filter((team) => team.id !== winnerId);
-
     const playersWinners = teamWinner[0].user;
-  
     const playersLoosers = teamLooser[0].user;
 
     teamLooser[0].ableForPlay = false;
     await this.teamRepository.save(teamLooser[0]);
 
     for (const player of playersWinners) {
-      const stat = await this.playerStadisticRepository.save({ won: +1 });
-      player.playerStadistic = stat
-      await this.userRepository.save(player)
-    }
+      let playerStadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
 
+      if(player.playerStadistic === null){
+        const stat = await this.playerStadisticRepository.save({ won: 1 });
+        player.playerStadistic = stat
+        await this.userRepository.save(player)
+      }
+
+      playerStadistic.won += 1;
+      await this.playerStadisticRepository.save(playerStadistic)
+    }
 
     for (const player of playersLoosers) {
-      const stat = await this.playerStadisticRepository.save({loss: + 1});
-      player.playerStadistic = stat
-      await this.userRepository.save(player)
+      const playerStadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
+      
+      if(player.playerStadistic === null){
+       const stat = await this.playerStadisticRepository.save({loss: 1});
+       player.playerStadistic = stat
+       await this.userRepository.save(player)
+      }
+      
+      playerStadistic.loss += 1
+      await this.playerStadisticRepository.save(playerStadistic);
     }
+
     return { message: 'Estadisticas actualizadas con exito' };
+  }
+
+  async getPlayerStadistics(playerId: string) {
+    const player = await this.userRepository.findOne({where:{id:playerId},relations:{playerStadistic:true}})
+    if(!player) throw new NotFoundException("No se encontro jugador con el id proporcionado")
+
+    const stadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
+    if(!stadistic) throw new NotFoundException("El jugador no tiene estadisticas aun")
+      
+    return stadistic;
+    
   }
 }

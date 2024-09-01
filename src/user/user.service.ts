@@ -113,7 +113,7 @@ async updateUserRole(userId: string, adminKey: AdminKeyDto) {
   }
 
   async getUserById(id: string): Promise<User> {
-    const user = await this.userRepository.findOne({where:{id}, relations:{category:true}})
+    const user = await this.userRepository.findOne({where:{id}, relations:{category:true, team:true}})
       if(!user){
         throw new NotFoundException("No se encuentra usuario con el id proporcionado")
       }
