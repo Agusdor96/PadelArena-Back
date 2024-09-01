@@ -25,11 +25,28 @@ export class MercadoPagoController {
     } catch (error) {
       throw new NotFoundException('No fue posible encontrar al payment')
     }
-    
+
   }
 
   @Get('preference/:id')
   getPreferencebyUserId(@Param('id', ParseUUIDPipe) id:string ){
     return this.mercadoPagoService.getPreferenceByUserId(id)
+  }
+
+  @Get(":tournamentId")
+  allTournamentPayments(@Param("tournamentId", ParseUUIDPipe) tournamentId:string){
+    try{
+      this.mercadoPagoService.getPaymentsFromTournament(tournamentId)
+    } catch(err){
+      return err
+    }
+  }
+  @Get(":userId")
+  allUserPayments(@Param("userId", ParseUUIDPipe) userId:string){
+    try{
+      this.mercadoPagoService.getPaymentsFromUser(userId)
+    } catch(err){
+      return err
+    }
   }
 }
