@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlayerStadistic } from './entities/player-stadistic.entity';
 import { In, Repository } from 'typeorm';
@@ -57,5 +57,16 @@ export class PlayerStadisticsService {
     }
 
     return { message: 'Estadisticas actualizadas con exito' };
+  }
+
+  async getPlayerStadistics(playerId: string) {
+    const player = await this.userRepository.findOne({where:{id:playerId},relations:{playerStadistic:true}})
+    if(!player) throw new NotFoundException("No se encontro jugador con el id proporcionado")
+
+    const stadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
+    if(!stadistic) throw new NotFoundException("El jugador no tiene estadisticas aun")
+      
+    return stadistic;
+    
   }
 }

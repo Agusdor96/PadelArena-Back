@@ -1,4 +1,4 @@
-import { Controller} from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe} from '@nestjs/common';
 import { PlayerStadisticsService } from './player-stadistics.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -7,5 +7,9 @@ import { ApiTags } from '@nestjs/swagger';
 export class PlayerStadisticsController {
   constructor(private readonly playerStadisticsService: PlayerStadisticsService) {}
 
+  @Get(":playerId")
+  getPlayerStadistics(@Param("playerId", ParseUUIDPipe) playerId: string){
+    return this.playerStadisticsService.getPlayerStadistics(playerId)
+  }
   
 }
