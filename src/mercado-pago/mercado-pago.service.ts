@@ -1,5 +1,5 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { Payment, Preference} from 'mercadopago';
+import { ExecutionContext, Injectable, NotFoundException } from '@nestjs/common';
+import { Preference } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +7,7 @@ import { PaymentDetail } from './entities/paymentDetail.entity';
 import { Repository } from 'typeorm';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
-import * as crypto from 'crypto'
+// import * as crypto from 'crypto'
 
 @Injectable()
 export class MercadoPagoService {
@@ -17,13 +17,14 @@ export class MercadoPagoService {
     @InjectRepository(TournamentEntity)
     private tournamentRepository: Repository<TournamentEntity>,
     @InjectRepository(User)
-    private userRepsoitory: Repository<User>
-  ){}
+    private userRepsoitory: Repository<User>,
+  ) {}
   async mpConnections(req: dataPaymentDto) {
-    
-    const tournament = await this.tournamentRepository.findOne({where: {id: req.tournament}})
-    const user = await this.userRepsoitory.findOne({where: { id: req.user}})
-    
+    const tournament = await this.tournamentRepository.findOne({
+      where: { id: req.tournament },
+    });
+    const user = await this.userRepsoitory.findOne({ where: { id: req.user } });
+
     const body = {
       items: [
         {
@@ -32,87 +33,123 @@ export class MercadoPagoService {
           unit_price: tournament.price,
           description: tournament.description,
           currency_id: 'ARS',
-          id: ''
         },
       ],
       back_urls: {
-        success: `${req.host}/${req.tournament}`,
-        failure: `${req.host}/${req.tournament}`,
-        pending: `${req.host}/${req.tournament}`
+        //CAMBIAR A LINK DE DEPLOY CABEZAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        success:
+          'https://q52vfbj3-3000.brs.devtunnels.ms/mercado-pago/feedback',
+        // success: `${req.host}/${req.tournament}`,
+        // failure: `${req.host}/${req.tournament}`,
+        // pending: `${req.host}/${req.tournament}`
       },
-      auto_return: "approved",
-      external_reference: req.user,
-      notification_url: "https://q52vfbj3-3000.brs.devtunnels.ms/mercado-pago/feedback/notification?new-source=webhook"
-      };
-    const preference = await new Preference(client).create({ body })
+      auto_return: 'approved',
+      external_reference: `user:${req.user}, tournament:${req.tournament}`,
+    };
+    const preference = await new Preference(client).create({ body });
     const prefId = {
       preferenceId: preference.id,
       tournament: tournament,
       user: user,
-      external_reference: preference.external_reference
+      external_reference: preference.external_reference,
+    };
+
+    await this.paymentDetailRepository.save(prefId);
+    return { redirectUrl: preference.init_point };
+  }
+
+  async feedbackPayment(preference: string, url: any) {
+    const data = url.url.split('?');
+    const dataArray = data[1].split('&');
+
+    const payment_id = dataArray[2].split('=')[1];
+    const status = dataArray[3].split('=')[1];
+    const external_reference = dataArray[4].split('=')[1];
+    const userid = external_reference.split(',')[0].split(':')[1];
+    const tournamentid = external_reference.split(',')[1].split(':')[1];
+
+    const payDetail = await this.paymentDetailRepository.findOne({
+      where: { preferenceId: preference },
+      relations: {
+        user: true,
+        tournament: true,
+      },
+    });
+    const payIncludesUser = payDetail.user.id === userid;
+    const payIncludesTournament = payDetail.tournament.id === tournamentid;
+    if (payIncludesUser && payIncludesTournament) {
+      const pay = {
+        payment_id: payment_id,
+        status: status,
+        transaction_amount: payDetail.tournament.price,
+      };
+      await this.paymentDetailRepository.update(
+        payDetail.id,
+        pay,
+      );
+      
+      return { message: payDetail };
     }
-    
-    await this.paymentDetailRepository.save(prefId)
-    return {redirectUrl: preference.sandbox_init_point}
-  }
-
-  async feedbackPayment(paymentDetails: any, id: string) {
-    
-    const parts = paymentDetails.xSignature.split(',')
-    let timestamps: string
-    let encryptedToken: string
-
-    parts.forEach(part => {
-      const [key, value] = part.split('=');
-      if (key && value) {
-          const trimmedKey = key.trim();
-          const trimmedValue = value.trim();
-          if (trimmedKey === 'ts') {
-            timestamps = trimmedValue;
-          } else if (trimmedKey === 'v1') {
-            encryptedToken = trimmedValue;
-          }
-      }
-  });
-  const secret = process.env.MP_SECRET_KEY
-
-  const manifest = `id:${id};request-id:${paymentDetails.xRequestId};ts:${timestamps};`
-  
-  const hmac = crypto.createHmac('sha256', secret)
-  hmac.update(manifest)
-  const sha = hmac.digest('hex');
-
-  if(sha !== encryptedToken){
-    throw new ForbiddenException('Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago')
-  }
-  const payment = await new Payment(client).get({id})
-  console.log(payment);
-    // const user = await this.userRepsoitory.findOne({where: {id: paymentDetails.external_reference}})
-    // const payDetail = await this.paymentDetailRepository.findOne({where: {user: user}})
-
-    // const pay = {
-    //   payment_id: paymentDetails.payment,
-    //   status: paymentDetails.status,
-    //   date_created: paymentDetails.date_created,
-    //   date_last_update: paymentDetails.date_last_update,
-    //   transaction_amount: paymentDetails.transaction_amount,
-    //   payment_method_id: paymentDetails.payment_method_id,
-    //   payment_type_id: paymentDetails.payment_type_id,
-    // }
-    // const paymentDetailComplete = await this.paymentDetailRepository.update(payDetail.id, pay)
-    
-    return {message: 'paymentDetailComplete'}
   }
 
   async getPreferenceByUserId(id: string) {
-    const user = await this.userRepsoitory.findOne({where: {id}})
-    const preference  =await this.paymentDetailRepository.findOne({where: {user: user }})
-    if(!user){
-      throw new NotFoundException('No fue posible encontrar al usuario')
+    const user = await this.userRepsoitory.findOne({ where: { id } });
+    const preference = await this.paymentDetailRepository.findOne({
+      where: { user: user },
+    });
+    if (!user) {
+      throw new NotFoundException('No fue posible encontrar al usuario');
     }
-    if(!preference){
-      throw new NotFoundException('Parece que el usuario no tiene ninguna preferencia ligada')
+    if (!preference) {
+      throw new NotFoundException(
+        'Parece que el usuario no tiene ninguna preferencia ligada',
+      );
     }
-    return preference
+    return preference;
   }
 }
+//   const parts = paymentDetails.xSignature.split(',')
+//   let timestamps: string
+//   let encryptedToken: string
+
+//   parts.forEach(part => {
+//     const [key, value] = part.split('=');
+//     if (key && value) {
+//         const trimmedKey = key.trim();
+//         const trimmedValue = value.trim();
+//         if (trimmedKey === 'ts') {
+//           timestamps = trimmedValue;
+//         } else if (trimmedKey === 'v1') {
+//           encryptedToken = trimmedValue;
+//         }
+//     }
+// });
+// const secret = process.env.MP_SECRET_KEY
+
+// const manifest = `id:${id};request-id:${paymentDetails.xRequestId};ts:${timestamps};`
+
+// const hmac = crypto.createHmac('sha256', secret)
+// hmac.update(manifest)
+// const sha = hmac.digest('hex');
+
+// if(sha !== encryptedToken){
+//   throw new ForbiddenException('Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago')
+// }
+
+//5031 7557 3453 0604 123 11/25
+//TESTUSER1729053974
+//ckpw8VmZLr
+
+//[
+//   'collection_id=86406107703',
+//   'collection_status=approved',
+//   'payment_id=86406107703',
+//   'status=approved',
+//   'external_reference=user:58e4a0f2-0964-4280-b233-29b6db27638b,%20tournament:47ba07cb-4bca-4738-9fb6-7cb2cb8a2cbe',
+//   'payment_type=account_money',
+//   'merchant_order_id=22352003121',
+//   'preference_id=1967937891-32dd24d3-67f4-46ff-92f4-b5272b182a40',
+//   'site_id=MLA',
+//   'processing_mode=aggregator',
+//   'merchant_account_id=null'
+// ]

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, NotFoundException, Redirect, } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
 import { ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
@@ -16,9 +16,16 @@ export class MercadoPagoController {
 
   @HttpCode(200)
   @UseInterceptors(HeaderInterceptor)
-  @Post('feedback/notification')
-  feedbackPayment (@Body() paymentDetails:any, @Query('data.id') id?:string){
-    return this.mercadoPagoService.feedbackPayment(paymentDetails, id)
+  @Get('feedback')
+  @Redirect('https://google.com')
+  feedbackPayment (@Query('preference_id') preference: string, @Body() url : string){
+    try {
+      return this.mercadoPagoService.feedbackPayment(preference, url)
+      
+    } catch (error) {
+      throw new NotFoundException('No fue posible encontrar al payment')
+    }
+    
   }
 
   @Get('preference/:id')
