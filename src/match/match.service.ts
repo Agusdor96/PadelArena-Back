@@ -22,12 +22,12 @@ export class MatchService {
         where: {
           name: teamName.name,
         },
-      });
+      })
       if (!teamsFinder) {
-        throw new NotFoundException(
-          'No se encontró un equipo con el nombre: ', teamName.name
-        );
-      } }
+        throw new NotFoundException('No se encontró un equipo con el nombre: ',
+        teamName.name)
+      }
+    }
       const newMatch = {
           tournament
         };
