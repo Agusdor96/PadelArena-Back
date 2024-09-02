@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, NotFoundException, Redirect, HttpStatus, } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
 import { ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
@@ -18,14 +18,14 @@ export class MercadoPagoController {
   @UseInterceptors(HeaderInterceptor)
   @Post('feedback')
   feedbackPayment (@Query('data.id') id: string, @Body() body : string){
-    this.mercadoPagoService.getpayment(id, body)
+    this.mercadoPagoService.encryptHeaders(body)
+    this.mercadoPagoService.getpayment(id)
     return id
-    // return this.mercadoPagoService.feedbackPayment(id, url)
   }
 
-  @Get('preference/:id')
-  getPreferencebyUserId(@Param('id', ParseUUIDPipe) id:string ){
-    return this.mercadoPagoService.getPreferenceByUserId(id)
+  @Get('allPayments')
+  getAllPayments(){
+    return this.mercadoPagoService.getPreferenceByUserId()
   }
 
   @Get("byTournament/:tournamentId")

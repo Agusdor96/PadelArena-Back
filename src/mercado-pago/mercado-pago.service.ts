@@ -1,10 +1,11 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
-import { Payment, Preference, } from 'mercadopago';
+import { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
+import { Payment, Preference } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { Repository } from 'typeorm';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
 import * as crypto from 'crypto';
+import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 
 @Injectable()
 export class MercadoPagoService {
@@ -52,7 +54,7 @@ export class MercadoPagoService {
         pending: 'https://youtube-music.com',
       },
       auto_return: 'approved',
-      external_reference: `user:${req.user}, tournament: ${req.tournament}`,
+      external_reference: `user:${req.user},tournament:${req.tournament}`,
     };
     const preference = await new Preference(client).create({ body });
     const prefId = {
@@ -66,63 +68,69 @@ export class MercadoPagoService {
   }
 
   async feedbackPayment(payment: PaymentResponse) {
-    
-    // const payDetail = await this.paymentDetailRepository.findOne({
-    //   where: { preferenceId: preference },
-    //   relations: {
-    //     user: true,
-    //     tournament: true,
-    //   },
-    // });
-    // const payIncludesUser = payDetail.user.id === userid;
-    // const payIncludesTournament = payDetail.tournament.id === tournamentid;
-    // if (payIncludesUser && payIncludesTournament) {
-    //   const pay = {
-    //     payment_id: payment_id,
-    //     date_created: String(new Date()),
-    //     status: status,
-    //     transaction_amount: payDetail.tournament.price,
-    //   };
-    //   await this.paymentDetailRepository.update(payDetail.id, pay);
-    //   const paymentCompleted = await this.paymentDetailRepository.findOne({
-    //     where: { id: payDetail.id },
-    // relations: { user: true, tournament: true },
-    //   });
-    //   return { message: paymentCompleted };
-    // } else {
-    //   throw new BadRequestException(
-    //     'El usuario y torneo proporcionados no coinciden con ninguna referencia',
-    //   );
-    // }
+    const externalReference = payment.external_reference;
+    const userid = externalReference.split(',')[0].split(':')[1];
+    const tournamentid = externalReference.split(',')[1].split(':')[1];
+    const payDetail = await this.paymentDetailRepository.findOne({
+      where: {
+        external_reference: externalReference
+      },
+      relations: {
+        user: true,
+        tournament: true,
+      },
+    });
+    if (!payDetail) throw new NotFoundException('No fue posible encontrar la preferencia correspondiente al pago a ejecutarse')
+    const payIncludesUser = payDetail.user.id === userid;
+    const payIncludesTournament = payDetail.tournament.id === tournamentid;
+    if (payIncludesUser && payIncludesTournament) {
+      const pay: PaymentDetailDto = {
+        payment_id: String(payment.id),
+        date_approved: payment.date_approved,
+        date_created: payment.date_created,
+        date_last_updated: payment.date_last_updated,
+        status: payment.status,
+        transaction_amount: payment.transaction_amount
+      };
+      await this.paymentDetailRepository.update(payDetail.id, pay);
+      const paymentCompleted = await this.paymentDetailRepository.findOne({
+        where: { id: payDetail.id },
+    relations: { user: true, tournament: true },
+      });
+      return { message: paymentCompleted };
+    } else {
+      throw new BadRequestException(
+        'El usuario y torneo proporcionados no coinciden con ninguna referencia',
+      );
+    }
   }
 
-  getpayment(id: string, body: any) {
-    this.encryptHeaders(body)
+  getpayment(id: string) {
     const payment = new Payment(client);
     payment
       .get({ id })
       .then((payment) => {
-        this.feedbackPayment(payment)
+        this.feedbackPayment(payment);
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  async getPreferenceByUserId(id: string) {
-    const user = await this.userRepsoitory.findOne({ where: { id } });
-    const preference = await this.paymentDetailRepository.findOne({
-      where: { user: user },
+  async getPreferenceByUserId() {
+    const payments = await this.paymentDetailRepository.find({
+      order: {
+        date_created: 'DESC'
+      }
     });
-    if (!user) {
-      throw new NotFoundException('No fue posible encontrar al usuario');
-    }
-    if (!preference) {
+    const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
+      return payment.id !== null;
+    });
+    if (!validPaymentId.length)
       throw new NotFoundException(
-        'Parece que el usuario no tiene ninguna preferencia ligada',
+        'No se encuentran pagos concretados en la BDD',
       );
-    }
-    return preference;
+    return validPaymentId;
   }
 
   async getPaymentsFromTournament(tournamentId: string) {
@@ -164,11 +172,10 @@ export class MercadoPagoService {
     return validPaymentId;
   }
 
-  encryptHeaders (body:any) {
+  encryptHeaders(body: any) {
     const parts = body.xSignature.split(',');
     let timestamps: string;
     let encryptedToken: string;
-
     parts.forEach((part) => {
       const [key, value] = part.split('=');
       if (key && value) {
@@ -182,13 +189,10 @@ export class MercadoPagoService {
       }
     });
     const secret = process.env.MP_SECRET_KEY;
-
     const manifest = `id:${body.data.id};request-id:${body.xRequestId};ts:${timestamps};`;
-
     const hmac = crypto.createHmac('sha256', secret);
     hmac.update(manifest);
     const sha = hmac.digest('hex');
-
     if (sha !== encryptedToken) {
       throw new ForbiddenException(
         'Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago',
@@ -196,4 +200,3 @@ export class MercadoPagoService {
     }
   }
 }
-

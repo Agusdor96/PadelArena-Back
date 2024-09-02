@@ -23,7 +23,13 @@ export class PaymentDetail {
     status?: string
 
     @Column({nullable:true})
-    date_created?: string
+    date_created?: Date
+
+    @Column({nullable:true})
+    date_approved?: Date
+    
+    @Column({nullable:true})
+    date_last_updated?: Date
 
     @Column({nullable:true})
     transaction_amount?: number
