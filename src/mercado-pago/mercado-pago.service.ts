@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 import { Payment, Preference, } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
@@ -64,7 +65,7 @@ export class MercadoPagoService {
     return { redirectUrl: preference.init_point };
   }
 
-  async feedbackPayment(payment: any) {
+  async feedbackPayment(payment: PaymentResponse) {
     
     // const payDetail = await this.paymentDetailRepository.findOne({
     //   where: { preferenceId: preference },
