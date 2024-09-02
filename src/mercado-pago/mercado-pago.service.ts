@@ -38,6 +38,7 @@ export class MercadoPagoService {
           unit_price: tournament.price,
           description: tournament.description,
           currency_id: 'ARS',
+          id:''
         },
       ],
       back_urls: {
