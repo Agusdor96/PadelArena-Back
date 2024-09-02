@@ -42,19 +42,19 @@ export class MercadoPagoService {
           unit_price: tournament.price,
           description: tournament.description,
           currency_id: 'ARS',
-          id: '',
+          id: tournament.id,
         },
       ],
       back_urls: {
-        //CAMBIAR A LINK DE DEPLOY CABEZAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         success:
-          'https://q52vfbj3-3000.brs.devtunnels.ms/mercado-pago/feedback',
+          'https://google.com',
         failure:
-          'https://q52vfbj3-3000.brs.devtunnels.ms/mercado-pago/feedback',
+          'https://youtube.com',
+        pending: 
+          'https://youtube-music.com'
       },
       auto_return: 'approved',
-      external_reference: `user:${req.user}, tournament:${req.tournament}`,
-      binary_mode: true,
+      external_reference: `${req.user}`,
     };
     const preference = await new Preference(client).create({ body });
     const prefId = {
@@ -68,40 +68,40 @@ export class MercadoPagoService {
   }
 
   async feedbackPayment(preference: string, body: any) {
-    const data = body.url.split('?');
-    const dataArray = data[1].split('&');
-    const payment_id = dataArray[2].split('=')[1];
-    const status = dataArray[3].split('=')[1];
-    const external_reference = dataArray[4].split('=')[1];
-    const userid = external_reference.split(',')[0].split(':')[1];
-    const tournamentid = external_reference.split(',')[1].split(':')[1];
+    // const data = body.url.split('?');
+    // const dataArray = data[1].split('&');
+    // const payment_id = dataArray[2].split('=')[1];
+    // const status = dataArray[3].split('=')[1];
+    // const external_reference = dataArray[4].split('=')[1];
+    // const userid = external_reference.split(',')[0].split(':')[1];
+    // const tournamentid = external_reference.split(',')[1].split(':')[1];
 
-    const payDetail = await this.paymentDetailRepository.findOne({
-      where: { preferenceId: preference },
-      relations: {
-        user: true,
-        tournament: true,
-      },
-    });
-    const payIncludesUser = payDetail.user.id === userid;
-    const payIncludesTournament = payDetail.tournament.id === tournamentid;
-    if (payIncludesUser && payIncludesTournament) {
-      const pay = {
-        payment_id: payment_id,
-        date_created: String(new Date()),
-        status: status,
-        transaction_amount: payDetail.tournament.price,
-      };
-      await this.paymentDetailRepository.update(payDetail.id, pay);
-      const paymentCompleted = await this.paymentDetailRepository.findOne({
-        where: { id: payDetail.id }, relations: {user: true, tournament: true}
-      });
-      return { message: paymentCompleted };
-    } else {
-      throw new BadRequestException(
-        'El usuario y torneo proporcionados no coinciden con ninguna referencia',
-      );
-    }
+    // const payDetail = await this.paymentDetailRepository.findOne({
+    //   where: { preferenceId: preference },
+    //   relations: {
+    //     user: true,
+    //     tournament: true,
+    //   },
+    // });
+    // const payIncludesUser = payDetail.user.id === userid;
+    // const payIncludesTournament = payDetail.tournament.id === tournamentid;
+    // if (payIncludesUser && payIncludesTournament) {
+    //   const pay = {
+    //     payment_id: payment_id,
+    //     date_created: String(new Date()),
+    //     status: status,
+    //     transaction_amount: payDetail.tournament.price,
+    //   };
+    //   await this.paymentDetailRepository.update(payDetail.id, pay);
+    //   const paymentCompleted = await this.paymentDetailRepository.findOne({
+    //     where: { id: payDetail.id }, relations: {user: true, tournament: true}
+    //   });
+    //   return { message: paymentCompleted };
+    // } else {
+    //   throw new BadRequestException(
+    //     'El usuario y torneo proporcionados no coinciden con ninguna referencia',
+    //   );
+    // }
   }
 
   async getPreferenceByUserId(id: string) {
