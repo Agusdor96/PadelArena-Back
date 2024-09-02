@@ -17,31 +17,19 @@ export class MatchService {
   ) {}
 
   async createMatch({ teams, tournament, currentHour, dayIndex }) {
-    const {startingTime, finishTime, matchDuration, courtsAvailable, playingDay, startDate} = tournament;
+    const {playingDay} = tournament;
     const [team1, team2] = teams;
 
     const timeZone = 'America/Argentina/Buenos_Aires';
     const matchStartTime = format(currentHour, 'HH:mm', { timeZone });
-    console.log("matchStartTime", matchStartTime);
-    
-    const openingTime = new Date(startingTime).getHours(); // 7
-    const closeTime = new Date(finishTime); // 14
-    // const availableHoursForPlaying = closeTime - openingTime // 7
-    // const matchesPerHour = courtsAvailable / (matchDuration / 60) // 2
-    // const matchesPerDay = availableHoursForPlaying * matchesPerHour // 14
-    // const matchesAtSameTime = courtsAvailable // 2
-    // const matchDurationHour = matchDuration / 60 // 1
-    
+
     const newMatch = {
       tournament,
         teams: [team1, team2],
         date: playingDay[dayIndex],
         time: matchStartTime,
       };
-      console.log(newMatch.date);
-      
-      console.log("time:", newMatch.time);
-      
+
     const savedMatch = await this.matchRepository.save(newMatch)
     return savedMatch
       

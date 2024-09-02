@@ -23,7 +23,7 @@ constructor(
   async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
-      if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
+    if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
       
       const existingTournament = await this.tournamentRepository.findOne({
         where: {
@@ -40,16 +40,16 @@ constructor(
       throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64")
     }
 
-      const InitialMatches = createTournamentDto.teamsQuantity /2;
-      const startTime = parse(createTournamentDto.startTime, 'HH:mm', new Date());
-      const endTime = parse(createTournamentDto.endTime, 'HH:mm', new Date());
-      const availableHoursPerDay = differenceInHours(endTime, startTime);
-      const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
+    const InitialMatches = createTournamentDto.teamsQuantity /2;
+    const startTime = parse(createTournamentDto.startTime, 'HH:mm', new Date());
+    const endTime = parse(createTournamentDto.endTime, 'HH:mm', new Date());
+    const availableHoursPerDay = differenceInHours(endTime, startTime);
+    const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
-      let qMatchRounds = InitialMatches;
-      let totalMatches = 0;
-      while(qMatchRounds > 1 ){
-        totalMatches += qMatchRounds;
+    let qMatchRounds = InitialMatches;
+    let totalMatches = 0;
+    while(qMatchRounds > 1 ){
+      totalMatches += qMatchRounds;
         qMatchRounds /= 2;
       }
       totalMatches +=1;
@@ -115,8 +115,11 @@ constructor(
     if (!uuidValidate(id)) throw new BadRequestException("Debes proporcionar un id de tipo UUID valido")
 
     const tournament = await this.getTournament(id);
+    const teams = tournament.team
     if(!tournament) throw new NotFoundException("No se encontro ningun torneo con el id proporcionado")
-
+    if(teams.length !== tournament.teamsQuantity ){
+      throw new BadRequestException("No se puede cerrar un torneo sin la cantidad de equipos exacta (16, 32 o 64)");
+    }
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
     return await this.fixtureService.createFixture(tournament.id)
   }

@@ -40,8 +40,8 @@ export class FixtureService {
       relations: { team: true, matches: true, fixture: true, category: true },
     });
 
-    const tournamentHasClosedInscription = tournament.inscription;
-    if (tournamentHasClosedInscription === 'cerradas') {
+    if(tournament.inscription !== 'cerradas') throw new BadRequestException('Las inscripciones de este torneo deben estar cerradas');
+
       const round = await this.createRound(tournamentID);
       const fixture = new Fixture();
       const newFixture = await this.fixtureRepository.save(fixture);
@@ -51,58 +51,8 @@ export class FixtureService {
       });
 
       await this.roundRepository.update(round.id, { fixture: fixture });
-
       return { message: 'Fixture creado con exito', newFixture };
-    } else {
-      throw new BadRequestException(
-        'Las inscripciones de este torneo deben estar cerradas',
-      );
-    }
-  }
-
-  async uploadWinners({ matchId }, winnerId: string) {
-    const match = await this.matchRepository.findOne({
-      where: { id: matchId },
-      relations: { teams: { user: true }, round: true, tournament: true },
-    });
-    const teamsIds = match.teams.map((team) => team.id);
-    const teamIdInMatch = teamsIds.includes(winnerId);
-    if (match) {
-      if (teamIdInMatch) {
-        await this.matchRepository.update(matchId, { teamWinner: winnerId });
-        await this.playerStatsService.addStats(teamsIds, winnerId);
-
-        const round = await this.roundRepository.findOne({
-          where: { id: match.round.id },
-          relations: { matches: true },
-        });
-
-        if (round.stage === 'final') {
-          return { message: 'Final definida', winner: winnerId };
-        } else {
-          const allMatchesFromThatRound = round.matches;
-          const notAllMatchesHasWinner = allMatchesFromThatRound
-            .map((match) => {
-              const hasWinner = match.teamWinner;
-              if (hasWinner !== null) {
-                return true;
-              } else return false;
-            })
-            .includes(false);
-          if (notAllMatchesHasWinner) {
-            return { message: 'Partido definido con exito' };
-          } else {
-            return await this.createRound(match.tournament.id);
-          }
-        }
-      } else {
-        throw new BadRequestException(
-          'El equipo debe pertenecer al partido para poder ganarlo',
-        );
-      }
-    } else {
-      throw new NotFoundException('No fue posible encontrar el partido');
-    }
+    
   }
 
   async createRound(tournamentID: string) {
@@ -116,9 +66,10 @@ export class FixtureService {
     const validTeamCounts: number[] = [ 2, 4, 8, 16, 32, 64];
     const includerVerify:boolean = validTeamCounts.includes(availableTeams.length);
 
-    if (includerVerify) {
-        let stage = '';
-        switch (availableTeams.length) {
+    if(!includerVerify) throw new BadRequestException("Cantidad de equipos invalida para crear la ronda")
+
+    let stage = '';
+    switch (availableTeams.length) {
             case 2: stage = 'final'; break;
             case 4: stage = 'semifinal'; break;
             case 8: stage = 'cuartos'; break;
@@ -126,36 +77,34 @@ export class FixtureService {
             case 32: stage = 'ronda de 16'; break;
             case 64: stage = 'fase de grupos'; break;
             default: stage = 'Ronda no válida';
-        }
+    }
 
-        const { startingTime, matchDuration, courtsAvailable, finishTime} = tournament;
+    const { startingTime, matchDuration, courtsAvailable, finishTime} = tournament;
+    
+    const startHour: Date = parse(startingTime, 'HH:mm', new Date());
+    const finishHour: Date = parse(finishTime, 'HH:mm', new Date());
+    let currentHour: Date = tournament.currentHour 
+      ? parse(tournament.currentHour, 'HH:mm', new Date())
+      : startHour;
+    
+    const startHourValue: number = getHours(startHour);
+    const finishHourValue: number = getHours(finishHour);
+    let currentHourValue: number = getHours(currentHour);
 
-        const startHour = parse(startingTime, 'HH:mm', new Date());
-const finishHour = parse(finishTime, 'HH:mm', new Date());
-const startHourValue = getHours(startHour);
-const finishHourValue = getHours(finishHour);
+    const matchesAtSameTime = courtsAvailable;
+    let currentTeamIndex = 0; 
+    let dayIndex = 0;
 
-let currentHour: Date = tournament.currentHour 
-? parse(tournament.currentHour, 'HH:mm', new Date())
-: startHour;
-let currentHourValue = getHours(currentHour);
-
-
-        const matchesAtSameTime = courtsAvailable;
-        let currentTeamIndex = 0; 
-        let dayIndex = 0;
-
-        while (currentTeamIndex < availableTeams.length) {
-          
-          
-        for (let i = 0; i < matchesAtSameTime && currentTeamIndex < availableTeams.length; i++) {
-
+    while (currentTeamIndex < availableTeams.length) {
+      
+      for (let i = 0; i < matchesAtSameTime && currentTeamIndex < availableTeams.length; i++) {
+        
         if (currentTeamIndex + 1 < availableTeams.length) {
           const currentHourDecimal = getHours(currentHour) + getMinutes(currentHour) / 60;
           const finishTimeDecimal = finishHourValue + getMinutes(finishHourValue) / 60;
+          
           if(currentHourDecimal >= finishTimeDecimal){
             dayIndex ++;
-            
             currentHourValue = startHourValue;
             currentHour = parse(format(startHour, 'HH:mm'), 'HH:mm', new Date());
             
@@ -172,39 +121,73 @@ let currentHourValue = getHours(currentHour);
           });
           currentTeamIndex += 2; 
         }
+      }
+      currentHour = addMinutes(currentHour, matchDuration);
     }
 
-    currentHour = addMinutes(currentHour, matchDuration);
-    console.log("currentHour 2:", currentHour);
-  }
-  const formattedCurrentHour = format(currentHour, 'HH:mm');
-   await this.tournamentRepository.update(tournamentID, { currentHour: formattedCurrentHour });
-  /////////////////////////////////////////////////////////////////////////////////////////////////
-            const matches = await this.matchService.getAllMatchesFromTournament(tournament.id);
-            const matchesNotPlayed = matches.filter((match) => match.teamWinner === null);
-            const newRound = new Round();
-            newRound.stage = stage;
-            newRound.matches = matchesNotPlayed;
-          
-        if (!tournament.fixture) {
-            const round = await this.roundRepository.save(newRound);
-            return round;
-          }
-          
-          newRound.fixture = tournament.fixture;
-          const round = await this.roundRepository.save(newRound);
-          return round;
-        } else {
-          throw new BadRequestException(
-            'El torneo no puede cerrarse ya que no cumple con la cantidad de equipos',
-        );
-      }
-}
+    const formattedCurrentHour = format(currentHour, 'HH:mm');
+    await this.tournamentRepository.update(tournamentID, { currentHour: formattedCurrentHour });
 
-async getOneFixture(fixtureId: string) {
+    const matches = await this.matchService.getAllMatchesFromTournament(tournament.id);
+    const matchesNotPlayed = matches.filter((match) => match.teamWinner === null);
+    const newRound = new Round();
+    newRound.stage = stage;
+    newRound.matches = matchesNotPlayed;
+          
+    if (!tournament.fixture) {
+      const round = await this.roundRepository.save(newRound);
+      return round;
+    }
+          
+    newRound.fixture = tournament.fixture;
+    const round = await this.roundRepository.save(newRound);
+    return round;     
+  }
+
+  async uploadWinners({ matchId }, winnerId: string) {
+    const match = await this.matchRepository.findOne({
+      where: { id: matchId },
+      relations: { teams: { user: true }, round: true, tournament: true },
+    });
+
+    const teamsIds = match.teams.map((team) => team.id);
+    const teamIdInMatch = teamsIds.includes(winnerId);
+
+    if (!match) throw new NotFoundException('No fue posible encontrar el partido');
+    if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
+
+    await this.matchRepository.update(matchId, { teamWinner: winnerId });
+    await this.playerStatsService.addStats(teamsIds, winnerId);
+
+    const round = await this.roundRepository.findOne({
+      where: { id: match.round.id },
+      relations: { matches: true },
+    });
+
+    if (round.stage === 'final') {
+      return { message: 'Final definida', winner: winnerId };
+    } else {
+      const allMatchesFromThatRound = round.matches;
+      
+      const notAllMatchesHasWinner = allMatchesFromThatRound.map((match) => {
+        const hasWinner = match.teamWinner;
+        if (hasWinner !== null) {
+        return true;
+        } else return false;
+        }).includes(false);
+        
+        if (notAllMatchesHasWinner) {
+        return { message: 'Partido definido con exito' };
+        } else {
+          return await this.createRound(match.tournament.id);
+        }
+    }
+  }
+
+  async getOneFixture(fixtureId: string) {
   const fixture = await this.fixtureRepository.findOne({where: {id:fixtureId},relations: {round: {matches: {teams:true}}}})
   if(!fixture) throw new NotFoundException("El torneo no tiene un fixture asociado o No se encuentra fixture con el id proporcionado")
   
   return fixture;  
-}
+  }
 }
