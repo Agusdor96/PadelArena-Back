@@ -9,6 +9,7 @@ import { FixtureService } from 'src/fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
 import { FileService } from 'src/file/file.service';
+import { addDays, format, parse, differenceInHours } from 'date-fns';
 
 @Injectable()
 export class TournamentService {
@@ -40,9 +41,9 @@ constructor(
     }
 
       const InitialMatches = createTournamentDto.teamsQuantity /2;
-      const startTime = new Date(createTournamentDto.startTime);
-      const endTime = new Date(createTournamentDto.endTime);
-      const availableHoursPerDay = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+      const startTime = parse(createTournamentDto.startTime, 'HH:mm', new Date());
+      const endTime = parse(createTournamentDto.endTime, 'HH:mm', new Date());
+      const availableHoursPerDay = differenceInHours(endTime, startTime);
       const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
       let qMatchRounds = InitialMatches;
@@ -55,15 +56,14 @@ constructor(
   
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
-      const endDate = new Date(createTournamentDto.startDate);
-      endDate.setDate(endDate.getDate() + tournamentDuration);
+      const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
 
       const tournament = new TournamentEntity();
         tournament.name = createTournamentDto.name;
         tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
-        tournament.startingTime = createTournamentDto.startTime;
-        tournament.finishTime = createTournamentDto.endTime;
+        tournament.startingTime = format(startTime, 'HH:mm'); 
+        tournament.finishTime = format(endTime, 'HH:mm');
         tournament.playingDay = createTournamentDto.playingDays;
         tournament.status = StatusEnum.UPCOMING;
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
@@ -144,8 +144,8 @@ constructor(
       if(existingTournament){
         continue;
       }
-        const startTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.startTime}:00.000Z`);
-        const endTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.endTime}:00.000Z`);
+      const startTime = tournament.startTime; 
+      const endTime = tournament.endTime;
 
         const newTournament = {
             ...tournament,

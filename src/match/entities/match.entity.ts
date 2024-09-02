@@ -15,7 +15,7 @@ export class Match {
     date?: string
 
     @Column({nullable: true})
-    appointment?: number
+    time?: string
 
     @ManyToMany(()=>Team)
     @JoinTable({name: "TEAM_MATCH"})

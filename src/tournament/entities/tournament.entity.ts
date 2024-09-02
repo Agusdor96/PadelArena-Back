@@ -17,10 +17,10 @@ export class TournamentEntity {
   @Column({type:"varchar", length: 50})
   name:string
 
-  @Column()
+  @Column({ type: 'date' })
   startDate:Date
 
-  @Column()
+  @Column({ type: 'date' })
   endDate:Date
 
   @Column()
@@ -54,6 +54,9 @@ export class TournamentEntity {
 
   @Column()
   description: string
+
+  @Column({nullable: true })
+  currentHour: string;
 
   @Column("text", { array: true, nullable: true })
   gallery: string[]

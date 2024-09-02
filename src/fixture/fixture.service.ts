@@ -13,6 +13,9 @@ import { MatchService } from 'src/match/match.service';
 import { Match } from 'src/match/entities/match.entity';
 import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics.service';
 // import { DateTime } from 'luxon';
+import { setHours, addHours, getMinutes, getHours, parse, addMinutes } from 'date-fns';
+import { toZonedTime, format } from 'date-fns-tz';
+import { Team } from 'src/team/entities/team.entity';
 
 
 @Injectable()
@@ -108,65 +111,75 @@ export class FixtureService {
         relations: { team: true, matches: true, fixture: true, category: true },
     });
 
-    const allTeamsArray = tournament.team.sort((team) => team.order);
-    const teamsArray = allTeamsArray.filter((team) => team.ableForPlay === true);
-    const qteamsArray = [2, 4, 8, 16, 32, 64];
-    const includerVerify = qteamsArray.includes(teamsArray.length);
-
+    const teamsByOrder:Team[] = tournament.team.sort((team) => team.order);
+    const availableTeams: Team[] = teamsByOrder.filter((team) => team.ableForPlay === true);
+    const validTeamCounts: number[] = [ 2, 4, 8, 16, 32, 64];
+    const includerVerify:boolean = validTeamCounts.includes(availableTeams.length);
 
     if (includerVerify) {
-        // const durationPerMatch = tournament.matchDuration;
-        // const closingTime = tournament.finishTime; // Hora de cierre del club
-
         let stage = '';
-        switch (teamsArray.length) {
-            case 2:
-                stage = 'final';
-                break;
-            case 4:
-                stage = 'semifinal';
-                break;
-            case 8:
-                stage = 'cuartos';
-                break;
-            case 16:
-                stage = 'octavos';
-                break;
-            case 32:
-                stage = 'ronda de 16';
-                break;
-            case 64:
-                stage = 'fase de grupos';
-                break;
-            default:
-                stage = 'Ronda no válida';
+        switch (availableTeams.length) {
+            case 2: stage = 'final'; break;
+            case 4: stage = 'semifinal'; break;
+            case 8: stage = 'cuartos'; break;
+            case 16: stage = 'octavos'; break;
+            case 32: stage = 'ronda de 16'; break;
+            case 64: stage = 'fase de grupos'; break;
+            default: stage = 'Ronda no válida';
         }
 
-        for (let i = 1; i < teamsArray.length + 1; i += 2) {
-            if (i < teamsArray.length) {
-                const teams = [teamsArray[i - 1], teamsArray[i]];
-              //converitr la duracion de los partidos a horas
-              // const durationMatchToHours = tournament.matchDuration /60; 
-              
-              // const horaInicio = new Date(tournament.startingTime).getHours();
-              // const horaFin = new Date(tournament.finishTime).getHours();
-              
-              // let matchTime = horaInicio;
-              // while(horaFin > (horaInicio + durationMatchToHours)){
+        const { startingTime, matchDuration, courtsAvailable, finishTime} = tournament;
 
-                await this.matchService.createMatch({
-                  // date: tournament.startDate.toString(),
-                // time: matchTime,
-                  teams,
-                  tournament,
-              });
-              // console.log(matchTime);
-              // console.log(horaInicio);
-              // console.log(horaFin);
-              
-              // matchTime += durationMatchToHours;
+        const startHour = parse(startingTime, 'HH:mm', new Date());
+const finishHour = parse(finishTime, 'HH:mm', new Date());
+const startHourValue = getHours(startHour);
+const finishHourValue = getHours(finishHour);
+
+let currentHour: Date = tournament.currentHour 
+? parse(tournament.currentHour, 'HH:mm', new Date())
+: startHour;
+let currentHourValue = getHours(currentHour);
+
+
+        const matchesAtSameTime = courtsAvailable;
+        let currentTeamIndex = 0; 
+        let dayIndex = 0;
+
+        while (currentTeamIndex < availableTeams.length) {
+          
+          
+        for (let i = 0; i < matchesAtSameTime && currentTeamIndex < availableTeams.length; i++) {
+
+        if (currentTeamIndex + 1 < availableTeams.length) {
+          const currentHourDecimal = getHours(currentHour) + getMinutes(currentHour) / 60;
+          const finishTimeDecimal = finishHourValue + getMinutes(finishHourValue) / 60;
+          if(currentHourDecimal >= finishTimeDecimal){
+            dayIndex ++;
+            
+            currentHourValue = startHourValue;
+            currentHour = parse(format(startHour, 'HH:mm'), 'HH:mm', new Date());
+            
+            if(dayIndex >= tournament.playingDay.length){
+              dayIndex = 0;
             }
-              }
+          }
+          const teams = [availableTeams[currentTeamIndex], availableTeams[currentTeamIndex + 1]];
+          await this.matchService.createMatch({
+            teams,
+            tournament,
+            currentHour,
+            dayIndex
+          });
+          currentTeamIndex += 2; 
+        }
+    }
+
+    currentHour = addMinutes(currentHour, matchDuration);
+    console.log("currentHour 2:", currentHour);
+  }
+  const formattedCurrentHour = format(currentHour, 'HH:mm');
+   await this.tournamentRepository.update(tournamentID, { currentHour: formattedCurrentHour });
+  /////////////////////////////////////////////////////////////////////////////////////////////////
             const matches = await this.matchService.getAllMatchesFromTournament(tournament.id);
             const matchesNotPlayed = matches.filter((match) => match.teamWinner === null);
             const newRound = new Round();
