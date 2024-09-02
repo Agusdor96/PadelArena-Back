@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Preference } from 'mercadopago';
+import { Payment, Preference, } from 'mercadopago';
 import { client } from 'src/config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,7 +11,7 @@ import { PaymentDetail } from './entities/paymentDetail.entity';
 import { Repository } from 'typeorm';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
-// import * as crypto from 'crypto'
+import * as crypto from 'crypto';
 
 @Injectable()
 export class MercadoPagoService {
@@ -46,15 +46,12 @@ export class MercadoPagoService {
         },
       ],
       back_urls: {
-        success:
-          'https://google.com',
-        failure:
-          'https://youtube.com',
-        pending: 
-          'https://youtube-music.com'
+        success: 'https://google.com',
+        failure: 'https://youtube.com',
+        pending: 'https://youtube-music.com',
       },
       auto_return: 'approved',
-      external_reference: `${req.user}`,
+      external_reference: `user:${req.user}, tournament: ${req.tournament}`,
     };
     const preference = await new Preference(client).create({ body });
     const prefId = {
@@ -67,15 +64,8 @@ export class MercadoPagoService {
     return { redirectUrl: preference.init_point };
   }
 
-  async feedbackPayment(preference: string, body: any) {
-    // const data = body.url.split('?');
-    // const dataArray = data[1].split('&');
-    // const payment_id = dataArray[2].split('=')[1];
-    // const status = dataArray[3].split('=')[1];
-    // const external_reference = dataArray[4].split('=')[1];
-    // const userid = external_reference.split(',')[0].split(':')[1];
-    // const tournamentid = external_reference.split(',')[1].split(':')[1];
-
+  async feedbackPayment(payment: any) {
+    
     // const payDetail = await this.paymentDetailRepository.findOne({
     //   where: { preferenceId: preference },
     //   relations: {
@@ -95,7 +85,7 @@ export class MercadoPagoService {
     //   await this.paymentDetailRepository.update(payDetail.id, pay);
     //   const paymentCompleted = await this.paymentDetailRepository.findOne({
     //     where: { id: payDetail.id },
-        relations: { user: true, tournament: true },
+    // relations: { user: true, tournament: true },
     //   });
     //   return { message: paymentCompleted };
     // } else {
@@ -103,6 +93,19 @@ export class MercadoPagoService {
     //     'El usuario y torneo proporcionados no coinciden con ninguna referencia',
     //   );
     // }
+  }
+
+  getpayment(id: string, body: any) {
+    this.encryptHeaders(body)
+    const payment = new Payment(client);
+    payment
+      .get({ id })
+      .then((payment) => {
+        this.feedbackPayment(payment)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   async getPreferenceByUserId(id: string) {
@@ -145,7 +148,7 @@ export class MercadoPagoService {
       .leftJoinAndSelect('paymentDetail.user', 'user')
       .where('user.id = :userId', { userId })
       .getMany();
-      
+
     if (!allPayments.length)
       throw new NotFoundException('No se encuentran pagos en este torneo');
 
@@ -159,33 +162,37 @@ export class MercadoPagoService {
       );
     return validPaymentId;
   }
+
+  encryptHeaders (body:any) {
+    const parts = body.xSignature.split(',');
+    let timestamps: string;
+    let encryptedToken: string;
+
+    parts.forEach((part) => {
+      const [key, value] = part.split('=');
+      if (key && value) {
+        const trimmedKey = key.trim();
+        const trimmedValue = value.trim();
+        if (trimmedKey === 'ts') {
+          timestamps = trimmedValue;
+        } else if (trimmedKey === 'v1') {
+          encryptedToken = trimmedValue;
+        }
+      }
+    });
+    const secret = process.env.MP_SECRET_KEY;
+
+    const manifest = `id:${body.data.id};request-id:${body.xRequestId};ts:${timestamps};`;
+
+    const hmac = crypto.createHmac('sha256', secret);
+    hmac.update(manifest);
+    const sha = hmac.digest('hex');
+
+    if (sha !== encryptedToken) {
+      throw new ForbiddenException(
+        'Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago',
+      );
+    }
+  }
 }
-//   const parts = paymentDetails.xSignature.split(',')
-//   let timestamps: string
-//   let encryptedToken: string
 
-//   parts.forEach(part => {
-//     const [key, value] = part.split('=');
-//     if (key && value) {
-//         const trimmedKey = key.trim();
-//         const trimmedValue = value.trim();
-//         if (trimmedKey === 'ts') {
-//           timestamps = trimmedValue;
-//         } else if (trimmedKey === 'v1') {
-//           encryptedToken = trimmedValue;
-//         }
-//     }
-// });
-// const secret = process.env.MP_SECRET_KEY
-
-// const manifest = `id:${id};request-id:${paymentDetails.xRequestId};ts:${timestamps};`
-
-// const hmac = crypto.createHmac('sha256', secret)
-// hmac.update(manifest)
-// const sha = hmac.digest('hex');
-
-// if(sha !== encryptedToken){
-//   throw new ForbiddenException('Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago')
-// }
-
-// /mercado-pago/feedback?collection_id=86466887941&collection_status=approved&payment_id=86466887941&status=approved&external_reference=user:58e4a0f2-0964-4280-b233-29b6db27638b,%20tournament:47ba07cb-4bca-4738-9fb6-7cb2cb8a2cbe&payment_type=account_money&merchant_order_id=22386184588&preference_id=1967937891-46414eef-dc93-4ceb-8fb8-32f0431e0185&site_id=MLA&processing_mode=aggregator&merchant_account_id=null
