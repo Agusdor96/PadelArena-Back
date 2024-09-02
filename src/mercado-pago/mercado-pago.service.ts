@@ -94,7 +94,8 @@ export class MercadoPagoService {
     //   };
     //   await this.paymentDetailRepository.update(payDetail.id, pay);
     //   const paymentCompleted = await this.paymentDetailRepository.findOne({
-    //     where: { id: payDetail.id }, relations: {user: true, tournament: true}
+    //     where: { id: payDetail.id },
+        relations: { user: true, tournament: true },
     //   });
     //   return { message: paymentCompleted };
     // } else {
@@ -118,6 +119,45 @@ export class MercadoPagoService {
       );
     }
     return preference;
+  }
+
+  async getPaymentsFromTournament(tournamentId: string) {
+    const payments = await this.paymentDetailRepository.find({
+      where: { tournament: { id: tournamentId } },
+    });
+
+    if (!payments.length)
+      throw new NotFoundException('No se encuentran pagos en este torneo');
+
+    const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
+      return payment.id !== null;
+    });
+    if (!validPaymentId.length)
+      throw new NotFoundException(
+        'No se encuentran pagos concretados en la BDD',
+      );
+    return validPaymentId;
+  }
+
+  async getPaymentsFromUser(userId: string) {
+    const allPayments: PaymentDetail[] = await this.paymentDetailRepository
+      .createQueryBuilder('paymentDetail')
+      .leftJoinAndSelect('paymentDetail.user', 'user')
+      .where('user.id = :userId', { userId })
+      .getMany();
+      
+    if (!allPayments.length)
+      throw new NotFoundException('No se encuentran pagos en este torneo');
+
+    const validPaymentId: PaymentDetail[] = allPayments.filter((payment) => {
+      return payment.id !== null;
+    });
+
+    if (!validPaymentId.length)
+      throw new NotFoundException(
+        'No se encuentran pagos concretados en la BDD',
+      );
+    return validPaymentId;
   }
 }
 //   const parts = paymentDetails.xSignature.split(',')
