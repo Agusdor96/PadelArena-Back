@@ -32,18 +32,18 @@ export class MercadoPagoController {
     return this.mercadoPagoService.getPreferenceByUserId(id)
   }
 
-  @Get(":tournamentId")
+  @Get("byTournament/:tournamentId")
   allTournamentPayments(@Param("tournamentId", ParseUUIDPipe) tournamentId:string){
     try{
-      this.mercadoPagoService.getPaymentsFromTournament(tournamentId)
+      return this.mercadoPagoService.getPaymentsFromTournament(tournamentId)
     } catch(err){
-      return err
+      throw err
     }
   }
-  @Get(":userId")
+  @Get("byUser/:userId")
   allUserPayments(@Param("userId", ParseUUIDPipe) userId:string){
     try{
-      this.mercadoPagoService.getPaymentsFromUser(userId)
+      return this.mercadoPagoService.getPaymentsFromUser(userId)
     } catch(err){
       return err
     }
