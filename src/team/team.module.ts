@@ -17,9 +17,10 @@ import { PlayerStadistic } from 'src/player-stadistics/entities/player-stadistic
 import { FileService } from 'src/file/file.service';
 import { FileModule } from 'src/file/file.module';
 import { FileRepository } from 'src/file/file.repository';
+import { PaymentDetail } from 'src/mercado-pago/entities/paymentDetail.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Team, TournamentEntity, User, Category, Fixture, Round, Match, PlayerStadistic]), FileModule],
+  imports: [TypeOrmModule.forFeature([Team, TournamentEntity, User, Category, Fixture, Round, Match, PlayerStadistic, PaymentDetail]), FileModule],
   controllers: [TeamController],
   providers: [TeamService, TournamentService, FixtureService, MatchService, PlayerStadisticsService, FileService, FileRepository],
   exports:[TeamService]
