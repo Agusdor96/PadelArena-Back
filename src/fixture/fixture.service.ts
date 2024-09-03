@@ -79,39 +79,42 @@ export class FixtureService {
             default: stage = 'Ronda no válida';
     }
 
-    const { startingTime, matchDuration, courtsAvailable, finishTime, currentHour, playingDay} = tournament;
+    const { startingTime, matchDuration, courtsAvailable, finishTime, playingDay} = tournament;
+    let {currentDay, matchStartTime} = tournament
 
     const dailyStartHour: Date = parse(startingTime, 'HH:mm', new Date());
     const dailyEndHour: Date = parse(finishTime, 'HH:mm', new Date());
-    let currentMatchTime: Date = currentHour 
-      ? parse(currentHour, 'HH:mm', new Date())
+    let currentMatchTime: Date = matchStartTime 
+      ? parse(matchStartTime, 'HH:mm', new Date())
       : dailyStartHour;
     
-    const openingHour: number = getHours(dailyStartHour);
     const closingHour: number = getHours(dailyEndHour);
-    let currentMatchHour: number = getHours(currentMatchTime);
- 
+    
     const simultaneousMatches = courtsAvailable;
     let teamIndex = 0; 
-    let currentDayIndex = 0;
-
+    let currentDayIndex = currentDay;
+    console.log("currentDayIndex =? currentDay:", currentDayIndex, ":", currentDay);
+    
     while (teamIndex < availableTeams.length) {
       for (let i = 0; i < simultaneousMatches && teamIndex < availableTeams.length; i++) {
         if (teamIndex + 1 < availableTeams.length) {  
 
           const matchHourDecimal = getHours(currentMatchTime) + getMinutes(currentMatchTime) / 60;          
           const closingHourDecimal = closingHour + getMinutes(closingHour) / 60;
+          
+          console.log("matchHour : closingTime",matchHourDecimal, "y", closingHourDecimal);
           if(matchHourDecimal >= closingHourDecimal){
-            currentDayIndex ++;  
-            currentMatchHour = openingHour;
+            console.log("actualizando currentDayIndex, Reiniciando matchHour y matchTime");
+            
+            currentDayIndex ++;
             currentMatchTime = parse(format(dailyStartHour, 'HH:mm'), 'HH:mm', new Date());
 
             if(currentDayIndex >= playingDay.length){
+              console.log("reiniciando currentDayindex:", currentDayIndex, ">=?", playingDay.length);
+              
               currentDayIndex = 0;
-            }else {
-              currentMatchTime = addDays(currentMatchTime, 1);
-              currentMatchTime = setHours(currentMatchTime, openingHour);
-              currentMatchTime = setMinutes(currentMatchTime, 0);
+              console.log("reiniciado", currentDayIndex);
+              
             }
           }
           const teams = [availableTeams[teamIndex], availableTeams[teamIndex + 1]];
@@ -124,11 +127,14 @@ export class FixtureService {
           teamIndex += 2; 
         }
       }
+      console.log("dayIndex2:", currentDayIndex);
+      
       currentMatchTime = addMinutes(currentMatchTime, matchDuration);      
+      console.log("currentMatchTime:", currentMatchTime);
     }
 
     const formattedCurrentHour = format(currentMatchTime, 'HH:mm');
-    await this.tournamentRepository.update(tournamentID, { currentHour: formattedCurrentHour });
+    await this.tournamentRepository.update(tournamentID, { matchStartTime: formattedCurrentHour, currentDay: currentDayIndex});
 
     const matches = await this.matchService.getAllMatchesFromTournament(tournament.id);
     const matchesNotPlayed = matches.filter((match) => match.teamWinner === null);

@@ -56,7 +56,10 @@ export class TournamentEntity {
   description: string
 
   @Column({nullable: true })
-  currentHour: string;
+  matchStartTime: string;
+
+  @Column({default: 0})
+  currentDay: number
 
   @Column("text", { array: true, nullable: true })
   gallery: string[]
