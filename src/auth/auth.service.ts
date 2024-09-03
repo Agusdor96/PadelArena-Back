@@ -8,6 +8,7 @@ import { CredentialsDto, UserDto } from 'src/user/dto/user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
+import { sender } from './mail';
 
 
 @Injectable()
@@ -39,7 +40,7 @@ export class AuthService {
 
       const user = await this.userRepository.save({...newUser, password: encryptedPassword})
       const {password, passwordConfirm, role, ...desestructuredUser} = user
-        
+      sender(user.email)
       return {message: 'Usuario creado con exito', desestructuredUser}
   }
   
@@ -69,6 +70,7 @@ export class AuthService {
 
         const token = this.JWTservice.sign(userPayload);
         const {password, ...userClean} = userExist
+        
 
       return {message: 'Inicio de sesion realizado con exito', token, userClean}
   }

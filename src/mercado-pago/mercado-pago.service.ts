@@ -39,7 +39,6 @@ export class MercadoPagoService {
       items: [
         {
           title: tournament.name,
-          id: "",
           quantity: 1,
           unit_price: tournament.price,
           description: tournament.description,
