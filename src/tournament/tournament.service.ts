@@ -120,7 +120,7 @@ constructor(
     if(teams.length !== tournament.teamsQuantity ){
       throw new BadRequestException("No se puede cerrar un torneo sin la cantidad de equipos exacta (16, 32 o 64)");
     }
-    await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
+    await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED, status: StatusEnum.INPROGRESS})
     return await this.fixtureService.createFixture(tournament.id)
   }
 
@@ -160,5 +160,5 @@ constructor(
       await this.createTournament(newTournament)
     }
     return {message: "Torneos cargados con exito"}
-  }
+  } 
 }
