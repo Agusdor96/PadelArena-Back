@@ -87,10 +87,11 @@ export class FixtureService {
       ? parse(tournament.currentHour, 'HH:mm', new Date())
       : startHour;
     
-    const startHourValue: number = getHours(startHour);
-    const finishHourValue: number = getHours(finishHour);
+    const openingTime: number = getHours(startHour);
+    const closingTime: number = getHours(finishHour);
     let currentHourValue: number = getHours(currentHour);
-
+    
+    
     const matchesAtSameTime = courtsAvailable;
     let currentTeamIndex = 0; 
     let dayIndex = 0;
@@ -101,11 +102,11 @@ export class FixtureService {
         
         if (currentTeamIndex + 1 < availableTeams.length) {
           const currentHourDecimal = getHours(currentHour) + getMinutes(currentHour) / 60;
-          const finishTimeDecimal = finishHourValue + getMinutes(finishHourValue) / 60;
+          const finishTimeDecimal = closingTime + getMinutes(closingTime) / 60;
           
           if(currentHourDecimal >= finishTimeDecimal){
             dayIndex ++;
-            currentHourValue = startHourValue;
+            currentHourValue = openingTime;
             currentHour = parse(format(startHour, 'HH:mm'), 'HH:mm', new Date());
             
             if(dayIndex >= tournament.playingDay.length){
