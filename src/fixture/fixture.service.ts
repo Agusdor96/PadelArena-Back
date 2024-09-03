@@ -16,6 +16,7 @@ import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics
 import { setHours, addDays, getMinutes, getHours, parse, addMinutes, setMinutes } from 'date-fns';
 import { toZonedTime, format } from 'date-fns-tz';
 import { Team } from 'src/team/entities/team.entity';
+import { StatusEnum } from 'src/tournament/tournament.enum';
 
 
 @Injectable()
@@ -162,6 +163,10 @@ export class FixtureService {
     });
 
     if (round.stage === 'final') {
+      const tournamentFromMatch = match.tournament.id
+      await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}})
+      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
+      
       return { message: 'Final definida', winner: winnerId };
     } else {
       const allMatchesFromThatRound = round.matches;
