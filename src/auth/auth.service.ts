@@ -112,7 +112,7 @@ export class AuthService {
             role: newGoogleUser.role 
           }
           const token = this.JWTservice.sign(userPayload);
-
+          
           return {message: 'Registro e inicio de sesion realizado con exito', token, newGoogleUser}
         }
     }

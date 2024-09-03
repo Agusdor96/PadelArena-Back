@@ -16,6 +16,7 @@ import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics
 import { setHours, addDays, getMinutes, getHours, parse, addMinutes, setMinutes } from 'date-fns';
 import { toZonedTime, format } from 'date-fns-tz';
 import { Team } from 'src/team/entities/team.entity';
+import { StatusEnum } from 'src/tournament/tournament.enum';
 
 
 @Injectable()
@@ -146,11 +147,11 @@ export class FixtureService {
       where: { id: matchId },
       relations: { teams: { user: true }, round: true, tournament: true },
     });
+    if (!match) throw new NotFoundException('No fue posible encontrar el partido');
 
     const teamsIds = match.teams.map((team) => team.id);
     const teamIdInMatch = teamsIds.includes(winnerId);
-
-    if (!match) throw new NotFoundException('No fue posible encontrar el partido');
+    
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
 
     await this.matchRepository.update(matchId, { teamWinner: winnerId });
@@ -162,6 +163,10 @@ export class FixtureService {
     });
 
     if (round.stage === 'final') {
+      const tournamentFromMatch = match.tournament.id
+      await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}})
+      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
+      
       return { message: 'Final definida', winner: winnerId };
     } else {
       const allMatchesFromThatRound = round.matches;
