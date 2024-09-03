@@ -93,7 +93,6 @@ export class FixtureService {
     const simultaneousMatches = courtsAvailable;
     let teamIndex = 0; 
     let currentDayIndex = currentDay;
-    console.log("currentDayIndex =? currentDay:", currentDayIndex, ":", currentDay);
     
     while (teamIndex < availableTeams.length) {
       for (let i = 0; i < simultaneousMatches && teamIndex < availableTeams.length; i++) {
@@ -101,20 +100,13 @@ export class FixtureService {
 
           const matchHourDecimal = getHours(currentMatchTime) + getMinutes(currentMatchTime) / 60;          
           const closingHourDecimal = closingHour + getMinutes(closingHour) / 60;
-          
-          console.log("matchHour : closingTime",matchHourDecimal, "y", closingHourDecimal);
           if(matchHourDecimal >= closingHourDecimal){
-            console.log("actualizando currentDayIndex, Reiniciando matchHour y matchTime");
             
             currentDayIndex ++;
             currentMatchTime = parse(format(dailyStartHour, 'HH:mm'), 'HH:mm', new Date());
 
             if(currentDayIndex >= playingDay.length){
-              console.log("reiniciando currentDayindex:", currentDayIndex, ">=?", playingDay.length);
-              
               currentDayIndex = 0;
-              console.log("reiniciado", currentDayIndex);
-              
             }
           }
           const teams = [availableTeams[teamIndex], availableTeams[teamIndex + 1]];
@@ -127,10 +119,7 @@ export class FixtureService {
           teamIndex += 2; 
         }
       }
-      console.log("dayIndex2:", currentDayIndex);
-      
       currentMatchTime = addMinutes(currentMatchTime, matchDuration);      
-      console.log("currentMatchTime:", currentMatchTime);
     }
 
     const formattedCurrentHour = format(currentMatchTime, 'HH:mm');
