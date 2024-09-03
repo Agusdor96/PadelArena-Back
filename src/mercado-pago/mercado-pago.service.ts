@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -14,7 +13,6 @@ import { Repository } from 'typeorm';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
 import * as crypto from 'crypto';
-import { PaymentDetailDto } from './dtos/paymentDetail.dto';
 
 @Injectable()
 export class MercadoPagoService {
@@ -49,21 +47,14 @@ export class MercadoPagoService {
         },
       ],
       back_urls: {
-        success: 'https://google.com',
-        failure: 'https://youtube.com',
-        pending: 'https://youtube-music.com',
+        success: `${req.host}/${req.tournament}`,
+        failure: `${req.host}/${req.tournament}`,
+        pending: `${req.host}/${req.tournament}`,
       },
       auto_return: 'approved',
       external_reference: `user:${req.user},tournament:${req.tournament}`,
     };
     const preference = await new Preference(client).create({ body });
-    const prefId = {
-      preferenceId: preference.id,
-      tournament: tournament,
-      user: user,
-      external_reference: preference.external_reference,
-    };
-    await this.paymentDetailRepository.save(prefId);
     return { redirectUrl: preference.init_point };
   }
 
@@ -71,38 +62,30 @@ export class MercadoPagoService {
     const externalReference = payment.external_reference;
     const userid = externalReference.split(',')[0].split(':')[1];
     const tournamentid = externalReference.split(',')[1].split(':')[1];
-    const payDetail = await this.paymentDetailRepository.findOne({
-      where: {
-        external_reference: externalReference
-      },
-      relations: {
-        user: true,
-        tournament: true,
-      },
+
+    const tournament = await this.tournamentRepository.findOne({
+      where: { id: tournamentid },
     });
-    if (!payDetail) throw new NotFoundException('No fue posible encontrar la preferencia correspondiente al pago a ejecutarse')
-    const payIncludesUser = payDetail.user.id === userid;
-    const payIncludesTournament = payDetail.tournament.id === tournamentid;
-    if (payIncludesUser && payIncludesTournament) {
-      const pay: PaymentDetailDto = {
+    if (!tournament) {
+      throw new NotFoundException('No se encontró el torneo');
+    }
+    const user = await this.userRepsoitory.findOne({ where: { id: userid } });
+    if (!user) {
+      throw new NotFoundException('No se encontró al usuario')
+    }
+      const pay = {
         payment_id: String(payment.id),
         date_approved: payment.date_approved,
         date_created: payment.date_created,
         date_last_updated: payment.date_last_updated,
         status: payment.status,
-        transaction_amount: payment.transaction_amount
-      };
-      await this.paymentDetailRepository.update(payDetail.id, pay);
-      const paymentCompleted = await this.paymentDetailRepository.findOne({
-        where: { id: payDetail.id },
-    relations: { user: true, tournament: true },
-      });
+        transaction_amount: payment.transaction_amount,
+        user,
+        tournament
+      }
+      const paymentCompleted = await this.paymentDetailRepository.save(pay)
       return { message: paymentCompleted };
-    } else {
-      throw new BadRequestException(
-        'El usuario y torneo proporcionados no coinciden con ninguna referencia',
-      );
-    }
+    
   }
 
   getpayment(id: string) {
@@ -120,8 +103,8 @@ export class MercadoPagoService {
   async getPreferenceByUserId() {
     const payments = await this.paymentDetailRepository.find({
       order: {
-        date_created: 'DESC'
-      }
+        date_created: 'DESC',
+      },
     });
     const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;
@@ -174,14 +157,18 @@ export class MercadoPagoService {
 
   encryptHeaders(body: any) {
     const parts = body.xSignature.split(',');
+
     let timestamps: string;
     let encryptedToken: string;
     parts.forEach((part) => {
       const [key, value] = part.split('=');
+
       if (key && value) {
+
         const trimmedKey = key.trim();
         const trimmedValue = value.trim();
         if (trimmedKey === 'ts') {
+
           timestamps = trimmedValue;
         } else if (trimmedKey === 'v1') {
           encryptedToken = trimmedValue;
@@ -189,8 +176,11 @@ export class MercadoPagoService {
       }
     });
     const secret = process.env.MP_SECRET_KEY;
+
     const manifest = `id:${body.data.id};request-id:${body.xRequestId};ts:${timestamps};`;
+
     const hmac = crypto.createHmac('sha256', secret);
+
     hmac.update(manifest);
     const sha = hmac.digest('hex');
     if (sha !== encryptedToken) {
@@ -198,5 +188,6 @@ export class MercadoPagoService {
         'Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago',
       );
     }
+    return true
   }
 }
