@@ -4,6 +4,7 @@ import { Match } from './entities/match.entity';
 import { Repository } from 'typeorm';
 import { Team } from 'src/team/entities/team.entity';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
+import { format } from 'date-fns-tz';
 
 @Injectable()
 export class MatchService {
@@ -15,28 +16,23 @@ export class MatchService {
   //   @Inject() private tournamentService: TournamentService,
   ) {}
 
-  async createMatch({ teams, tournament}) {
-    
-    for (const teamName of teams) {
-      const teamsFinder = await this.teamRepository.findOne({
-        where: {
-          name: teamName.name,
-        },
-      })
-      if (!teamsFinder) {
-        throw new NotFoundException('No se encontró un equipo con el nombre: ',
-        teamName.name)
-      }
-    }
-      const newMatch = {
-          tournament
-        };
-        const match = await this.matchRepository.save(newMatch);
-        match.teams = [teams[0], teams[1]]
-        await this.matchRepository.save(match)
-        return match
+  async createMatch({ teams, tournament, currentHour, dayIndex }) {
+    const {playingDay} = tournament;
+    const [team1, team2] = teams;
+
+    const timeZone = 'America/Argentina/Buenos_Aires';
+    const matchStartTime = format(currentHour, 'HH:mm', { timeZone });
+
+    const newMatch = {
+      tournament,
+        teams: [team1, team2],
+        date: playingDay[dayIndex],
+        time: matchStartTime,
+      };
+
+    const savedMatch = await this.matchRepository.save(newMatch)
+    return savedMatch
       
-    
   }
 
   async getAllMatchesFromTournament(tournamentId: string) {

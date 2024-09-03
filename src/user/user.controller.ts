@@ -39,7 +39,7 @@ export class UserController {
     @Body()adminKey:AdminKeyDto){
       return this.userService.updateUserRole(userId, adminKey)
     }
-
+    
   @Put("updateProfile/:userId")
   // @UseGuards(AuthGuard)
   @SwaggerUpdateUser()

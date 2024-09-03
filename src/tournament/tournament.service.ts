@@ -9,6 +9,7 @@ import { FixtureService } from 'src/fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
 import { FileService } from 'src/file/file.service';
+import { addDays, format, parse, differenceInHours } from 'date-fns';
 
 @Injectable()
 export class TournamentService {
@@ -22,7 +23,7 @@ constructor(
   async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
-      if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
+    if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
       
       const existingTournament = await this.tournamentRepository.findOne({
         where: {
@@ -39,31 +40,30 @@ constructor(
       throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64")
     }
 
-      const InitialMatches = createTournamentDto.teamsQuantity /2;
-      const startTime = new Date(createTournamentDto.startTime);
-      const endTime = new Date(createTournamentDto.endTime);
-      const availableHoursPerDay = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-      const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
+    const InitialMatches = createTournamentDto.teamsQuantity /2;
+    const startTime = parse(createTournamentDto.startTime, 'HH:mm', new Date());
+    const endTime = parse(createTournamentDto.endTime, 'HH:mm', new Date());
+    const availableHoursPerDay = differenceInHours(endTime, startTime);
+    const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
-      let qMatchRounds = InitialMatches;
-      let totalMatches = 0;
-      while(qMatchRounds > 1 ){
-        totalMatches += qMatchRounds;
+    let qMatchRounds = InitialMatches;
+    let totalMatches = 0;
+    while(qMatchRounds > 1 ){
+      totalMatches += qMatchRounds;
         qMatchRounds /= 2;
       }
       totalMatches +=1;
   
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
-      const endDate = new Date(createTournamentDto.startDate);
-      endDate.setDate(endDate.getDate() + tournamentDuration);
+      const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
 
       const tournament = new TournamentEntity();
         tournament.name = createTournamentDto.name;
         tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
-        tournament.startingTime = createTournamentDto.startTime;
-        tournament.finishTime = createTournamentDto.endTime;
+        tournament.startingTime = format(startTime, 'HH:mm'); 
+        tournament.finishTime = format(endTime, 'HH:mm');
         tournament.playingDay = createTournamentDto.playingDays;
         tournament.status = StatusEnum.UPCOMING;
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
@@ -115,8 +115,11 @@ constructor(
     if (!uuidValidate(id)) throw new BadRequestException("Debes proporcionar un id de tipo UUID valido")
 
     const tournament = await this.getTournament(id);
+    const teams = tournament.team
     if(!tournament) throw new NotFoundException("No se encontro ningun torneo con el id proporcionado")
-
+    if(teams.length !== tournament.teamsQuantity ){
+      throw new BadRequestException("No se puede cerrar un torneo sin la cantidad de equipos exacta (16, 32 o 64)");
+    }
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED})
     return await this.fixtureService.createFixture(tournament.id)
   }
@@ -144,8 +147,8 @@ constructor(
       if(existingTournament){
         continue;
       }
-        const startTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.startTime}:00.000Z`);
-        const endTime = new Date(`${tournament.startDate.split("T")[0]}T${tournament.endTime}:00.000Z`);
+      const startTime = tournament.startTime; 
+      const endTime = tournament.endTime;
 
         const newTournament = {
             ...tournament,
