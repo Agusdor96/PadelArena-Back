@@ -11,22 +11,22 @@ export class PaymentDetail {
     id: string = uuid()
 
     @Column()
-    preferenceId: string
+    payment_id: string
 
     @Column()
-    external_reference: string
+    status: string
 
-    @Column({nullable:true})
-    payment_id?: string
+    @Column()
+    date_created: Date
 
-    @Column({nullable:true})
-    status?: string
+    @Column()
+    date_approved: Date
+    
+    @Column()
+    date_last_updated: Date
 
-    @Column({nullable:true})
-    date_created?: string
-
-    @Column({nullable:true})
-    transaction_amount?: number
+    @Column()
+    transaction_amount: number
 
     @ManyToOne(()=> TournamentEntity)
     @JoinColumn({name: 'PAYMENTS-TOURNAMENT'})
