@@ -1,11 +1,9 @@
 
 export class PaymentDetailDto {
-    preference_id:string
-    payment: string
+    payment_id: string
     status: string
     date_created: string
-    date_last_update?: string
+    date_last_updated: string
+    date_approved: string
     transaction_amount: number
-    payment_method_id: string
-    payment_type_id:string
 }
