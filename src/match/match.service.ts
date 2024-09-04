@@ -16,17 +16,17 @@ export class MatchService {
   //   @Inject() private tournamentService: TournamentService,
   ) {}
 
-  async createMatch({ teams, tournament, currentHour, dayIndex }) {
+  async createMatch({ teams, tournament, currentMatchTime, currentDayIndex }) {
     const {playingDay} = tournament;
     const [team1, team2] = teams;
 
     const timeZone = 'America/Argentina/Buenos_Aires';
-    const matchStartTime = format(currentHour, 'HH:mm', { timeZone });
+    const matchStartTime = format(currentMatchTime, 'HH:mm', { timeZone });
 
     const newMatch = {
       tournament,
         teams: [team1, team2],
-        date: playingDay[dayIndex],
+        date: playingDay[currentDayIndex],
         time: matchStartTime,
       };
 

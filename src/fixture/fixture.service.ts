@@ -13,9 +13,10 @@ import { MatchService } from 'src/match/match.service';
 import { Match } from 'src/match/entities/match.entity';
 import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics.service';
 // import { DateTime } from 'luxon';
-import { setHours, addHours, getMinutes, getHours, parse, addMinutes } from 'date-fns';
+import { setHours, addDays, getMinutes, getHours, parse, addMinutes, setMinutes } from 'date-fns';
 import { toZonedTime, format } from 'date-fns-tz';
 import { Team } from 'src/team/entities/team.entity';
+import { StatusEnum } from 'src/tournament/tournament.enum';
 
 
 @Injectable()
@@ -63,10 +64,10 @@ export class FixtureService {
 
     const teamsByOrder:Team[] = tournament.team.sort((team) => team.order);
     const availableTeams: Team[] = teamsByOrder.filter((team) => team.ableForPlay === true);
-    const validTeamCounts: number[] = [ 2, 4, 8, 16, 32, 64];
-    const includerVerify:boolean = validTeamCounts.includes(availableTeams.length);
+    const validTeamSizes: number[] = [ 2, 4, 8, 16, 32, 64];
+    const isValidTeamCount:boolean = validTeamSizes.includes(availableTeams.length);
 
-    if(!includerVerify) throw new BadRequestException("Cantidad de equipos invalida para crear la ronda")
+    if(!isValidTeamCount) throw new BadRequestException("Cantidad de equipos invalida para crear la ronda")
 
     let stage = '';
     switch (availableTeams.length) {
@@ -79,54 +80,51 @@ export class FixtureService {
             default: stage = 'Ronda no válida';
     }
 
-    const { startingTime, matchDuration, courtsAvailable, finishTime} = tournament;
-    
-    const startHour: Date = parse(startingTime, 'HH:mm', new Date());
-    const finishHour: Date = parse(finishTime, 'HH:mm', new Date());
-    let currentHour: Date = tournament.currentHour 
-      ? parse(tournament.currentHour, 'HH:mm', new Date())
-      : startHour;
-    
-    const startHourValue: number = getHours(startHour);
-    const finishHourValue: number = getHours(finishHour);
-    let currentHourValue: number = getHours(currentHour);
+    const { startingTime, matchDuration, courtsAvailable, finishTime, playingDay} = tournament;
+    let {currentDay, matchStartTime} = tournament
 
-    const matchesAtSameTime = courtsAvailable;
-    let currentTeamIndex = 0; 
-    let dayIndex = 0;
+    const dailyStartHour: Date = parse(startingTime, 'HH:mm', new Date());
+    const dailyEndHour: Date = parse(finishTime, 'HH:mm', new Date());
+    let currentMatchTime: Date = matchStartTime 
+      ? parse(matchStartTime, 'HH:mm', new Date())
+      : dailyStartHour;
+    
+    const closingHour: number = getHours(dailyEndHour);
+    
+    const simultaneousMatches = courtsAvailable;
+    let teamIndex = 0; 
+    let currentDayIndex = currentDay;
+    
+    while (teamIndex < availableTeams.length) {
+      for (let i = 0; i < simultaneousMatches && teamIndex < availableTeams.length; i++) {
+        if (teamIndex + 1 < availableTeams.length) {  
 
-    while (currentTeamIndex < availableTeams.length) {
-      
-      for (let i = 0; i < matchesAtSameTime && currentTeamIndex < availableTeams.length; i++) {
-        
-        if (currentTeamIndex + 1 < availableTeams.length) {
-          const currentHourDecimal = getHours(currentHour) + getMinutes(currentHour) / 60;
-          const finishTimeDecimal = finishHourValue + getMinutes(finishHourValue) / 60;
-          
-          if(currentHourDecimal >= finishTimeDecimal){
-            dayIndex ++;
-            currentHourValue = startHourValue;
-            currentHour = parse(format(startHour, 'HH:mm'), 'HH:mm', new Date());
+          const matchHourDecimal = getHours(currentMatchTime) + getMinutes(currentMatchTime) / 60;          
+          const closingHourDecimal = closingHour + getMinutes(closingHour) / 60;
+          if(matchHourDecimal >= closingHourDecimal){
             
-            if(dayIndex >= tournament.playingDay.length){
-              dayIndex = 0;
+            currentDayIndex ++;
+            currentMatchTime = parse(format(dailyStartHour, 'HH:mm'), 'HH:mm', new Date());
+
+            if(currentDayIndex >= playingDay.length){
+              currentDayIndex = 0;
             }
           }
-          const teams = [availableTeams[currentTeamIndex], availableTeams[currentTeamIndex + 1]];
+          const teams = [availableTeams[teamIndex], availableTeams[teamIndex + 1]];
           await this.matchService.createMatch({
             teams,
             tournament,
-            currentHour,
-            dayIndex
+            currentMatchTime,
+            currentDayIndex
           });
-          currentTeamIndex += 2; 
+          teamIndex += 2; 
         }
       }
-      currentHour = addMinutes(currentHour, matchDuration);
+      currentMatchTime = addMinutes(currentMatchTime, matchDuration);      
     }
 
-    const formattedCurrentHour = format(currentHour, 'HH:mm');
-    await this.tournamentRepository.update(tournamentID, { currentHour: formattedCurrentHour });
+    const formattedCurrentHour = format(currentMatchTime, 'HH:mm');
+    await this.tournamentRepository.update(tournamentID, { matchStartTime: formattedCurrentHour, currentDay: currentDayIndex});
 
     const matches = await this.matchService.getAllMatchesFromTournament(tournament.id);
     const matchesNotPlayed = matches.filter((match) => match.teamWinner === null);
@@ -149,11 +147,11 @@ export class FixtureService {
       where: { id: matchId },
       relations: { teams: { user: true }, round: true, tournament: true },
     });
+    if (!match) throw new NotFoundException('No fue posible encontrar el partido');
 
     const teamsIds = match.teams.map((team) => team.id);
     const teamIdInMatch = teamsIds.includes(winnerId);
-
-    if (!match) throw new NotFoundException('No fue posible encontrar el partido');
+    
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
 
     await this.matchRepository.update(matchId, { teamWinner: winnerId });
@@ -165,6 +163,10 @@ export class FixtureService {
     });
 
     if (round.stage === 'final') {
+      const tournamentFromMatch = match.tournament.id
+      await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}})
+      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
+      
       return { message: 'Final definida', winner: winnerId };
     } else {
       const allMatchesFromThatRound = round.matches;
