@@ -74,7 +74,8 @@ constructor(
         tournament.category = category;
         tournament.price = createTournamentDto.price;
         tournament.plusCode = createTournamentDto.plusCode
-        tournament.location = createTournamentDto.location
+        tournament.latitud = createTournamentDto.latitud
+        tournament.longitud = createTournamentDto.longitud
     
       const newTournament = await this.tournamentRepository.save(tournament);
 
