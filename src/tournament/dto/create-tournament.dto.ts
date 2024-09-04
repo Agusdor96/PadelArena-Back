@@ -66,7 +66,7 @@ export class CreateTournamentDto {
     plusCode: string
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsString()
     location: string
 
     
