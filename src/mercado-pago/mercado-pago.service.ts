@@ -84,8 +84,12 @@ export class MercadoPagoService {
         tournament
       }
       const paymentCompleted = await this.paymentDetailRepository.save(pay)
-      return { message: paymentCompleted };
-    
+      const {password, ...cleanUser} =paymentCompleted.user
+      const response = {
+        user: cleanUser,
+        ...paymentCompleted
+      }
+      return { message: response };
   }
 
   getpayment(id: string) {
