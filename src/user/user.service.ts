@@ -11,6 +11,7 @@ import { validate as uuidValidate } from 'uuid';
 import { AdminKeyDto } from './dto/adminKey.dto';
 import { ConfigService } from '@nestjs/config';
 import { RoleEnum } from './roles.enum';
+import { sender } from './categoryChangeMail';
 
 @Injectable()
 export class UserService {
@@ -73,9 +74,11 @@ constructor(
     }
 
     await this.userRepository.update(userId, newUserCategory)
+    sender(user.email)
     const updatedUser = await this.userRepository.findOne({where:{id:userId}, relations:{category:true}})
-    
-    return updatedUser;
+    const {password, ...cleanUser} = updatedUser
+
+    return cleanUser;
   }  
 
  async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {

@@ -5,7 +5,7 @@ export const sender = async (userEmail:string)=>{
         from: '"Padel Arena 🎾" <arenapaddle@gmail.com>',
         to: userEmail,
         subject: "Notificacion de registro de usuario exitoso",
-        html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        html:`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
  <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@ export const sender = async (userEmail:string)=>{
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="telephone=no" name="format-detection">
-  <title>Copy of (1) Empty template</title><!--[if (mso 16)]>
+  <title>Empty template</title><!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}
     </style>
@@ -96,7 +96,7 @@ a[x-apple-data-detectors],
                   <td valign="top" align="center" style="padding:0;Margin:0;width:600px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px;font-size:0"><img src="https://fojrfxl.stripocdn.email/content/guids/CABINET_91e0736b42e150e9fe8c1ef36b23e962680506879b9f5850b336019b4223a1c7/images/image_bog.png" alt="" width="600" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img src="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_eh7.png" alt="" width="600" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -116,7 +116,7 @@ a[x-apple-data-detectors],
                   <td align="center" valign="top" style="padding:0;Margin:0;width:600px">
                    <table cellpadding="0" width="100%" cellspacing="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img alt="" height="269" src="https://fojrfxl.stripocdn.email/content/guids/CABINET_91e0736b42e150e9fe8c1ef36b23e962680506879b9f5850b336019b4223a1c7/images/image_Mm6.png" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img alt="" height="268" src="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_UBo.png" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -136,10 +136,10 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:600px">
                    <table cellspacing="0" width="100%" role="presentation" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" class="es-text-4728 es-m-p15" style="padding:20px;Margin:0"><h1 class="es-text-mobile-size-48 es-m-txt-c" style="Margin:0;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';mso-line-height-rule:exactly;letter-spacing:0;font-size:48px;font-style:normal;font-weight:normal;line-height:57.6px;color:#ffffff"><strong>Bienvenido a</strong></h1><h1 class="es-text-mobile-size-48 es-m-txt-c" style="Margin:0;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';mso-line-height-rule:exactly;letter-spacing:0;font-size:48px;font-style:normal;font-weight:normal;line-height:57.6px;color:#ffffff"><strong>Padel Arena</strong></h1></td>
+                      <td align="center" class="es-text-4728 es-m-p15" style="padding:20px;Margin:0"><h1 class="es-text-mobile-size-48 es-m-txt-c" style="Margin:0;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';mso-line-height-rule:exactly;letter-spacing:0;font-size:48px;font-style:normal;font-weight:normal;line-height:57.6px;color:#ffffff"><strong>¡Felicidades!</strong></h1></td>
                      </tr>
                      <tr>
-                      <td align="center" class="es-text-1923 es-m-p15" style="padding:20px;Margin:0"><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">Ya sos parte de nuestra comunidad, asi &nbsp;que agarrá</p><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">tu paleta, calzate las zapatillas y preparate para</p><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">romperla. Ingresá en el link para inscribirte al</p><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">próximo torneo.</p></td>
+                      <td align="center" class="es-text-1923 es-m-p15" style="padding:20px;Margin:0"><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">¡Nos alegra compartir con vos la alegría de ascender</p><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">&nbsp;a una nueva categoría! No vale aflojarle,&nbsp;</p><p class="es-text-mobile-size-13" style="Margin:0;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:19.5px;letter-spacing:0;color:#ffffff;font-size:13px">a entrenar y seguir dando lo mejor de vos 💥🎾</p></td>
                      </tr>
                      <tr>
                       <td align="center" class="es-m-p15" style="padding:20px;Margin:0"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#bef164;border-width:0;display:inline-block;border-radius:30px;width:auto"><a target="_blank" href="https://padelarena.vercel.app" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#000000;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#bef164;border-radius:30px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';font-weight:bold;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #bef164">Go to link</a></span></td>
@@ -175,7 +175,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:600px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img width="600" src="https://fojrfxl.stripocdn.email/content/guids/CABINET_91e0736b42e150e9fe8c1ef36b23e962680506879b9f5850b336019b4223a1c7/images/image_UFC.png" alt="" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img width="600" src="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_DDe.png" alt="" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>
