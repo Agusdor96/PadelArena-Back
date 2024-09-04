@@ -66,6 +66,10 @@ export class CreateTournamentDto {
     plusCode: string
 
     @IsNotEmpty()
-    @IsString()
-    location: string
+    @IsNumber()
+    longitud: number
+
+    @IsNotEmpty()
+    @IsNumber()
+    latitud: number
 }

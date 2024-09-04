@@ -12,7 +12,9 @@
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Primera",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "5PWX+84 Santiago del Estero",
+    "latitud": 40.714224,
+    "longitud": -73.961452
   },
   {
     "name": "Autumn Padel Challenge",
@@ -27,7 +29,9 @@
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Segunda",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "5PWX+84 Santiago del Estero",
+    "latitud": 40.714224,
+    "longitud": -73.961452
   },
   {
     "name": "Winter Padel League",
@@ -42,7 +46,9 @@
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Tercera",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "5PWX+84 Santiago del Estero",
+    "latitud": 40.714224,
+    "longitud": -73.961452
   },
   {
     "name": "Spring Padel Open",
@@ -57,7 +63,9 @@
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Cuarta",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "5PWX+84 Santiago del Estero",
+    "latitud": 40.714224,
+    "longitud": -73.961452
   },
   {
     "name": "Padel Masters Cup",
@@ -72,6 +80,8 @@
     "tournamentFlyer": "/images/default-image.jpg",
     "category": "Quinta",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "5PWX+84 Santiago del Estero",
+    "latitud": 40.714224,
+    "longitud": -73.961452
   }
 ]
