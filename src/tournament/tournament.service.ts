@@ -74,7 +74,6 @@ constructor(
         tournament.category = category;
         tournament.price = createTournamentDto.price;
         tournament.plusCode = createTournamentDto.plusCode;
-        tournament.location = createTournamentDto.location;
     
       const newTournament = await this.tournamentRepository.save(tournament);
 

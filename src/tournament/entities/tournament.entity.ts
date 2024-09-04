@@ -32,9 +32,6 @@ export class TournamentEntity {
   @Column("text", {array: true})
   playingDay:string[]
 
-  @Column()
-  location:string
-
   @Column({
     type: 'enum',
     enum: StatusEnum,
