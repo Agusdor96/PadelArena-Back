@@ -60,4 +60,12 @@ export class CreateTournamentDto {
     @IsNotEmpty()
     @IsNumber()
     price: number;
+
+    @IsNotEmpty()
+    @IsString()
+    plusCode: string
+
+    @IsNotEmpty()
+    @IsString()
+    location: string
 }

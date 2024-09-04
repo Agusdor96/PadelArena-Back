@@ -85,4 +85,10 @@ export class TournamentEntity {
 
   @Column()
   price: number
+
+  @Column()
+  plusCode:string
+
+  @Column()
+  location: string
 }
