@@ -103,7 +103,6 @@ export class AuthService {
 
         const newUser = await this.userService.createNewUser(googleUser)
         const newGoogleUser = newUser.withoutPassword
-
         if(newGoogleUser){
           const userPayload = {
             sub: newGoogleUser.id,
@@ -112,7 +111,7 @@ export class AuthService {
             role: newGoogleUser.role 
           }
           const token = this.JWTservice.sign(userPayload);
-          
+          sender(newGoogleUser.email)
           return {message: 'Registro e inicio de sesion realizado con exito', token, newGoogleUser}
         }
     }

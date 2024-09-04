@@ -15,6 +15,7 @@ import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { StatusEnum } from 'src/tournament/tournament.enum';
 import { validate as uuidValidate } from 'uuid';
 import { PaymentDetail } from 'src/mercado-pago/entities/paymentDetail.entity';
+import { sender } from './inscriptionMail';
 
 @Injectable()
 export class TeamService {
@@ -133,6 +134,7 @@ export class TeamService {
       order: teams.length,
     };
     await this.teamRepository.save(team);
+    sender(player1.email, player2.email)
     return team;
   }
 

@@ -5,7 +5,7 @@ import { TournamentModule } from './tournament/tournament.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
-import typeorm from './config/typeorm';
+import typeorm from './user/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { TeamModule } from './team/team.module';
 import { MatchModule } from './match/match.module';
