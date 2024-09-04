@@ -20,10 +20,10 @@ export class PaymentDetail {
     date_created: Date
 
     @Column()
-    date_approved: Date
+    date_approved?: Date
     
     @Column()
-    date_last_updated: Date
+    date_last_updated?: Date
 
     @Column()
     transaction_amount: number
