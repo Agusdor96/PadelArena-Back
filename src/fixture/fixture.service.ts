@@ -141,7 +141,8 @@ export class FixtureService {
           
     newRound.fixture = tournament.fixture;
     const round = await this.roundRepository.save(newRound);
-    return round;     
+    const returnRound = await this.roundRepository.findOne({where:{id:round.id}, relations:{matches:{teams:true}}})
+    return returnRound;     
   }
 
   async uploadWinners({ matchId }, winnerId: string) {
@@ -188,7 +189,6 @@ export class FixtureService {
       where: {id:fixtureId},
       relations: {round: {matches: {teams:true}}}
     })
-
     if(!fixture) throw new NotFoundException("El torneo no tiene un fixture asociado o No se encuentra fixture con el id proporcionado")
   
     return fixture;  
