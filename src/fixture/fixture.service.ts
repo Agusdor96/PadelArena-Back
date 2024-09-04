@@ -30,6 +30,8 @@ export class FixtureService {
     private roundRepository: Repository<Round>,
     @InjectRepository(Match)
     private matchRepository: Repository<Match>,
+    @InjectRepository(Team)
+    private teamRepository: Repository<Team>,
     @Inject()
     private matchService: MatchService,
     @Inject()
@@ -139,22 +141,32 @@ export class FixtureService {
           
     newRound.fixture = tournament.fixture;
     const round = await this.roundRepository.save(newRound);
+    console.log("Esta es la nueva ronda que retorno:", round);
+    
     return round;     
   }
 
   async uploadWinners({ matchId }, winnerId: string) {
+    console.log("este es el param que llega:", winnerId);
+    
     const match = await this.matchRepository.findOne({
       where: { id: matchId },
       relations: { teams: { user: true }, round: true, tournament: true },
     });
     if (!match) throw new NotFoundException('No fue posible encontrar el partido');
-
-    const teamsIds = match.teams.map((team) => team.id);
-    const teamIdInMatch = teamsIds.includes(winnerId);
+    console.log("entrando a la funcion uploadWInner:", match.teamWinner);
     
+    const teamsIds = match.teams.map((team) => team.id);
+    console.log("ids de los equipos del partido:", teamsIds);
+    
+    const teamIdInMatch = teamsIds.includes(winnerId);
+    console.log("ganador incluido en los ids?:", teamIdInMatch);
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
 
     await this.matchRepository.update(matchId, { teamWinner: winnerId });
+    const buscandoGanador = await this.matchRepository.findOne({where:{teamWinner:winnerId}, relations:{teams:true}})
+    console.log("te estan buscando ganador:", buscandoGanador.teams);
+    
     await this.playerStatsService.addStats(teamsIds, winnerId);
 
     const round = await this.roundRepository.findOne({
@@ -162,12 +174,14 @@ export class FixtureService {
       relations: { matches: true },
     });
 
+    const winnerTeam = await this.teamRepository.findOne({where:{id:winnerId}})
     if (round.stage === 'final') {
       const tournamentFromMatch = match.tournament.id
       await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}})
       await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
+      console.log("este es el winnerTeam:", winnerTeam);
       
-      return { message: 'Final definida', winner: winnerId };
+      return { message: 'Final definida', winner: winnerTeam};
     } else {
       const allMatchesFromThatRound = round.matches;
       
@@ -179,8 +193,10 @@ export class FixtureService {
         }).includes(false);
         
         if (notAllMatchesHasWinner) {
-        return { message: 'Partido definido con exito' };
+        return { message: 'Partido definido con exito', winner: winnerTeam };
         } else {
+          console.log("esto es lo que se le pasa a createRound", match.tournament.id);
+          
           return await this.createRound(match.tournament.id);
         }
     }
