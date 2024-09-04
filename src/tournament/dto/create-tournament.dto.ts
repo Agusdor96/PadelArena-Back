@@ -67,9 +67,7 @@ export class CreateTournamentDto {
 
     @IsNotEmpty()
     @IsNumber()
-    longitud: string
+    location: string
 
-    @IsNotEmpty()
-    @IsNumber()
-    latitud: string
+    
 }
