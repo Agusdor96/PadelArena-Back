@@ -21,7 +21,6 @@ constructor(
 ){}
 
   async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
-console.log(createTournamentDto);
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
     if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
@@ -56,10 +55,7 @@ console.log(createTournamentDto);
       totalMatches +=1;
   
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
-
       const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
-      console.log(format(startTime, "HH:mm"));
-      console.log(format(endTime, "HH:mm"));
       
       const tournament = new TournamentEntity();
         tournament.name = createTournamentDto.name;
