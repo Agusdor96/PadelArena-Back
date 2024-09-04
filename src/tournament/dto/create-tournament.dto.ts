@@ -57,10 +57,12 @@ export class CreateTournamentDto {
     @IsUUID()
     category: string;
 
+    @ApiProperty({ description: 'El costo de la inscripcion al torneo', example: '10' })
     @IsNotEmpty()
     @IsNumber()
     price: number;
 
+    @ApiProperty({ description: 'codigo de google maps', example: 'VJH3+89 San Carlos de Bariloche, Río Negro Province' })
     @IsNotEmpty()
     @IsString()
     plusCode: string 

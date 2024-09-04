@@ -21,6 +21,7 @@ constructor(
 ){}
 
   async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
+console.log(createTournamentDto);
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
     if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
@@ -41,8 +42,8 @@ constructor(
     }
 
     const InitialMatches = createTournamentDto.teamsQuantity /2;
-    const startTime = parse(createTournamentDto.startTime, 'HH:mm', new Date());
-    const endTime = parse(createTournamentDto.endTime, 'HH:mm', new Date());
+    const startTime = createTournamentDto.startTime;
+    const endTime = createTournamentDto.endTime;
     const availableHoursPerDay = differenceInHours(endTime, startTime);
     const matchesPerDay = (availableHoursPerDay / (createTournamentDto.matchDuration / 60)) * createTournamentDto.courts;
 
@@ -57,13 +58,15 @@ constructor(
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
 
       const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
-
+      console.log(format(startTime, "HH:mm"));
+      console.log(format(endTime, "HH:mm"));
+      
       const tournament = new TournamentEntity();
         tournament.name = createTournamentDto.name;
         tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
-        tournament.startingTime = format(startTime, 'HH:mm'); 
-        tournament.finishTime = format(endTime, 'HH:mm');
+        tournament.startingTime = format(startTime, "HH:mm"); 
+        tournament.finishTime = format(endTime, "HH:mm");
         tournament.playingDay = createTournamentDto.playingDays;
         tournament.status = StatusEnum.UPCOMING;
         tournament.teamsQuantity = createTournamentDto.teamsQuantity;
@@ -148,8 +151,9 @@ constructor(
       if(existingTournament){
         continue;
       }
-      const startTime = tournament.startTime; 
-      const endTime = tournament.endTime;
+      const startTime = parse(tournament.startTime, 'HH:mm', new Date());
+      const endTime = parse(tournament.endTime, 'HH:mm', new Date());
+
 
         const newTournament = {
             ...tournament,
