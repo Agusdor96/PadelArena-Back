@@ -91,10 +91,4 @@ export class TournamentEntity {
 
   @Column()
   plusCode:string
-
-  @Column()
-  latitud: string
-
-  @Column()
-  longitud: string
 }
