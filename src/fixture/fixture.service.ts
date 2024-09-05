@@ -188,7 +188,7 @@ export class FixtureService {
   async getOneFixture(fixtureId: string) {
     const fixture = await this.fixtureRepository.findOne({
       where: {id:fixtureId},
-      relations: {round: {matches: {teams:true}}}
+      relations: {round: {matches: {teams:true, teamWinner:true}}}
     })
     if(!fixture) throw new NotFoundException("El torneo no tiene un fixture asociado o No se encuentra fixture con el id proporcionado")
   
