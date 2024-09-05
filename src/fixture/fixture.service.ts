@@ -128,7 +128,8 @@ export class FixtureService {
     const formattedCurrentHour = format(currentMatchTime, 'HH:mm');
     await this.tournamentRepository.update(tournamentID, { matchStartTime: formattedCurrentHour, currentDay: currentDayIndex});
 
-    const matches = await this.matchService.getAllMatchesFromTournament(tournament.id);
+    const matches = await this.matchRepository.find({where:{tournament:{id:tournamentID}}, relations:["teamWinner"]})
+    
     const matchesNotPlayed = matches.filter((match) => match.teamWinner === null);
     const newRound = new Round();
     newRound.stage = stage;
@@ -159,7 +160,7 @@ export class FixtureService {
     const winnerTeam: Team = await this.teamRepository.findOne({where:{id:winnerId}})
     match.teamWinner = winnerTeam
 
-    await this.matchRepository.update(matchId, match);
+    await this.matchRepository.save(match);
     await this.playerStatsService.addStats(teamsIds, winnerId);
 
     const round = await this.roundRepository.findOne({

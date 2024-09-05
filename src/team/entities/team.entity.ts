@@ -9,6 +9,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -36,6 +37,9 @@ export class Team {
 
   @ManyToOne(() => TournamentEntity, (tournament) => tournament.team)
   tournament: TournamentEntity;
+
+  @OneToMany(() => Match, (match) => match.teamWinner, {nullable:true})
+  matchesWon: Match[];
 
   @Column({default:true})
   ableForPlay: boolean;

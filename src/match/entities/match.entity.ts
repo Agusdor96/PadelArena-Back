@@ -24,10 +24,9 @@ export class Match {
     @ManyToOne(()=> TournamentEntity, tournament=> tournament.matches)
     tournament: TournamentEntity
 
-    @ManyToOne(() => Team, { nullable: true })
-    teamWinner?: Team; 
+    @ManyToOne(() => Team, (team) => team.matchesWon, { nullable: true })
+    teamWinner: Team
   
-
     @ManyToOne(()=> Round, (round)=>round.matches)
     round: Round
 }
