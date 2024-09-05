@@ -30,6 +30,8 @@ export class FixtureService {
     private roundRepository: Repository<Round>,
     @InjectRepository(Match)
     private matchRepository: Repository<Match>,
+    @InjectRepository(Team)
+    private teamRepository: Repository<Team>,
     @Inject()
     private matchService: MatchService,
     @Inject()
@@ -139,7 +141,8 @@ export class FixtureService {
           
     newRound.fixture = tournament.fixture;
     const round = await this.roundRepository.save(newRound);
-    return round;     
+    const returnRound = await this.roundRepository.findOne({where:{id:round.id}, relations:{matches:{teams:true}}})
+    return returnRound;     
   }
 
   async uploadWinners({ matchId }, winnerId: string) {
@@ -151,7 +154,6 @@ export class FixtureService {
 
     const teamsIds = match.teams.map((team) => team.id);
     const teamIdInMatch = teamsIds.includes(winnerId);
-    
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
 
     await this.matchRepository.update(matchId, { teamWinner: winnerId });
@@ -162,34 +164,33 @@ export class FixtureService {
       relations: { matches: true },
     });
 
+    const winnerTeam = await this.teamRepository.findOne({where:{id:winnerId}})
+    if(!winnerTeam)throw new NotFoundException("No se pudo encontrar al equipo ganador")
+    const tournamentFromMatch = match.tournament.id
+
     if (round.stage === 'final') {
-      const tournamentFromMatch = match.tournament.id
-      await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}})
       await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
+      return { message: 'Final definida', winner: winnerTeam};
+    } 
+
+    const allMatchesFromThatRound = round.matches;
       
-      return { message: 'Final definida', winner: winnerId };
-    } else {
-      const allMatchesFromThatRound = round.matches;
-      
-      const notAllMatchesHasWinner = allMatchesFromThatRound.map((match) => {
-        const hasWinner = match.teamWinner;
-        if (hasWinner !== null) {
-        return true;
-        } else return false;
-        }).includes(false);
+    const allMatchesHaveWinners = allMatchesFromThatRound.every((match) => match.teamWinner !== null);
         
-        if (notAllMatchesHasWinner) {
-        return { message: 'Partido definido con exito' };
-        } else {
-          return await this.createRound(match.tournament.id);
-        }
-    }
+    if (!allMatchesHaveWinners) {
+      return { message: 'Partido definido con exito', winner: winnerTeam };
+    }  
+
+    return await this.createRound(tournamentFromMatch);
   }
 
   async getOneFixture(fixtureId: string) {
-  const fixture = await this.fixtureRepository.findOne({where: {id:fixtureId},relations: {round: {matches: {teams:true}}}})
-  if(!fixture) throw new NotFoundException("El torneo no tiene un fixture asociado o No se encuentra fixture con el id proporcionado")
+    const fixture = await this.fixtureRepository.findOne({
+      where: {id:fixtureId},
+      relations: {round: {matches: {teams:true}}}
+    })
+    if(!fixture) throw new NotFoundException("El torneo no tiene un fixture asociado o No se encuentra fixture con el id proporcionado")
   
-  return fixture;  
+    return fixture;  
   }
 }
