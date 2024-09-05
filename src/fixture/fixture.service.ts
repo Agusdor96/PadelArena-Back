@@ -164,7 +164,7 @@ export class FixtureService {
 
     const round = await this.roundRepository.findOne({
       where: { id: match.round.id },
-      relations: { matches: {teamWinner:true}
+      relations: { fixture:true, matches: {teamWinner:true}
       },
     });
 
