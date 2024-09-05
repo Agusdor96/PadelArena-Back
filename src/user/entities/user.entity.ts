@@ -4,6 +4,7 @@ import { Team } from "src/team/entities/team.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RoleEnum } from "../roles.enum";
 import {v4 as uuid} from 'uuid';
+import { Message } from "src/global-chat/entities/message.entity";
 
 @Entity({
     name: "USERS"  
@@ -55,4 +56,10 @@ export class User {
     @OneToOne(()=> PlayerStadistic, {nullable: true})
     @JoinColumn({name: "player_stadistics"})
         playerStadistic: PlayerStadistic
+
+    @Column({nullable: true})
+    clientId?: string
+
+    @ManyToOne(()=> Message, message => message.sender)
+    messages: Message[]
 }
