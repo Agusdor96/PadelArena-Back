@@ -155,8 +155,11 @@ export class FixtureService {
     const teamsIds = match.teams.map((team) => team.id);
     const teamIdInMatch = teamsIds.includes(winnerId);
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
+    
+    const winnerTeam: Team = await this.teamRepository.findOne({where:{id:winnerId}})
+    match.teamWinner = winnerTeam
 
-    await this.matchRepository.update(matchId, { teamWinner: winnerId });
+    await this.matchRepository.update(matchId, match);
     await this.playerStatsService.addStats(teamsIds, winnerId);
 
     const round = await this.roundRepository.findOne({
@@ -164,7 +167,6 @@ export class FixtureService {
       relations: { matches: true },
     });
 
-    const winnerTeam = await this.teamRepository.findOne({where:{id:winnerId}})
     if(!winnerTeam)throw new NotFoundException("No se pudo encontrar al equipo ganador")
     const tournamentFromMatch = match.tournament.id
 
