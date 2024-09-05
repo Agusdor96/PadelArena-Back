@@ -164,7 +164,7 @@ export class FixtureService {
 
     const round = await this.roundRepository.findOne({
       where: { id: match.round.id },
-      relations: { matches: {teamWinner:true}
+      relations: { fixture:true, matches: {teamWinner:true}
       },
     });
 
@@ -178,9 +178,14 @@ export class FixtureService {
 
     const allMatchesFromThatRound = round.matches;
     const allMatchesHaveWinners = allMatchesFromThatRound.every((match) => match.teamWinner !== null);
-        
+
+    const fixture = await this.fixtureRepository.findOne({
+      where: {id:round.fixture.id},
+      relations: {round: {matches: {teams:true, teamWinner:true}}}
+    })
+
     if (!allMatchesHaveWinners) {
-      return { message: 'Partido definido con exito', winner: winnerTeam, round:round };
+      return { fixture};
     } 
       return await this.createRound(tournamentFromMatch);
   }
