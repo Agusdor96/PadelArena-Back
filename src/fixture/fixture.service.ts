@@ -141,7 +141,7 @@ export class FixtureService {
           
     newRound.fixture = tournament.fixture;
     const round = await this.roundRepository.save(newRound);
-    const returnRound = await this.roundRepository.findOne({where:{id:round.id}, relations:{matches:{teams:true}}})
+    const returnRound = await this.roundRepository.findOne({where:{id:round.id}, relations:{matches:{teams:true, teamWinner:true}}})
     return returnRound;     
   }
 
@@ -179,8 +179,13 @@ export class FixtureService {
     const allMatchesFromThatRound = round.matches;
     const allMatchesHaveWinners = allMatchesFromThatRound.every((match) => match.teamWinner !== null);
         
+    const fixture = await this.fixtureRepository.findOne({
+      where: {id:round.fixture.id},
+      relations: {round: {matches: {teams:true, teamWinner:true}}}
+    })
+    
     if (!allMatchesHaveWinners) {
-      return { message: 'Partido definido con exito', winner: winnerTeam };
+      return { fixture };
     } 
       return await this.createRound(tournamentFromMatch);
   }
