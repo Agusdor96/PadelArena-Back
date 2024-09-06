@@ -190,7 +190,7 @@ export class FixtureService {
     await this.createRound(tournamentFromMatch);
 
     const actualTournament = await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}, 
-      relations:{fixture:{round:{matches:{teamWinner:true}}}}})
+      relations:{fixture:{round:{matches:{teams:true, teamWinner:true}}}}})
 
     const {fixture, ...rest} = actualTournament
     return fixture;
