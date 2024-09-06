@@ -177,14 +177,20 @@ export class FixtureService {
       await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
       return [winnerTeam]
     } 
-
     const allMatchesFromThatRound = round.matches;
     const allMatchesHaveWinners = allMatchesFromThatRound.every((match) => match.teamWinner !== null);
 
     if (!allMatchesHaveWinners) {
       return [winnerTeam];
     } 
-      return await this.createRound(tournamentFromMatch);
+    
+    await this.createRound(tournamentFromMatch);
+
+    const actualTournament = await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}, 
+      relations:{fixture:{round:{matches:{teamWinner:true}}}}})
+
+    const {fixture, ...rest} = actualTournament
+    return fixture;
   }
 
   async getOneFixture(fixtureId: string) {
