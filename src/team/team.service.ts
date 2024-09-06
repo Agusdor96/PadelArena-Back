@@ -42,7 +42,6 @@ export class TeamService {
       where: { id: tournamentId },
       relations: { category: true, team: { user: true } },
     });
-    console.log('TOURNAMENT', tournament);
     
     if (!tournament)
       throw new NotFoundException(
@@ -59,23 +58,30 @@ export class TeamService {
       );
 
     const [player1, player2] = players;
-    console.log('PLAYER1', player1);
-    console.log('PLAYER2', player2);
 
-    const payment = await this.paymentRepository.findOne({
+    const paymentPlayer1 = await this.paymentRepository.findOne({
       where: {
         tournament: {id: tournament.id},
-        user: {id: player1.id} || {id: player2.id},
+        user: {id: player1.id },
         status: 'approved',
       }, relations: {tournament: true, user: true}
     });
-    console.log('PAYMENT',payment);
     
-    if (!payment)
-      throw new BadRequestException(
+    if (!paymentPlayer1) {
+      const paymentPlayer2 = await this.paymentRepository.findOne({
+        where: {
+          tournament: {id: tournament.id},
+          user: {id: player2.id },
+          status: 'approved',
+        }, relations: {tournament: true, user: true}
+      });
+      if(!paymentPlayer2) {
+        throw new BadRequestException(
         'Debe pagar antes de poder registrar el equipo',
-      );
-
+        );
+      }
+    }
+      
     if (player1.category.id !== player2.category.id)
       throw new BadRequestException(
         'La categoria de los jugadores debe ser la misma para poder inscribirse al torneo',
