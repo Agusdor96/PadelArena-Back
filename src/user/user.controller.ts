@@ -58,6 +58,12 @@ export class UserController {
       return this.userService.updateUserCategory(userId, modifyCategory)
       }
 
+  @Get('tournament/:userId')
+  // @UseGuards(AuthGuard)
+  @UseInterceptors(PasswordInterceptor)
+  getUserTournament(@Param('userId', ParseUUIDPipe) userId: string) {
+    return this.userService.getUserTournament(userId);
+  }
   @Get(':id')
   // @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
