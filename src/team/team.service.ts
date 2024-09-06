@@ -42,6 +42,8 @@ export class TeamService {
       where: { id: tournamentId },
       relations: { category: true, team: { user: true } },
     });
+    console.log('TOURNAMENT', tournament);
+    
     if (!tournament)
       throw new NotFoundException(
         'No se encuentra torneo con el id proporcionado',
@@ -57,13 +59,18 @@ export class TeamService {
       );
 
     const [player1, player2] = players;
+    console.log('PLAYER1', player1);
+    console.log('PLAYER2', player2);
+
     const payment = await this.paymentRepository.findOne({
       where: {
         tournament: tournament,
         user: player1 || player2,
         status: 'approved',
-      },
+      }, relations: {tournament: true, user: true}
     });
+    console.log('PAYMENT',payment);
+    
     if (!payment)
       throw new BadRequestException(
         'Debe pagar antes de poder registrar el equipo',
