@@ -13,6 +13,7 @@ import { FixtureModule } from './fixture/fixture.module';
 import { FileModule } from './file/file.module';
 import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.module';
 import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
+import { GlobalChatModule } from './global-chat/global-chat.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
     FixtureModule,
     FileModule,
     PlayerStadisticsModule,
-    MercadoPagoModule
+    MercadoPagoModule,
+    GlobalChatModule
 
   ],
   controllers: [],
