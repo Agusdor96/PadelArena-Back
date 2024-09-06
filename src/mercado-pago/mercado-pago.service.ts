@@ -140,16 +140,14 @@ export class MercadoPagoService {
   }
 
   async getPaymentsFromUser(userId: string) {
-    const allPayments: PaymentDetail[] = await this.paymentDetailRepository
-      .createQueryBuilder('paymentDetail')
-      .leftJoinAndSelect('paymentDetail.user', 'user')
-      .where('user.id = :userId', { userId })
-      .getMany();
+    const payments = await this.paymentDetailRepository.find({
+      where: { user: { id: userId } }, relations: { tournament: true }
+    });
 
-    if (!allPayments.length)
+    if (!payments.length)
       throw new NotFoundException('No se encuentran pagos en este torneo');
 
-    const validPaymentId: PaymentDetail[] = allPayments.filter((payment) => {
+    const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;
     });
 
@@ -157,7 +155,17 @@ export class MercadoPagoService {
       throw new NotFoundException(
         'No se encuentran pagos concretados en la BDD',
       );
-    return validPaymentId;
+
+      const cleanPlayments = validPaymentId.map(payment => {
+        const {password, ...cleanUser} = payment.user
+        const {user, ...paymentClean} = payment
+        const response = {
+          user: cleanUser,
+          ...paymentClean
+        }
+      return { message: response };
+      })
+    return cleanPlayments;
   }
 
   encryptHeaders(body: any) {
