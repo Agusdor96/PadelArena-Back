@@ -64,7 +64,7 @@ export class TeamService {
 
     const payment = await this.paymentRepository.findOne({
       where: {
-        tournament: tournament,
+        tournament: {id: tournament.id},
         user: {id: player1.id} || {id: player2.id},
         status: 'approved',
       }, relations: {tournament: true, user: true}
