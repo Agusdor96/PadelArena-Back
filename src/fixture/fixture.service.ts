@@ -151,7 +151,7 @@ export class FixtureService {
       relations: { teams: { user: true }, round: true, tournament: true },
     });
     if (!match) throw new NotFoundException('No fue posible encontrar el partido');
-
+    
     const teamsIds = match.teams.map((team) => team.id);
     const teamIdInMatch = teamsIds.includes(winnerId);
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
