@@ -69,8 +69,8 @@ export class MercadoPagoService {
     if (!tournament) {
       throw new NotFoundException('No se encontró el torneo');
     }
-    const user = await this.userRepsoitory.findOne({ where: { id: userid } });
-    if (!user) {
+    const userDB = await this.userRepsoitory.findOne({ where: { id: userid } });
+    if (!userDB) {
       throw new NotFoundException('No se encontró al usuario')
     }
       const pay = {
@@ -80,7 +80,7 @@ export class MercadoPagoService {
         date_last_updated: payment.date_last_updated,
         status: payment.status,
         transaction_amount: payment.transaction_amount,
-        user,
+        user: userDB,
         tournament
       }
       const paymentCompleted = await this.paymentDetailRepository.save(pay)
