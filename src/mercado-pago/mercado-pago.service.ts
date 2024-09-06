@@ -141,7 +141,7 @@ export class MercadoPagoService {
 
   async getPaymentsFromUser(userId: string) {
     const payments = await this.paymentDetailRepository.find({
-      where: { user: { id: userId } }, relations: { tournament: true, user: true }
+      where: { user: { id: userId } }, relations: { tournament: { team: true }, user: true }
     });
 
     if (!payments.length)
