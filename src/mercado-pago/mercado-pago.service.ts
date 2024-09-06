@@ -84,10 +84,11 @@ export class MercadoPagoService {
         tournament
       }
       const paymentCompleted = await this.paymentDetailRepository.save(pay)
-      const {password, ...cleanUser} =paymentCompleted.user
+      const {password, ...cleanUser} = paymentCompleted.user
+      const {user, ...paymentClean} = paymentCompleted
       const response = {
         user: cleanUser,
-        ...paymentCompleted
+        ...paymentClean
       }
       return { message: response };
   }
