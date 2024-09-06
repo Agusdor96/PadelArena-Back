@@ -24,9 +24,9 @@ export class Match {
     @ManyToOne(()=> TournamentEntity, tournament=> tournament.matches)
     tournament: TournamentEntity
 
-    @Column({nullable:true})
-    teamWinner?: string
-
+    @ManyToOne(() => Team, (team) => team.matchesWon, { nullable: true })
+    teamWinner: Team
+  
     @ManyToOne(()=> Round, (round)=>round.matches)
     round: Round
 }

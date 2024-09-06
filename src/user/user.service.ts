@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as data from '../seed/users.json';
+import * as bcrypt from 'bcrypt'
 import { Category } from 'src/category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
@@ -139,7 +140,9 @@ async updateUserRole(userId: string, adminKey: AdminKeyDto) {
       }
       const userFromDb = await this.userRepository.findOne({where: {email: user.email}})
       if(!userFromDb){
-        await this.userRepository.save({...user, category: userCategory});
+        const encryptedPassword = await bcrypt.hash(user.password, 10)
+
+        await this.userRepository.save({...user, password: encryptedPassword, category: userCategory});
       } 
     }
     return {message: "Usuarios precargados correctamente"};
