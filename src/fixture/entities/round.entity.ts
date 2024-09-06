@@ -19,3 +19,7 @@ export class Round {
     @ManyToOne(() => Fixture, (fixture) => fixture.round)
     fixture: Fixture
 }
+
+
+
+
