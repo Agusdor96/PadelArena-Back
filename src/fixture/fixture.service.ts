@@ -163,14 +163,14 @@ export class FixtureService {
       where: { id: match.round.id },
       relations: { matches: true },
     });
-
+    const fixture = await this.fixtureRepository.findOne({where: {round}});
     const winnerTeam = await this.teamRepository.findOne({where:{id:winnerId}})
     if(!winnerTeam)throw new NotFoundException("No se pudo encontrar al equipo ganador")
     const tournamentFromMatch = match.tournament.id
 
     if (round.stage === 'final') {
       await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
-      return { message: 'Final definida', winner: winnerTeam};
+      return { fixture, message: 'Final definida', winner: winnerTeam};
     } 
 
     const allMatchesFromThatRound = round.matches;
@@ -181,8 +181,10 @@ export class FixtureService {
       return { message: 'Partido definido con exito', winner: winnerTeam };
     }  
 
-    return await this.createRound(tournamentFromMatch);
+     await this.createRound(tournamentFromMatch);
+     return {message: "ronda finalizada", fixture}
   }
+
 
   async getOneFixture(fixtureId: string) {
     const fixture = await this.fixtureRepository.findOne({
