@@ -116,6 +116,13 @@ async updateUserRole(userId: string, adminKey: AdminKeyDto) {
     return adminUser;
   }
 
+  async getUserTournament(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne({where:{id:userId}, relations:{category:true, team:{tournament:true}}})
+      if(!user){
+        throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+      }
+    return user;
+  }
   async getUserById(id: string): Promise<User> {
     const user = await this.userRepository.findOne({where:{id}, relations:{category:true, team:true}})
       if(!user){
