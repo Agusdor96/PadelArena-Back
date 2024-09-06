@@ -166,22 +166,25 @@ export class FixtureService {
 
     const round = await this.roundRepository.findOne({
       where: { id: match.round.id },
-      relations: {matches: {teamWinner:true}
-      },
+      relations: {fixture:true, matches:{teams:true, teamWinner:true}}
     });
-
+    const fixtureFromRound = await this.fixtureRepository.findOne({
+      where: {id:round.fixture.id},
+      relations: {round: {matches: {teams:true, teamWinner:true}}}
+    })
+  
     if(!winnerTeam)throw new NotFoundException("No se pudo encontrar al equipo ganador")
     const tournamentFromMatch = match.tournament.id
 
     if (round.stage === 'final') {
       await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
-      return [winnerTeam]
+      return fixtureFromRound;
     } 
     const allMatchesFromThatRound = round.matches;
     const allMatchesHaveWinners = allMatchesFromThatRound.every((match) => match.teamWinner !== null);
 
     if (!allMatchesHaveWinners) {
-      return [winnerTeam];
+      return fixtureFromRound;
     } 
     
     await this.createRound(tournamentFromMatch);
