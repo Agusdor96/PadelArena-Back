@@ -69,8 +69,8 @@ export class MercadoPagoService {
     if (!tournament) {
       throw new NotFoundException('No se encontró el torneo');
     }
-    const user = await this.userRepsoitory.findOne({ where: { id: userid } });
-    if (!user) {
+    const userDB = await this.userRepsoitory.findOne({ where: { id: userid } });
+    if (!userDB) {
       throw new NotFoundException('No se encontró al usuario')
     }
       const pay = {
@@ -80,14 +80,15 @@ export class MercadoPagoService {
         date_last_updated: payment.date_last_updated,
         status: payment.status,
         transaction_amount: payment.transaction_amount,
-        user,
+        user: userDB,
         tournament
       }
       const paymentCompleted = await this.paymentDetailRepository.save(pay)
-      const {password, ...cleanUser} =paymentCompleted.user
+      const {password, ...cleanUser} = paymentCompleted.user
+      const {user, ...paymentClean} = paymentCompleted
       const response = {
         user: cleanUser,
-        ...paymentCompleted
+        ...paymentClean
       }
       return { message: response };
   }
@@ -139,16 +140,14 @@ export class MercadoPagoService {
   }
 
   async getPaymentsFromUser(userId: string) {
-    const allPayments: PaymentDetail[] = await this.paymentDetailRepository
-      .createQueryBuilder('paymentDetail')
-      .leftJoinAndSelect('paymentDetail.user', 'user')
-      .where('user.id = :userId', { userId })
-      .getMany();
+    const payments = await this.paymentDetailRepository.find({
+      where: { user: { id: userId } }, relations: { tournament: { team: true }, user: true }
+    });
 
-    if (!allPayments.length)
+    if (!payments.length)
       throw new NotFoundException('No se encuentran pagos en este torneo');
 
-    const validPaymentId: PaymentDetail[] = allPayments.filter((payment) => {
+    const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;
     });
 
@@ -156,7 +155,17 @@ export class MercadoPagoService {
       throw new NotFoundException(
         'No se encuentran pagos concretados en la BDD',
       );
-    return validPaymentId;
+
+      const cleanPlayments = validPaymentId.map(payment => {
+        const {password, ...cleanUser} = payment.user
+        const {user, ...paymentClean} = payment
+        const response = {
+          user: cleanUser,
+          ...paymentClean
+        }
+      return { message: response };
+      })
+    return cleanPlayments;
   }
 
   encryptHeaders(body: any) {
