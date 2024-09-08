@@ -31,7 +31,8 @@ export class GlobalChatService {
         await this.messagesRespository.save(message)
     }
 
-    async getAllMessages(): Promise<Message[]>{
-        return await this.messagesRespository.find()
+    async getAllMessages(){
+        const messages = await this.messagesRespository.find()        
+        return messages;
     }
 }
