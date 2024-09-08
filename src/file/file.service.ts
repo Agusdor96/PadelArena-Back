@@ -61,7 +61,7 @@ export class FileService {
     } else {
       const profilePhoto = await this.uploadImageToCloudinary(file)
       await this.userRepository.update(id, { profileImg: profilePhoto });
-      return { message: 'Foto de perfil actualizada con exito con exito' };
+      return profilePhoto;
     }
   }
 }
