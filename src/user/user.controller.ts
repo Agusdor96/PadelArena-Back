@@ -5,52 +5,59 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from './roles.enum';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { SwaggerUpdateUser } from 'src/decorators/UserSwagger.decorator';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 import { AdminKeyDto } from './dto/adminKey.dto';
+import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
 
 @ApiTags("USERS")
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
+  @ApiBearerAuth()
   @Get()
-  // @Roles(RoleEnum.ADMIN)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(PasswordInterceptor)
   getUsers() {
     return this.userService.getAllUsers();
   }
 
+  @ApiBearerAuth()
   @Get('category/:categoryId')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getUsersBy(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
     return this.userService.getUsersByCategory(categoryId);
   }
 
+  @ApiBearerAuth()
   @Put("makeMeAdmin/:userId")
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   updateUserRole(
     @Param("userId", ParseUUIDPipe)userId:string,
     @Body()adminKey:AdminKeyDto){
       return this.userService.updateUserRole(userId, adminKey)
     }
     
-  @Put("updateProfile/:userId")
-  // @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Put("updateProfile/:userId") 
+  @UseGuards(AuthGuard)
+  @UseInterceptors(UserIdINterceptor)
   @SwaggerUpdateUser()
   updateUserProfile(
     @Param("userId", ParseUUIDPipe)userId:string, 
     @Body()modifiedUser:UpdateUserDto){        
         return this.userService.updateUserProfile(userId, modifiedUser)
       }
-
+  
+  @ApiBearerAuth()
   @Put("updateCategory/:userId")
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(PasswordInterceptor)
   updateUserCategory(
     @Param("userId", ParseUUIDPipe)userId:string, 
@@ -58,15 +65,18 @@ export class UserController {
       return this.userService.updateUserCategory(userId, modifyCategory)
       }
 
+  @ApiBearerAuth()
   @Get('tournament/:userId')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getUserTournament(@Param('userId', ParseUUIDPipe) userId: string) {
     return this.userService.getUserTournament(userId);
   }
+
+  @ApiBearerAuth()
   @Get(':id')
-  // @UseGuards(AuthGuard)
-  @UseInterceptors(PasswordInterceptor)
+  @UseGuards(AuthGuard)
+  @UseInterceptors(UserIdINterceptor,PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUserById(id);
   }
