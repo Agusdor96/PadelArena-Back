@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { loggerGlobal } from './middleware/logger.middleware';
 import { CategoryService } from './category/category.service';
@@ -8,10 +8,13 @@ import {UserService} from './user/user.service';
 import {TeamService} from './team/team.service';
 import { ValidationPipe } from '@nestjs/common';
 import { TournamentService } from './tournament/tournament.service';
+import { AllExceptionFilter } from './filters/globalException.filter';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const httpAdapterHost = app.get(HttpAdapterHost)
+  app.useGlobalFilters( new AllExceptionFilter(httpAdapterHost))
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
