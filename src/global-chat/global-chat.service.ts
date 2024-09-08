@@ -39,8 +39,6 @@ export class GlobalChatService {
             content: oneMessage.content,
             sender: oneMessage.sender.name
         }))
-        console.log(messages);
         return messages
-                
     }
 }
