@@ -64,7 +64,7 @@ export class TournamentEntity {
   @Column("text", { array: true, nullable: true })
   gallery: string[]
 
-  @Column({type: 'text', nullable: false, default: '/images/default-image.jpg'})
+  @Column({type: 'text', nullable: false, default: 'https://assets-decimas-2.s3.amazonaws.com/uploads/2023/03/como-aprender-jugar-padel.jpg'})
   tournamentFlyer: string
 
   @Column()
