@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate{
         try{
             const secret = process.env.JWT_SECRET
             const userPayload = this.JWTservice.verify(token,{secret})
-            console.log(userPayload);
+           
             
             if(userPayload.role === "admin"){
                 userPayload.asignRole = ["admin"]
