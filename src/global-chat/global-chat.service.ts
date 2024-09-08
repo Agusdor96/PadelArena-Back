@@ -32,9 +32,15 @@ export class GlobalChatService {
     }
 
     async getAllMessages(){
-        const messages = await this.messagesRespository.find()  
-        
-        const content = messages.map((oneMessage) => oneMessage.content)
-        return content;
+        const dbMessages = await this.messagesRespository.find({
+            order: {createdAt:"DESC"}, relations:{sender:true}
+        })          
+        const messages = dbMessages.map( (oneMessage) =>({
+            content: oneMessage.content,
+            sender: oneMessage.sender.name
+        }))
+        console.log(messages);
+        return messages
+                
     }
 }
