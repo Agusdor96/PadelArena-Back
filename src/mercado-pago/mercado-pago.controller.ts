@@ -31,16 +31,16 @@ export class MercadoPagoController {
   }
 
   @ApiBearerAuth()
-  @Roles(RoleEnum.ADMIN)
   @Get('allPayments')
+  @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   getAllPayments(){
     return this.mercadoPagoService.getPreferenceByUserId()
   }
 
   @ApiBearerAuth()
-  @Roles(RoleEnum.ADMIN)
   @Get("byTournament/:tournamentId")
+  @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   allTournamentPayments(@Param("tournamentId", ParseUUIDPipe) tournamentId:string){
     try{

@@ -12,7 +12,7 @@ export class UserIdINterceptor implements NestInterceptor{
         const decriptedToken = this.jwtService.decode(token);
        
         if(paramsId != decriptedToken.id){
-            throw new UnauthorizedException(`Unauthorized. userLogged id does not match params Id`);
+            throw new UnauthorizedException(`No autorizado. Los usuarios deben coincidir`);
         }
         return next.handle();
     }
