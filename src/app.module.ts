@@ -14,6 +14,8 @@ import { FileModule } from './file/file.module';
 import { PlayerStadisticsModule } from './player-stadistics/player-stadistics.module';
 import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
 import { GlobalChatModule } from './global-chat/global-chat.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionFilter } from './filters/globalException.filter';
 
 @Module({
   imports: [
@@ -42,10 +44,10 @@ import { GlobalChatModule } from './global-chat/global-chat.module';
     FileModule,
     PlayerStadisticsModule,
     MercadoPagoModule,
-    GlobalChatModule
+    GlobalChatModule,
 
   ],
   controllers: [],
-  providers: [],
+  providers: [{provide: APP_FILTER, useClass: AllExceptionFilter}],
 })
 export class AppModule {}
