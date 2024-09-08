@@ -105,11 +105,9 @@ constructor(
 async updateUserRole(userId: string, adminKey: AdminKeyDto) {
     const user = await this.getUserById(userId)
     if(!user)throw new NotFoundException("No se encuentra usuario con el id proporcionado")
-    
-      user.role = RoleEnum.ADMIN
     if(adminKey.secretKey !== this.adminKey)throw new ForbiddenException("La clave no es correcta")
       
-    await this.userRepository.update(userId, user)
+    await this.userRepository.update(userId, { role: RoleEnum.ADMIN })
     const userAdmin =  await this.getUserById(userId)
 
     const { password, ...adminUser} = userAdmin
