@@ -32,7 +32,9 @@ export class GlobalChatService {
     }
 
     async getAllMessages(){
-        const messages = await this.messagesRespository.find()        
-        return messages;
+        const messages = await this.messagesRespository.find()  
+        
+        const content = messages.map((oneMessage) => oneMessage.content)
+        return content;
     }
 }
