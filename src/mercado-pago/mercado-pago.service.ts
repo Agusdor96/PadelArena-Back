@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -35,6 +36,12 @@ export class MercadoPagoService {
     if (!user) {
       throw new NotFoundException('No se encontró al usuario');
     }
+    const payment = await this.paymentDetailRepository.findOne({where: {
+      user:{id: user.id},
+      tournament: {id: tournament.id},
+      status: 'approved'
+    }})
+    if(payment) throw new BadRequestException('El usuario ya tiene un pago aprobado para este torneo.')
     const body = {
       items: [
         {
