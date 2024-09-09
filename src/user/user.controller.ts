@@ -37,7 +37,6 @@ export class UserController {
   @ApiBearerAuth()
   @Put("makeMeAdmin/:userId")
   @UseGuards(AuthGuard)
-  @UseInterceptors(UserIdINterceptor)
   updateUserRole(
     @Param("userId", ParseUUIDPipe)userId:string,
     @Body()adminKey:AdminKeyDto){
