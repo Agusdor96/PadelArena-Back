@@ -24,7 +24,9 @@ export class TeamController {
     return this.teamService.findOneTeam(id);
   }
 
+  @ApiBearerAuth()
   @Get(':tournamentId')
+  @UseGuards(AuthGuard)
   getAllTeams(@Param('tournamentId', ParseUUIDPipe) tournamentId:string) {
     return this.teamService.findAllTeamsByTournament(tournamentId);
   }

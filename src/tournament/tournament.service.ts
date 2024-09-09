@@ -19,7 +19,7 @@ constructor(
   @Inject() private fileService: FileService,
 ){}
 
-  async createTournament(createTournamentDto:any, file?:Express.Multer.File) {
+  async createTournament(createTournamentDto:any) {
 
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
     if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
@@ -73,7 +73,6 @@ constructor(
         tournament.plusCode = createTournamentDto.plusCode;
       
       const newTournament = await this.tournamentRepository.save(tournament);
-      await this.fileService.UpdateTournamentFlyer(newTournament.id, file)
       return newTournament;
     
   }

@@ -19,8 +19,8 @@ export class TournamentController {
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(new TransformTime())
   async create(
-    @Body() createTournamentDto: CreateTournamentDto,file?: Express.Multer.File,) {
-    return  await this.tournamentService.createTournament(createTournamentDto, file);
+    @Body() createTournamentDto: CreateTournamentDto) {
+    return  await this.tournamentService.createTournament(createTournamentDto);
   }
 
   @Get()
