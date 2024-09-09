@@ -1,8 +1,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
@@ -56,10 +55,9 @@ constructor(
   
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
       const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
-      
       const tournament = new TournamentEntity();
-        tournament.name = createTournamentDto.name;
-        tournament.startDate = createTournamentDto.startDate;
+      tournament.name = createTournamentDto.name;
+      tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
         tournament.startingTime = format(startTime, "HH:mm"); 
         tournament.finishTime = format(endTime, "HH:mm");
@@ -73,9 +71,9 @@ constructor(
         tournament.category = category;
         tournament.price = createTournamentDto.price;
         tournament.plusCode = createTournamentDto.plusCode;
-    
+      
       const newTournament = await this.tournamentRepository.save(tournament);
-
+      await this.fileService.UpdateTournamentFlyer(newTournament.id, file)
       return newTournament;
     
   }
@@ -119,7 +117,9 @@ constructor(
     if(!tournament) throw new NotFoundException("No se encontro ningun torneo con el id proporcionado")
     if(teams.length !== tournament.teamsQuantity ){
       throw new BadRequestException("No se puede cerrar un torneo sin la cantidad de equipos exacta (16, 32 o 64)");
-    }
+    } 
+    if(tournament.status === "en progreso" || tournament.status === "finalizado") throw new BadRequestException("El torneo ya se encuentra en progreso o finalizado");
+    
     await this.tournamentRepository.update(tournament.id, {inscription: InscriptionEnum.CLOSED, status: StatusEnum.INPROGRESS})
     return await this.fixtureService.createFixture(tournament.id)
   }

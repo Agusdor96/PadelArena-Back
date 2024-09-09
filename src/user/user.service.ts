@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException, ParseUUIDPipe } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -8,7 +8,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
-import { validate as uuidValidate } from 'uuid';
+
 import { AdminKeyDto } from './dto/adminKey.dto';
 import { ConfigService } from '@nestjs/config';
 import { RoleEnum } from './roles.enum';
