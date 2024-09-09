@@ -49,18 +49,17 @@ export class AuthService {
       where:{
         email:credentials.email
       }, relations:{category:true}})
+
       
-      if(!userExist){
-        throw new BadRequestException('Email o contraseña incorrectos')
-      }
+    if(!userExist)throw new BadRequestException('Email o contraseña incorrectos')
+    if(!userExist.password)throw new BadRequestException("Debes iniciar sesion con google")
       
     const passwordComparation = await bcrypt.compare(credentials.password, userExist.password)
 
+    if(!passwordComparation){
+      throw new BadRequestException('Email o contraseña incorrectos')
+    }
     
-      if(!passwordComparation){
-        throw new BadRequestException('Email o contraseña incorrectos')
-      }
-      
       const userPayload = {
         sub: userExist.id,
         id: userExist.id,

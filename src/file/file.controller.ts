@@ -70,7 +70,7 @@ export class FileController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 500000,
+            maxSize: 10485760,
             message: 'La imagen no puede pesar mas de 500kb',
           }),
           new FileTypeValidator({
@@ -99,8 +99,8 @@ export class FileController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 200000,
-            message: 'La imagen no puede pesar mas de 200kb',
+            maxSize: 5242880,
+            message: 'La imagen no puede pesar mas de 5mb',
           }),
           new FileTypeValidator({
             fileType: /(jpg|jpeg|png|webp)$/,

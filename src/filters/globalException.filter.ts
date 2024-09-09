@@ -18,10 +18,21 @@ export class AllExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+        let message = 'Internal server error';  // Mensaje por defecto
+        if (exception instanceof HttpException) {
+          const response = exception.getResponse();
+          if (typeof response === 'string') {
+            message = response;  // Mensaje directo
+          } else if (typeof response === 'object' && response.hasOwnProperty('message')) {
+            message = (response as any).message;  // Extraer mensaje de un objeto
+          }
+        }
+
     const responseBody = {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      message,
     };
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
