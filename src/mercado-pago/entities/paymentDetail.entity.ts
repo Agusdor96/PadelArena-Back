@@ -28,6 +28,9 @@ export class PaymentDetail {
     @Column()
     transaction_amount: number
 
+    @Column({default: false})
+    successInscription?: boolean
+
     @ManyToOne(()=> TournamentEntity)
     @JoinColumn({name: 'PAYMENTS-TOURNAMENT'})
     tournament: TournamentEntity

@@ -35,7 +35,7 @@ export class MercadoPagoController {
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   getAllPayments(){
-    return this.mercadoPagoService.getPreferenceByUserId()
+    return this.mercadoPagoService.getAllPayments()
   }
 
   @ApiBearerAuth()

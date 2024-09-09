@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -35,6 +37,18 @@ export class MercadoPagoService {
     if (!user) {
       throw new NotFoundException('No se encontró al usuario');
     }
+    const payment = await this.paymentDetailRepository.findOne({
+      where: {
+        user: { id: user.id },
+        tournament: { id: tournament.id },
+        status: 'approved',
+      },
+      relations: { user: true, tournament: true },
+    });
+    if (payment)
+      throw new BadRequestException(
+        'El usuario ya tiene un pago aprobado para este torneo.',
+      );
     const body = {
       items: [
         {
@@ -71,26 +85,41 @@ export class MercadoPagoService {
     }
     const userDB = await this.userRepsoitory.findOne({ where: { id: userid } });
     if (!userDB) {
-      throw new NotFoundException('No se encontró al usuario')
+      throw new NotFoundException('No se encontró al usuario');
     }
-      const pay = {
-        payment_id: String(payment.id),
-        date_approved: payment.date_approved,
-        date_created: payment.date_created,
-        date_last_updated: payment.date_last_updated,
-        status: payment.status,
-        transaction_amount: payment.transaction_amount,
-        user: userDB,
-        tournament
-      }
-      const paymentCompleted = await this.paymentDetailRepository.save(pay)
-      const {password, ...cleanUser} = paymentCompleted.user
-      const {user, ...paymentClean} = paymentCompleted
+    const pay = {
+      payment_id: String(payment.id),
+      date_approved: payment.date_approved,
+      date_created: payment.date_created,
+      date_last_updated: payment.date_last_updated,
+      status: payment.status,
+      transaction_amount: payment.transaction_amount,
+      user: userDB,
+      tournament,
+    };
+    const paymentCompleted = await this.paymentDetailRepository.save(pay);
+    if (paymentCompleted.status === 'approved') {
+      await this.paymentDetailRepository.update(paymentCompleted.id, {
+        successInscription: true,
+      });
+      const paymentApproved = await this.paymentDetailRepository.findOne({
+        where: { id: paymentCompleted.id },
+      });
+      const { password, ...cleanUser } = paymentApproved.user;
+      const { user, ...paymentClean } = paymentApproved;
       const response = {
         user: cleanUser,
-        ...paymentClean
-      }
+        ...paymentClean,
+      };
       return { message: response };
+    }
+    const { password, ...cleanUser } = paymentCompleted.user;
+    const { user, ...paymentClean } = paymentCompleted;
+    const response = {
+      user: cleanUser,
+      ...paymentClean,
+    };
+    return { message: response };
   }
 
   getpayment(id: string) {
@@ -105,7 +134,7 @@ export class MercadoPagoService {
       });
   }
 
-  async getPreferenceByUserId() {
+  async getAllPayments() {
     const payments = await this.paymentDetailRepository.find({
       order: {
         date_created: 'DESC',
@@ -141,7 +170,8 @@ export class MercadoPagoService {
 
   async getPaymentsFromUser(userId: string) {
     const payments = await this.paymentDetailRepository.find({
-      where: { user: { id: userId } }, relations: { tournament: { team: true }, user: true }
+      where: { user: { id: userId } },
+      relations: { tournament: { team: true }, user: true },
     });
 
     if (!payments.length)
@@ -156,15 +186,15 @@ export class MercadoPagoService {
         'No se encuentran pagos concretados en la BDD',
       );
 
-      const cleanPlayments = validPaymentId.map(payment => {
-        const {password, ...cleanUser} = payment.user
-        const {user, ...paymentClean} = payment
-        const response = {
-          user: cleanUser,
-          ...paymentClean
-        }
+    const cleanPlayments = validPaymentId.map((payment) => {
+      const { password, ...cleanUser } = payment.user;
+      const { user, ...paymentClean } = payment;
+      const response = {
+        user: cleanUser,
+        ...paymentClean,
+      };
       return { message: response };
-      })
+    });
     return cleanPlayments;
   }
 
@@ -177,11 +207,9 @@ export class MercadoPagoService {
       const [key, value] = part.split('=');
 
       if (key && value) {
-
         const trimmedKey = key.trim();
         const trimmedValue = value.trim();
         if (trimmedKey === 'ts') {
-
           timestamps = trimmedValue;
         } else if (trimmedKey === 'v1') {
           encryptedToken = trimmedValue;
@@ -201,6 +229,6 @@ export class MercadoPagoService {
         'Por seguridad no es posible completar la transaccion, revise que su proveedor de link sea Mercado Pago',
       );
     }
-    return true
+    return true;
   }
 }
