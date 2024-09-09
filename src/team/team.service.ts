@@ -147,8 +147,16 @@ export class TeamService {
       order: teams.length,
     };
     await this.teamRepository.save(team);
+    const cleanPlayers = team.user.map(user =>  {
+      const {password, role, ...cleanUser} = user
+      return cleanUser
+    })
+    const cleanTeam = {
+      user: cleanPlayers,
+      ...team
+    }
     sender(player1.email, player2.email)
-    return team;
+    return cleanTeam;
   }
 
   async findOneTeam(id: string) {

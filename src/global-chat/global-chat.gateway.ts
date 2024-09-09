@@ -18,7 +18,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     handleDisconnect(client: Socket) {
         console.log('cliente desconectado', client.id);
-        //se ejecuta cuando alguien se desconecta
     }
 
     @SubscribeMessage('message')
