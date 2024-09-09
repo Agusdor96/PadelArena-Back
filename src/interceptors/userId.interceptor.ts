@@ -15,8 +15,8 @@ export class UserIdINterceptor implements NestInterceptor{
         if(!token){
             throw new BadRequestException("No se encontro el Bearer token")
         }
-        
-        const paramsId = request.params.userId;
+
+        const paramsId = request.params.id;
         const decriptedToken = this.jwtService.decode(token);
        
         if(paramsId != decriptedToken.id){
