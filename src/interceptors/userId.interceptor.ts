@@ -1,4 +1,4 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, CallHandler, ExecutionContext, Injectable, NestInterceptor, UnauthorizedException } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { JwtService } from "@nestjs/jwt";
 
@@ -8,7 +8,7 @@ export class UserIdINterceptor implements NestInterceptor{
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
         const request = context.switchToHttp().getRequest();
         if(!request.headers["authorization"]){
-            throw new BadRequestException ("Falta la autorizacion en el header de la request")
+            throw new BadRequestException("Falta la autorizacion en el header de la request")
           }  
 
         const token = request.headers.authorization.split(" ")[1];
