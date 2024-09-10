@@ -10,6 +10,7 @@ import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
 import { FileService } from 'src/file/file.service';
 import { addDays, format, parse, differenceInHours } from 'date-fns';
+import { Team } from 'src/team/entities/team.entity';
 
 @Injectable()
 export class TournamentService {
@@ -19,6 +20,7 @@ constructor(
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
   @Inject() private fixtureService: FixtureService,
   @Inject() private fileService: FileService,
+  @InjectRepository(Team) private teamRepository: Repository<Team>
 ){}
 
   async createTournament(createTournamentDto:any) {
@@ -185,9 +187,10 @@ constructor(
     }
     return {message: "Torneos cargados con exito"}
   } 
-  async tournamentWinner(userId: string) {
-    const tournament = await this.tournamentRepository.findOne({where: {teamWinner:{user: {id: userId}}}})
-    console.log(tournament);
-    
-  }
+
+  // async tournamentWinner(userId: string) {
+  //   const team = await this.
+  //   const tournament = await this.tournamentRepository.find({where: {teamWinner: }})
+  //   console.log(tournament);
+  // }
 }
