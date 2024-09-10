@@ -27,7 +27,6 @@ jobs:
         with:
           context: .
           file: ./dockerfile
-          build: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/padelarena
 
