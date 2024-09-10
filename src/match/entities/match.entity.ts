@@ -9,24 +9,24 @@ import {v4 as uuid} from 'uuid'
 })
 export class Match {
     @PrimaryGeneratedColumn('uuid')
-    id: string = uuid()
+        id: string = uuid()
 
     @Column({nullable: true})
-    date?: string
+        date?: string
 
     @Column({nullable: true})
-    time?: string
+        time?: string
 
     @ManyToMany(()=>Team)
     @JoinTable({name: "TEAM_MATCH"})
-    teams: Team[]
+        teams: Team[]
 
     @ManyToOne(()=> TournamentEntity, tournament=> tournament.matches)
-    tournament: TournamentEntity
+        tournament: TournamentEntity
 
     @ManyToOne(() => Team, (team) => team.matchesWon, { nullable: true })
-    teamWinner: Team
+        teamWinner: Team
   
     @ManyToOne(()=> Round, (round)=>round.matches)
-    round: Round
+        round: Round
 }

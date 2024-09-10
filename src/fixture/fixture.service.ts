@@ -178,7 +178,7 @@ export class FixtureService {
     const tournamentFromMatch = match.tournament.id
 
     if (round.stage === 'final') {
-      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED})
+      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED, teamWinner:winnerTeam})
       return fixtureFromRound;
     } 
     const allMatchesFromThatRound = round.matches;

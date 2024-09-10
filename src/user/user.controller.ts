@@ -76,7 +76,7 @@ export class UserController {
   @ApiBearerAuth()
   @Get(':id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(UserIdINterceptor,PasswordInterceptor)
+  @UseInterceptors(PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUserById(id);
   }

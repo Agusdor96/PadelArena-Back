@@ -16,13 +16,15 @@ export class UserIdINterceptor implements NestInterceptor{
             throw new BadRequestException("No se encontro el Bearer token")
         }
 
-        const paramsId = request.params.id;
+        const paramsId = request.params.id || request.params.userId;
         const decriptedToken = this.jwtService.decode(token);
 
+        console.log(request.params);
         if(paramsId){
             if(paramsId != decriptedToken.id){
                 throw new UnauthorizedException(`No autorizado. (params)`);
             }
+            
         } else{
            const bodyId = request.body.user
             if(bodyId != decriptedToken.id){
