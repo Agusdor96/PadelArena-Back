@@ -22,11 +22,11 @@ jobs:
     - name: SSH into EC2 and deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+        sudo su - << 'SUDO'
         cd ${{ secrets.EC2_PROJECT_PATH }}
-        # Fetch the latest changes from the repository
         git pull origin main
-        # Install dependencies in case of updates
         npm install
-        # Restart the application with npm
         npm run start:dev
+        SUDO
         EOF
+
