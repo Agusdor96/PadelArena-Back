@@ -19,28 +19,29 @@ import { v4 as uuid } from 'uuid';
 })
 export class Team {
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+    id: string = uuid();
 
   @Column({ type: 'varchar', length: 50, nullable: false })
-  name: string;
+    name: string;
 
   @Column({ nullable: true })
-  order: number;
+    order: number;
+  
+  @Column({default:true})
+    ableForPlay: boolean;
 
   @ManyToOne(() => Category, (category) => category.team)
   @JoinColumn()
-  category: Category;
+    category: Category;
 
   @ManyToMany(() => User, (user) => user.team, { cascade: true })
   @JoinTable({ name: 'TEAM_USERS' })
-  user: User[];
+    user: User[];
 
   @ManyToOne(() => TournamentEntity, (tournament) => tournament.team)
-  tournament: TournamentEntity;
+    tournament: TournamentEntity;
 
   @OneToMany(() => Match, (match) => match.teamWinner, {nullable:true})
-  matchesWon: Match[];
+    matchesWon: Match[];
 
-  @Column({default:true})
-  ableForPlay: boolean;
 }

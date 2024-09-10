@@ -8,35 +8,35 @@ import { v4 as uuid } from "uuid";
 })
 export class PaymentDetail {
     @PrimaryGeneratedColumn('uuid')
-    id: string = uuid()
+        id: string = uuid()
 
     @Column()
-    payment_id: string
+        payment_id: string
 
     @Column()
-    status: string
+        status: string
 
     @Column()
-    date_created: Date
+        date_created: Date
 
     @Column({nullable: true})
-    date_approved?: Date
+        date_approved?: Date
     
     @Column({nullable: true})
-    date_last_updated?: Date
+        date_last_updated?: Date
 
     @Column()
-    transaction_amount: number
+        transaction_amount: number
 
     @Column({default: false})
-    successInscription?: boolean
+        successInscription?: boolean
 
     @ManyToOne(()=> TournamentEntity)
     @JoinColumn({name: 'PAYMENTS-TOURNAMENT'})
-    tournament: TournamentEntity
+        tournament: TournamentEntity
 
     @ManyToOne(()=> User)
     @JoinColumn({name: 'PAYMENTS-USER'})
-    user: User
+        user: User
 
 }

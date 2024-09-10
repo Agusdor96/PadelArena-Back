@@ -8,14 +8,14 @@ import { Fixture } from "./fixture.entity";
 })
 export class Round {
     @PrimaryGeneratedColumn('uuid')
-    id:string = uuid();
+        id:string = uuid();
 
     @Column()
-    stage: string
+        stage: string
 
     @OneToMany(()=> Match, (match)=> match.round)
-    matches: Match[]
+        matches: Match[]
 
     @ManyToOne(() => Fixture, (fixture) => fixture.round)
-    fixture: Fixture
+        fixture: Fixture
 }

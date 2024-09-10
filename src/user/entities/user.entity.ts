@@ -11,7 +11,7 @@ import { Message } from "src/global-chat/entities/message.entity";
 })
 export class User {
     @PrimaryGeneratedColumn("uuid")
-    id:string = uuid()
+        id:string = uuid()
 
     @Column({type: "varchar", length: 50, nullable:false})
         name:string;
@@ -40,13 +40,16 @@ export class User {
     @Column({ type: "text", nullable: true, default: "https://asset.cloudinary.com/ds7jn3ymr/07244713074f55f66782faa03a555811" })
         profileImg?: string
 
+    @Column({nullable: true})
+        clientId?: string
+        
     @Column({
         type: "enum",
         enum: RoleEnum,
         default:RoleEnum.USER
     })
         role:RoleEnum
-
+        
     @ManyToOne(()=> Category, (category) => category.users, {nullable: true})
         category:Category
 
@@ -57,9 +60,7 @@ export class User {
     @JoinColumn({name: "player_stadistics"})
         playerStadistic: PlayerStadistic
 
-    @Column({nullable: true})
-    clientId?: string
 
     @ManyToOne(()=> Message, message => message.sender)
-    messages: Message[]
+        messages: Message[]
 }
