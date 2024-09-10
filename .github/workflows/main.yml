@@ -34,5 +34,5 @@ jobs:
         # Kill the running process (you may need to adapt this depending on how your app runs)
         pkill node || true
         # Start the app (adjust the command if necessary)
-        nohup node server.js > output.log 2>&1 &
+        npm run start:dev
         EOF
