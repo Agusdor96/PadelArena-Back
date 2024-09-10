@@ -147,7 +147,7 @@ export class MercadoPagoService {
     const payments = await this.paymentDetailRepository.find({
       order: {
         date_created: 'DESC',
-      },
+      }, relations: { user:true }
     });
     const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;
