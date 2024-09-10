@@ -2,7 +2,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
@@ -10,14 +10,17 @@ import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
 import { FileService } from 'src/file/file.service';
 import { addDays, format, parse, differenceInHours } from 'date-fns';
+import { Team } from 'src/team/entities/team.entity';
 
 @Injectable()
 export class TournamentService {
+  
 constructor(
   @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
   @Inject() private fixtureService: FixtureService,
   @Inject() private fileService: FileService,
+  @InjectRepository(Team) private teamRepository: Repository<Team>
 ){}
 
   async createTournament(createTournamentDto:any) {
@@ -184,4 +187,10 @@ constructor(
     }
     return {message: "Torneos cargados con exito"}
   } 
+
+  // async tournamentWinner(userId: string) {
+  //   const team = await this.
+  //   const tournament = await this.tournamentRepository.find({where: {teamWinner: }})
+  //   console.log(tournament);
+  // }
 }
