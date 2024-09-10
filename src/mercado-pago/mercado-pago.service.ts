@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -42,7 +43,6 @@ export class MercadoPagoService {
     if (!user) {
       throw new NotFoundException('No se encontró al usuario');
     }
-    console.log(user.category.name, "?=", tournament.category.name);
     
     if(user.category.name !== tournament.category.name) throw new BadRequestException("El usuario debe pertencer a la categoria del torneo")
 
@@ -109,10 +109,11 @@ export class MercadoPagoService {
     };
     const paymentCompleted = await this.paymentDetailRepository.save(pay);
     
-    if (paymentCompleted.status === 'approved') {
-      await this.paymentDetailRepository.update(paymentCompleted.id, {
-        successInscription: true,
-      });
+     if (paymentCompleted.status === 'approved') {
+    //   await this.paymentDetailRepository.update(paymentCompleted.id, {
+    //     successInscription: false,
+    //   });
+
       const paymentApproved = await this.paymentDetailRepository.findOne({
         where: { id: paymentCompleted.id }, relations: {user:true, tournament:true}
       });
@@ -131,6 +132,21 @@ export class MercadoPagoService {
       ...paymentClean,
     };
     return { message: response };
+  }
+
+  async updateSuccessInscription(Id: string) {
+    const paymentInDb = await this.paymentDetailRepository.findOne({where:{id:Id}})
+    if(!paymentInDb) throw new NotFoundException("No se encontro pago con el id proporcionado")
+    if(paymentInDb.successInscription === true) throw new NotFoundException("El estado de la inscripcion de este pago ya fue actualizado")
+
+    try{
+      await this.paymentDetailRepository.update(Id, {
+        successInscription: true,
+      })
+      return ("El estado de la inscripcion en el pago fue actualizado con exito");
+    }catch (error){
+      throw new ConflictException("No se logro actualizar el estado de la inscripcion en el pago")
+    }
   }
 
   getpayment(id: string) {
