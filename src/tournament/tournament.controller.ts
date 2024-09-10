@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors, Put, UseGuards } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
-import { TransformTime } from 'src/interceptors/dateTime.interceptor';
+import { TransformTime } from '../interceptors/dateTime.interceptor';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RoleEnum } from 'src/user/roles.enum';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RoleEnum } from '../user/roles.enum';
+import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags("TOURNAMENT")
 @Controller('tournament')

@@ -15,11 +15,11 @@ import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileDto } from './dto/file.dto';
-import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RoleEnum } from 'src/user/roles.enum';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { UserIdINterceptor } from '../interceptors/userId.interceptor';
+import { AuthGuard } from '../guards/auth.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RoleEnum } from '../user/roles.enum';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags("FILE")
 @Controller('file')

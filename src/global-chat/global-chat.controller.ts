@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { GlobalChatService } from "./global-chat.service";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "src/guards/auth.guard";
+import { AuthGuard } from "../guards/auth.guard";
 
 @ApiTags("CHAT")
 @Controller('/chat')

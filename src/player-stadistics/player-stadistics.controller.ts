@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseUUIDPipe, UseGuards} from '@nestjs/common';
 import { PlayerStadisticsService } from './player-stadistics.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 
 @ApiTags("PLAYER-STADISTICS")
 @Controller('player-stadistics')

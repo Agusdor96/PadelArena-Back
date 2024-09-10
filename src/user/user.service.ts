@@ -4,7 +4,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as data from '../seed/users.json';
 import * as bcrypt from 'bcrypt'
-import { Category } from 'src/category/entities/category.entity';
+import { Category } from '../category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';

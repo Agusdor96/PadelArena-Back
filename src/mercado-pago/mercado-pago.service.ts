@@ -7,15 +7,15 @@ import {
 } from '@nestjs/common';
 import { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
 import { Payment, Preference } from 'mercadopago';
-import { client } from 'src/config/mercadopago';
+import { client } from '../config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentDetail } from './entities/paymentDetail.entity';
 import { Repository } from 'typeorm';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
-import { User } from 'src/user/entities/user.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
+import { User } from '../user/entities/user.entity';
 import * as crypto from 'crypto';
-import { InscriptionEnum } from 'src/tournament/tournament.enum';
+import { InscriptionEnum } from '../tournament/tournament.enum';
 
 @Injectable()
 export class MercadoPagoService {

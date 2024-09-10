@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
 import { Repository } from 'typeorm';
-import { Team } from 'src/team/entities/team.entity';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
+import { Team } from '../team/entities/team.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
 import { format } from 'date-fns-tz';
 
 @Injectable()

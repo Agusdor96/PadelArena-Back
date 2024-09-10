@@ -1,10 +1,10 @@
-import { Category } from "src/category/entities/category.entity";
-import { PlayerStadistic } from "src/player-stadistics/entities/player-stadistic.entity";
-import { Team } from "src/team/entities/team.entity";
+import { Category } from "../category/entities/category.entity";
+import { PlayerStadistic } from "../player-stadistics/entities/player-stadistic.entity";
+import { Team } from "../team/entities/team.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RoleEnum } from "../roles.enum";
 import {v4 as uuid} from 'uuid';
-import { Message } from "src/global-chat/entities/message.entity";
+import { Message } from "../global-chat/entities/message.entity";
 
 @Entity({
     name: "USERS"  

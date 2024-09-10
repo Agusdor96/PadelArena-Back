@@ -3,14 +3,14 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
 import { In, Repository } from 'typeorm';
-import { Category } from 'src/category/entities/category.entity';
+import { Category } from '../category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
-import { FixtureService } from 'src/fixture/fixture.service';
+import { FixtureService } from '../fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
-import { FileService } from 'src/file/file.service';
+import { FileService } from '../file/file.service';
 import { addDays, format, parse, differenceInHours } from 'date-fns';
-import { Team } from 'src/team/entities/team.entity';
+import { Team } from '../team/entities/team.entity';
 
 @Injectable()
 export class TournamentService {

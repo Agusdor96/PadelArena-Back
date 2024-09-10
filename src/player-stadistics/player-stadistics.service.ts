@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlayerStadistic } from './entities/player-stadistic.entity';
 import { In, Repository } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { Team } from 'src/team/entities/team.entity';
+import { User } from '../user/entities/user.entity';
+import { Team } from '../team/entities/team.entity';
 
 @Injectable()
 export class PlayerStadisticsService {

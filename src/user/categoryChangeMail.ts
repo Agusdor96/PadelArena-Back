@@ -1,4 +1,4 @@
-import { transporter } from "src/config/nodemailer"
+import { transporter } from "../config/nodemailer"
 
 export const sender = async (userEmail:string)=>{
     await transporter.sendMail({
@@ -96,7 +96,7 @@ a[x-apple-data-detectors],
                   <td valign="top" align="center" style="padding:0;Margin:0;width:600px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img src="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_eh7.png" alt="" width="600" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img ..="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_eh7.png" alt="" width="600" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -116,7 +116,7 @@ a[x-apple-data-detectors],
                   <td align="center" valign="top" style="padding:0;Margin:0;width:600px">
                    <table cellpadding="0" width="100%" cellspacing="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img alt="" height="268" src="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_UBo.png" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img alt="" height="268" ..="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_UBo.png" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -148,9 +148,9 @@ a[x-apple-data-detectors],
                       <td align="center" style="padding:15px;Margin:0;font-size:0">
                        <table cellpadding="0" cellspacing="0" class="es-table-not-adapt es-social" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                          <tr>
-                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:15px"><a target="_blank" href="https://facebook.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#2CB543;font-size:14px"><img title="Facebook" src="https://fojrfxl.stripocdn.email/content/assets/img/social-icons/logo-gray/facebook-logo-gray.png" alt="Fb" width="32" height="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
-                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:15px"><a target="_blank" href="https://x.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#2CB543;font-size:14px"><img title="X" src="https://fojrfxl.stripocdn.email/content/assets/img/social-icons/logo-gray/x-logo-gray.png" alt="X" width="32" height="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
-                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:10px"><a target="_blank" href="https://instagram.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#2CB543;font-size:14px"><img height="32" title="Instagram" src="https://fojrfxl.stripocdn.email/content/assets/img/social-icons/logo-gray/instagram-logo-gray.png" alt="Ig" width="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
+                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:15px"><a target="_blank" href="https://facebook.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#2CB543;font-size:14px"><img title="Facebook" ..="https://fojrfxl.stripocdn.email/content/assets/img/social-icons/logo-gray/facebook-logo-gray.png" alt="Fb" width="32" height="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
+                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:15px"><a target="_blank" href="https://x.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#2CB543;font-size:14px"><img title="X" ..="https://fojrfxl.stripocdn.email/content/assets/img/social-icons/logo-gray/x-logo-gray.png" alt="X" width="32" height="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
+                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:10px"><a target="_blank" href="https://instagram.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#2CB543;font-size:14px"><img height="32" title="Instagram" ..="https://fojrfxl.stripocdn.email/content/assets/img/social-icons/logo-gray/instagram-logo-gray.png" alt="Ig" width="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
                          </tr>
                        </table></td>
                      </tr>
@@ -175,7 +175,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:600px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img width="600" src="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_DDe.png" alt="" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img width="600" ..="https://fojrfxl.stripocdn.email/content/guids/CABINET_181706de9826cb7fa36df77c9086b6b3147d88779f8387c0c8fbded89e764ac0/images/image_DDe.png" alt="" class="adapt-img" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>

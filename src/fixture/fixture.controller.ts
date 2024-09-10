@@ -3,10 +3,10 @@ import { Body, Controller, Get, Param, ParseUUIDPipe, Put, UseGuards} from '@nes
 import { FixtureService } from './fixture.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MatchIdDTO } from './dto/matchId.dto';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RoleEnum } from 'src/user/roles.enum';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RoleEnum } from '../user/roles.enum';
+import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags("FIXTURE")
 @Controller('tournamentfixture')

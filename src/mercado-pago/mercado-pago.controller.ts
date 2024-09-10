@@ -2,12 +2,12 @@ import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, Htt
 import { MercadoPagoService } from './mercado-pago.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
-import { HeaderInterceptor } from 'src/interceptors/demo.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RoleEnum } from 'src/user/roles.enum';
-import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
+import { HeaderInterceptor } from '../interceptors/demo.interceptor';
+import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RoleEnum } from '../user/roles.enum';
+import { UserIdINterceptor } from '../interceptors/userId.interceptor';
 
 @ApiTags("MERCADO-PAGO")
 @Controller('mercado-pago')
