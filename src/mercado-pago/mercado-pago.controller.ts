@@ -7,6 +7,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
+import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
 
 @ApiTags("MERCADO-PAGO")
 @Controller('mercado-pago')
@@ -16,13 +17,15 @@ export class MercadoPagoController {
   @ApiBearerAuth()
   @Post('create_preference')
   @UseGuards(AuthGuard)
+  @UseInterceptors(UserIdINterceptor)
   apiMPConnection(@Body() req: dataPaymentDto){
     return this.mercadoPagoService.mpConnections(req)
   }
+  
   @ApiBearerAuth()
   @HttpCode(201)
-  @UseInterceptors(HeaderInterceptor)
   @Post('feedback')
+  @UseInterceptors(HeaderInterceptor)
   @UseGuards(AuthGuard)
   feedbackPayment (@Query('data.id') id: string, @Body() body : string){
     this.mercadoPagoService.encryptHeaders(body)

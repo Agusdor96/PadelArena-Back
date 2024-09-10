@@ -23,7 +23,7 @@ export class TeamController {
   getTeamByID(@Param('id', ParseUUIDPipe) id: string) {
     return this.teamService.findOneTeam(id);
   }
-
+  
   @ApiBearerAuth()
   @Get(':tournamentId')
   @UseGuards(AuthGuard)

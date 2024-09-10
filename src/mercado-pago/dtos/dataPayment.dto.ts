@@ -1,8 +1,9 @@
-import {  IsNotEmpty, IsString } from "class-validator"
+import {  IsNotEmpty, IsString, IsUUID } from "class-validator"
 
 export class dataPaymentDto {
     @IsNotEmpty()
     @IsString()
+    @IsUUID()
     tournament: string
 
     @IsNotEmpty()
@@ -11,5 +12,6 @@ export class dataPaymentDto {
 
     @IsNotEmpty()
     @IsString()
+    @IsUUID()
     user:string
 }

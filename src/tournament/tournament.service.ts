@@ -39,6 +39,26 @@ constructor(
       throw new BadRequestException("La cantidad de equipos en el torneo debe ser 16, 32 o 64")
     }
 
+    if(!createTournamentDto.playingDays.length) throw new BadRequestException("Playing days no puede estar vacio")
+      
+      let days = []
+    createTournamentDto.playingDays.map((day) => {
+      switch (day) {
+              case "Lunes": days.push(true); break;
+              case "Martes": days.push(true) ; break;
+              case "Miercoles": days.push(true); break;
+              case "Jueves": days.push(true); break;
+              case "Viernes": days.push(true); break;
+              case "Sabado": days.push(true); break;
+              case "Domingo": days.push(true); break;
+              default: days.push(false);
+      }
+    });
+
+    if(days.includes(false)) throw new BadRequestException("No pueden haber campos de dias invalidos o vacios")
+    if(createTournamentDto.matchDuration < 30) throw new BadRequestException("Los partidos no pueden durar menos de 30 minutos")
+    if(createTournamentDto.courts < 1) throw new BadRequestException("Debe haber al menos una cancha disponible")
+
     const InitialMatches = createTournamentDto.teamsQuantity /2;
     const startTime = createTournamentDto.startTime;
     const endTime = createTournamentDto.endTime;
@@ -74,7 +94,7 @@ constructor(
       
       const newTournament = await this.tournamentRepository.save(tournament);
       return newTournament;
-    
+
   }
 
   async getAllTournaments() {
