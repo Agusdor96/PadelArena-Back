@@ -2,7 +2,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
 import { FixtureService } from 'src/fixture/fixture.service';
@@ -13,6 +13,7 @@ import { addDays, format, parse, differenceInHours } from 'date-fns';
 
 @Injectable()
 export class TournamentService {
+  
 constructor(
   @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
@@ -184,4 +185,9 @@ constructor(
     }
     return {message: "Torneos cargados con exito"}
   } 
+  async tournamentWinner(userId: string) {
+    const tournament = await this.tournamentRepository.findOne({where: {teamWinner:{user: {id: userId}}}})
+    console.log(tournament);
+    
+  }
 }

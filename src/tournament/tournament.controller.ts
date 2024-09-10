@@ -7,6 +7,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { ParamsTokenFactory } from '@nestjs/core/pipes';
 
 @ApiTags("TOURNAMENT")
 @Controller('tournament')
@@ -39,5 +40,10 @@ export class TournamentController {
   @UseGuards(AuthGuard, RolesGuard)
   changeInscriptionStatus(@Param('id', ParseUUIDPipe) id: string) {
     return this.tournamentService.changeInscriptionStatus(id)
+  }
+
+  @Get('tournamentWinner/:userId')
+  teamWinner (@Param('userId', ParseUUIDPipe) userId:string){
+    return this.tournamentService.tournamentWinner(userId)
   }
 }
