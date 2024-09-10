@@ -120,7 +120,8 @@ constructor(
         team:true,
         matches:true,
         fixture:true,
-        category: true
+        category: true,
+        teamWinner:true
       }
     })
     if(!tournament){
