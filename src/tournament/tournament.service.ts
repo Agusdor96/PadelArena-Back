@@ -187,10 +187,4 @@ constructor(
     }
     return {message: "Torneos cargados con exito"}
   } 
-
-  // async tournamentWinner(userId: string) {
-  //   const team = await this.
-  //   const tournament = await this.tournamentRepository.find({where: {teamWinner: }})
-  //   console.log(tournament);
-  // }
 }

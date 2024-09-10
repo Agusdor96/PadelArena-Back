@@ -134,15 +134,15 @@ export class MercadoPagoService {
     return { message: response };
   }
 
-  async updateSuccessInscription(Id: string) {
-    const paymentInDb = await this.paymentDetailRepository.findOne({where:{id:Id}})
+  async updateSuccessInscription(paymentId: string) {
+    const paymentInDb = await this.paymentDetailRepository.findOne({where:{payment_id:paymentId}})
     if(!paymentInDb) throw new NotFoundException("No se encontro pago con el id proporcionado")
     if(paymentInDb.successInscription === true) throw new NotFoundException("El estado de la inscripcion de este pago ya fue actualizado")
 
     try{
-      await this.paymentDetailRepository.update(Id, {
+      await this.paymentDetailRepository.update({ payment_id: paymentId }, {
         successInscription: true,
-      })
+      });
       return ("El estado de la inscripcion en el pago fue actualizado con exito");
     }catch (error){
       throw new ConflictException("No se logro actualizar el estado de la inscripcion en el pago")

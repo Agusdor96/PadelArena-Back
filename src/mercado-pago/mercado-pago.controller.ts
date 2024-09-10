@@ -33,10 +33,10 @@ export class MercadoPagoController {
   }
 
   @ApiBearerAuth()
-  @Put("/inscriptionStatus/:Id")
+  @Put("/inscriptionStatus/:paymentId")
   @UseGuards(AuthGuard)
-  updateSuccessInscription(@Param("Id", ParseUUIDPipe) Id:string){
-    return this.mercadoPagoService.updateSuccessInscription(Id)
+  updateSuccessInscription(@Param("paymentId") paymentId:string){
+    return this.mercadoPagoService.updateSuccessInscription(paymentId)
   }
 
   @ApiBearerAuth()
