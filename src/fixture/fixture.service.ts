@@ -55,6 +55,7 @@ export class FixtureService {
       await this.roundRepository.update(round.id, { fixture: fixture });
       return { message: 'Fixture creado con exito', newFixture };
     
+
   }
 
   async createRound(tournamentID: string) {
@@ -109,8 +110,10 @@ export class FixtureService {
 
             if(currentDayIndex >= playingDay.length){
               currentDayIndex = 0;
+
             }
           }
+
           const teams = [availableTeams[teamIndex], availableTeams[teamIndex + 1]];
           await this.matchService.createMatch({
             teams,
@@ -207,3 +210,4 @@ export class FixtureService {
     return fixture;  
   }
 }
+
