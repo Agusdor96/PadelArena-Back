@@ -12,7 +12,11 @@ export class CategoryService {
   ){}
 
   async findAllCategories(){
-    return await this.categoryRepository.find()
+    try{
+      return await this.categoryRepository.find()
+    }catch(error){
+      return "No hay categorias precargadas"
+    }
   }
 
   async preloadCategories(){

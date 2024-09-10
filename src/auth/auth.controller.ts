@@ -4,7 +4,7 @@ import { PasswordsCompare } from 'src/decorators/EqualPasswords';
 import { UserDto } from 'src/user/dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { GoogleUserDto } from 'src/user/dto/googleUser.dto';
-import { SwaggerGoogleAuth, SwaggerLocalSignIn, SwaggerLocalSignUp } from 'src/decorators/AuthSwagger.decorator';
+import { SwaggerGoogleAuth, SwaggerLocalSignIn, SwaggerLocalSignUp } from '../decorators/SwaggerDecorators/Auth.decorator';
 import { CredentialsDto } from 'src/user/dto/credential.dto';
 
 @ApiTags("AUTH")

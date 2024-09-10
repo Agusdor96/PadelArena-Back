@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate{
             return true;
 
         } catch (err){
-            throw new UnauthorizedException("Token invalido")
+            throw new UnauthorizedException("Token invalido (guard)")
         }
     }
 }
