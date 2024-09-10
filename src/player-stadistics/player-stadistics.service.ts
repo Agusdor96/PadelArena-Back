@@ -64,7 +64,7 @@ export class PlayerStadisticsService {
     if(!player) throw new NotFoundException("No se encontro jugador con el id proporcionado")
 
     const stadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
-    if(!stadistic) throw new NotFoundException("El jugador no tiene estadisticas aun")
+    if(!stadistic) return ("El jugador no tiene estadisticas aun")
       
     return stadistic;
     

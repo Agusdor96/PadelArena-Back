@@ -37,8 +37,9 @@ export class MatchService {
 
   async getAllMatchesFromTournament(tournamentId: string) {
     const tournament = await this.tournamentRepository.findOne({where: {id: tournamentId},relations:{matches:true}})
+    if(!tournament) throw new NotFoundException("No se encuentra torneo por el id proporcionado")
+    
     const matches = tournament.matches;
-
     if (!matches.length) {
       throw new NotFoundException(
         'No se encontraron partidos asociados a este torneo',

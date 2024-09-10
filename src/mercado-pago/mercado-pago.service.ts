@@ -15,6 +15,7 @@ import { Repository } from 'typeorm';
 import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
 import { User } from 'src/user/entities/user.entity';
 import * as crypto from 'crypto';
+import { InscriptionEnum } from 'src/tournament/tournament.enum';
 
 @Injectable()
 export class MercadoPagoService {
@@ -29,14 +30,22 @@ export class MercadoPagoService {
   async mpConnections(req: dataPaymentDto) {
     const tournament = await this.tournamentRepository.findOne({
       where: { id: req.tournament },
+      relations:{category:true}
     });
+
     if (!tournament) {
       throw new NotFoundException('No se encontró el torneo');
     }
-    const user = await this.userRepsoitory.findOne({ where: { id: req.user } });
+    if(tournament.inscription === InscriptionEnum.CLOSED) throw new BadRequestException("Este torneo ha cerrado sus inscripciones")
+
+    const user = await this.userRepsoitory.findOne({ where: { id: req.user }, relations:{category:true} });
     if (!user) {
       throw new NotFoundException('No se encontró al usuario');
     }
+    console.log(user.category.name, "?=", tournament.category.name);
+    
+    if(user.category.name !== tournament.category.name) throw new BadRequestException("El usuario debe pertencer a la categoria del torneo")
+
     const payment = await this.paymentDetailRepository.findOne({
       where: {
         user: { id: user.id },
@@ -151,31 +160,31 @@ export class MercadoPagoService {
   }
 
   async getPaymentsFromTournament(tournamentId: string) {
+    const tournament = await this.tournamentRepository.findOne({where:{id:tournamentId}})
+    if(!tournament)throw new NotFoundException("No se encuentra torneo con el id proporcionado")
+    
     const payments = await this.paymentDetailRepository.find({
       where: { tournament: { id: tournamentId } },
     });
-
-    if (!payments.length)
-      throw new NotFoundException('No se encuentran pagos en este torneo');
 
     const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;
     });
     if (!validPaymentId.length)
       throw new NotFoundException(
-        'No se encuentran pagos concretados en la BDD',
+        'No se encuentran pagos en este torneo',
       );
     return validPaymentId;
   }
 
   async getPaymentsFromUser(userId: string) {
+    const user = await this.userRepsoitory.findOne({where:{id:userId}})
+    if(!user)throw new NotFoundException("No se encuentra usuario con el id proporcionado")
+
     const payments = await this.paymentDetailRepository.find({
       where: { user: { id: userId } },
       relations: { tournament: { team: true }, user: true },
     });
-
-    if (!payments.length)
-      throw new NotFoundException('No se encuentran pagos en este torneo');
 
     const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;
@@ -183,7 +192,7 @@ export class MercadoPagoService {
 
     if (!validPaymentId.length)
       throw new NotFoundException(
-        'No se encuentran pagos concretados en la BDD',
+        'Este usuario no tiene pagos registrados',
       );
 
     const cleanPlayments = validPaymentId.map((payment) => {

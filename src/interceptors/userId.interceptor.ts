@@ -8,7 +8,7 @@ export class UserIdINterceptor implements NestInterceptor{
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
         const request = context.switchToHttp().getRequest();
         if(!request.headers["authorization"]){
-            throw new BadRequestException("Falta la autorizacion en el header de la request")
+            throw new BadRequestException("Falta la autorizacion en el header de la request (Interceptor)")
           }  
 
         const token = request.headers.authorization.split(" ")[1];
@@ -18,10 +18,18 @@ export class UserIdINterceptor implements NestInterceptor{
 
         const paramsId = request.params.id;
         const decriptedToken = this.jwtService.decode(token);
-       
-        if(paramsId != decriptedToken.id){
-            throw new UnauthorizedException(`No autorizado. Los usuarios deben coincidir`);
-        }
+
+        if(paramsId){
+            if(paramsId != decriptedToken.id){
+                throw new UnauthorizedException(`No autorizado. (params)`);
+            }
+        } else{
+           const bodyId = request.body.user
+            if(bodyId != decriptedToken.id){
+               throw new UnauthorizedException(`No autorizado. (Body)`);
+           }
+        }   
+
         return next.handle();
     }
 }

@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate{
         const request = context.switchToHttp().getRequest()
 
         if(!request.headers["authorization"]){
-            throw new BadRequestException ("Falta la autorizacion en el header de la request")
+            throw new BadRequestException ("Falta la autorizacion en el header de la request (Guard)")
           }  
         const token = request.headers["authorization"].split(" ")[1]
         if(!token){
