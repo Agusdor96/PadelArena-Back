@@ -1,4 +1,4 @@
-import { PickType } from "@nestjs/mapped-types";
+
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID, Length, Matches } from "class-validator";
 
@@ -66,4 +66,4 @@ export class UserDto {
   profileImg: string | undefined;
 }
 
-export class CredentialsDto extends PickType(UserDto, ['email', 'password']){}
+

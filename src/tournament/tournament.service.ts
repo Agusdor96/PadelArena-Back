@@ -55,7 +55,7 @@ constructor(
         default: days.push(false);
       }
     });
-  
+    
     if(days.includes(false)) throw new BadRequestException("No pueden haber campos de dias invalidos o vacios")
     if(createTournamentDto.matchDuration < 30) throw new BadRequestException("Los partidos no pueden durar menos de 30 minutos")
     if(createTournamentDto.courts < 1) throw new BadRequestException("Debe haber al menos una cancha disponible")
