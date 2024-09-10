@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseInterceptors, Put
 import { TournamentService } from './tournament.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { TransformTime } from 'src/interceptors/dateTime.interceptor';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -13,13 +13,14 @@ import { RolesGuard } from 'src/guards/roles.guard';
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
 
+  @ApiBearerAuth()
   @Post('/new')
-  // @Roles(RoleEnum.ADMIN)
-  // @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(new TransformTime())
-  async create(@Body() createTournamentDto: CreateTournamentDto) {
-      await this.tournamentService.create(createTournamentDto);
-    return {message:"Torneo creado con exito", createTournamentDto};
+  async create(
+    @Body() createTournamentDto: CreateTournamentDto) {
+    return  await this.tournamentService.createTournament(createTournamentDto);
   }
 
   @Get()
@@ -32,8 +33,16 @@ export class TournamentController {
     return this.tournamentService.getTournament(id);
   }
 
+  @ApiBearerAuth()
   @Put('closeInscriptions/:id')
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   changeInscriptionStatus(@Param('id', ParseUUIDPipe) id: string) {
     return this.tournamentService.changeInscriptionStatus(id)
   }
+
+  // @Get('tournamentWinner/:userId')
+  // teamWinner (@Param('userId', ParseUUIDPipe) userId:string){
+  //   return this.tournamentService.tournamentWinner(userId)
+  // }
 }

@@ -8,9 +8,9 @@ export class PlayerStadistic {
     @PrimaryGeneratedColumn("uuid")
         id: string = uuid()
 
-    @Column()
-        won: number
+    @Column({default: 0})
+        won?: number
 
-    @Column()
-        loss: number
+    @Column({default: 0})
+        loss?: number
 }

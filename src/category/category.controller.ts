@@ -12,8 +12,4 @@ export class CategoryController {
     return this.categoryService.findAllCategories()
   }
 
-  @Get('/preload')
-  preload() {
-    return this.categoryService.preloadCategories();
-  }
 }

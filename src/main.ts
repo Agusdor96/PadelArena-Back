@@ -1,23 +1,36 @@
 import 'reflect-metadata';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { loggerGlobal } from './middleware/logger.middleware';
 import { CategoryService } from './category/category.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {UserService} from './user/user.service';
-// import {TeamService} from './team/team.service';
+import {TeamService} from './team/team.service';
+import { ValidationPipe } from '@nestjs/common';
+import { TournamentService } from './tournament/tournament.service';
+import { AllExceptionFilter } from './filters/globalException.filter';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const httpAdapterHost = app.get(HttpAdapterHost)
+  app.useGlobalFilters( new AllExceptionFilter(httpAdapterHost))
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true, 
+    }))
   app.use(loggerGlobal)
   app.enableCors();
 
   const categoryService = app.get(CategoryService)
   await categoryService.preloadCategories()
   const userService = app.get(UserService);
-  await userService.preload();
-  // const teamService = app.get(TeamService);
-  // await teamService.preload();
+  await userService.preloadUsers();
+  const tournamentService = app.get(TournamentService);
+  await tournamentService.preloadTournaments()
+  const teamService = app.get(TeamService);
+  await teamService.preloadTeams();
 
 //Swagger config
 const swaggerConfig = new DocumentBuilder()

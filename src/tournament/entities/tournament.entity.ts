@@ -2,7 +2,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { Fixture } from 'src/fixture/entities/fixture.entity';
 import { Match } from 'src/match/entities/match.entity';
 import { Team } from 'src/team/entities/team.entity';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 import { InscriptionEnum, StatusEnum } from '../tournament.enum';
 
@@ -10,34 +10,34 @@ import { InscriptionEnum, StatusEnum } from '../tournament.enum';
  @Entity({
      name: 'TOURNAMENT'
  })
-export class Tournament {
+export class TournamentEntity {
   @PrimaryGeneratedColumn('uuid')
-  id:string = uuid()
+    id:string = uuid()
 
   @Column({type:"varchar", length: 50})
-  name:string
+    name:string
+
+  @Column({ type: 'date' })
+    startDate:Date
+
+  @Column({ type: 'date' })
+    endDate:Date
 
   @Column()
-  startDate:Date
+    startingTime:string
 
   @Column()
-  endDate:Date
-
-  @Column()
-  startingTime:string
-
-  @Column()
-  finishTime:string
+    finishTime:string
 
   @Column("text", {array: true})
-  playingDay:string[]
+    playingDay:string[]
 
   @Column({
     type: 'enum',
     enum: StatusEnum,
     default: StatusEnum.UPCOMING
   })
-  status: StatusEnum
+    status: StatusEnum
 
   @Column({
     type: "enum",
@@ -47,33 +47,49 @@ export class Tournament {
     inscription: InscriptionEnum
 
   @Column()
-  teamsQuantity: number
+    teamsQuantity: number
 
   @Column()
-  matchDuration: number
+    matchDuration: number
 
   @Column()
-  description: string
+    description: string
+
+  @Column({nullable: true })
+    matchStartTime: string;
+
+  @Column({default: 0})
+    currentDay: number
 
   @Column("text", { array: true, nullable: true })
-  gallery: string[]
+    gallery: string[]
 
-  @Column({type: 'text', nullable: false, default: '/images/default-image.jpg'})
-  tournamentFlyer: string
+  @Column({type: 'text', nullable: false, default: 'https://assets-decimas-2.s3.amazonaws.com/uploads/2023/03/como-aprender-jugar-padel.jpg'})
+    tournamentFlyer: string
 
   @Column()
-  courtsAvailable: number
+    courtsAvailable: number
+
+  @Column()
+    price: number
+
+  @Column()
+    plusCode:string
 
   @ManyToOne(() => Category, (category) => category.tournaments, {nullable:false})
-  category: Category
+    category: Category
 
   @OneToMany(() => Team, (team) => team.tournament, {nullable:true})
-  team: Team[]
+    team: Team[]
 
   @OneToMany(() => Match, (match) => match.tournament, {nullable:true})
-  matches: Match[]
+    matches: Match[]
 
   @OneToOne(() => Fixture, {nullable:true})
   @JoinColumn({name:"fixture_id"})
-  fixture: Fixture
+    fixture: Fixture
+
+  @OneToOne(() => Team, {nullable:true})
+  @JoinColumn({name: "teamWinner"})
+    teamWinner:Team  
 }

@@ -11,17 +11,17 @@ export class AuthGuard implements CanActivate{
         const request = context.switchToHttp().getRequest()
 
         if(!request.headers["authorization"]){
-            throw new BadRequestException ("Falta la autorizacion en el header de la request")
+            throw new BadRequestException ("Falta la autorizacion en el header de la request (Guard)")
           }  
-        
         const token = request.headers["authorization"].split(" ")[1]
         if(!token){
             throw new BadRequestException("No se encontro el Bearer token")
         }
+
         try{
             const secret = process.env.JWT_SECRET
             const userPayload = this.JWTservice.verify(token,{secret})
-            console.log(userPayload);
+           
             
             if(userPayload.role === "admin"){
                 userPayload.asignRole = ["admin"]

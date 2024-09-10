@@ -1,20 +1,22 @@
 [
   {
     "name": "Summer Padel Cup",
-    "startDate": "2024-09-01",
+    "startDate": "2024-12-24",
     "startTime": "10:00",
-    "endTime": "18:00",
+    "endTime": "17:00",
     "playingDays": ["Lunes", "Miércoles", "Viernes"],
     "teamsQuantity": 16,
     "matchDuration": 60,
-    "courts": 3,
+    "courts": 2,
     "description": "El torneo de verano más esperado con un premio de 5000€. ¡Prepárate para la competición!",
-    "tournamentImg": "https://example.com/summer-padel-cup.jpg",
-    "category": "id de la categoria"
+    "tournamentFlyer": "/images/default-image.jpg",
+    "category": "Primera",
+    "price": 30,
+    "plusCode": "5PWX+84 Santiago del Estero"
   },
   {
     "name": "Autumn Padel Challenge",
-    "startDate": "2024-10-10",
+    "startDate": "2024-12-10",
     "startTime": "09:00",
     "endTime": "17:00",
     "playingDays": ["Martes", "Jueves", "Sábado"],
@@ -22,8 +24,10 @@
     "matchDuration": 90,
     "courts": 4,
     "description": "Desafío de padel otoñal con un premio de 7500€. ¡Compite con los mejores!",
-    "tournamentImg": "https://example.com/autumn-padel-challenge.jpg",
-    "category": "id de la categoria"
+    "tournamentFlyer": "/images/default-image.jpg",
+    "category": "Primera",
+    "price": 30,
+    "plusCode": "5PWX+84 Santiago del Estero"
   },
   {
     "name": "Winter Padel League",
@@ -35,12 +39,14 @@
     "matchDuration": 30,
     "courts": 2,
     "description": "Liga de invierno con un premio de 3000€. ¡No dejes pasar esta oportunidad!",
-    "tournamentImg": "https://example.com/winter-padel-league.jpg",
-    "category": "id de la categoria"
+    "tournamentFlyer": "/images/default-image.jpg",
+    "category": "Tercera",
+    "price": 30,
+    "plusCode": "5PWX+84 Santiago del Estero"
   },
   {
     "name": "Spring Padel Open",
-    "startDate": "2024-03-20",
+    "startDate": "2024-10-20",
     "startTime": "12:00",
     "endTime": "20:00",
     "playingDays": ["Miércoles", "Sábado", "Domingo"],
@@ -48,8 +54,10 @@
     "matchDuration": 90,
     "courts": 4,
     "description": "Torneo de primavera con un premio de 6000€. ¡Demuestra tu talento en la pista!",
-    "tournamentImg": "https://example.com/spring-padel-open.jpg",
-    "category": "id de la categoria"
+    "tournamentFlyer": "/images/default-image.jpg",
+    "category": "Cuarta",
+    "price": 30,
+    "plusCode": "5PWX+84 Santiago del Estero"
   },
   {
     "name": "Padel Masters Cup",
@@ -61,8 +69,9 @@
     "matchDuration": 60,
     "courts": 3,
     "description": "Copa de maestros de padel con un premio de 10000€. ¡Sólo para los mejores!",
-    "tournamentImg": "https://example.com/padel-masters-cup.jpg",
-    "category": "id de la categoria"
+    "tournamentFlyer": "/images/default-image.jpg",
+    "category": "Quinta",
+    "price": 30,
+    "plusCode": "5PWX+84 Santiago del Estero"
   }
 ]
-
