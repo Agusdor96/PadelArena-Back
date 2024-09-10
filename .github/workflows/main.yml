@@ -19,20 +19,14 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.EC2_KEY }}
 
-    - name: Copy files to EC2
-      run: |
-        scp -o StrictHostKeyChecking=no -r * ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_PROJECT_PATH }}
-
-    - name: SSH into EC2 and restart application
+    - name: SSH into EC2 and deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
         cd ${{ secrets.EC2_PROJECT_PATH }}
-        # Pull the latest changes
+        # Fetch the latest changes from the repository
         git pull origin main
-        # Optional: Install dependencies
+        # Install dependencies in case of updates
         npm install
-        # Kill the running process (you may need to adapt this depending on how your app runs)
-        pkill node || true
-        # Start the app (adjust the command if necessary)
+        # Restart the application with npm
         npm run start:dev
         EOF
