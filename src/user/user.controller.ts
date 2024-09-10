@@ -7,7 +7,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from './roles.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { SwaggerUpdateUser } from 'src/decorators/UserSwagger.decorator';
+import { SwaggerUpdateUser,SwaggerMakeMeAdmin } from 'src/decorators/SwaggerDecorators/User.decorator';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 import { AdminKeyDto } from './dto/adminKey.dto';
 import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
@@ -37,6 +37,7 @@ export class UserController {
   @ApiBearerAuth()
   @Put("makeMeAdmin/:userId")
   @UseGuards(AuthGuard)
+  @SwaggerMakeMeAdmin()
   updateUserRole(
     @Param("userId", ParseUUIDPipe)userId:string,
     @Body()adminKey:AdminKeyDto){
