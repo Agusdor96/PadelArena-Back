@@ -82,6 +82,7 @@ export class MercadoPagoService {
   }
 
   async feedbackPayment(payment: PaymentResponse) {
+    
     const externalReference = payment.external_reference;
     const userid = externalReference.split(',')[0].split(':')[1];
     const tournamentid = externalReference.split(',')[1].split(':')[1];
@@ -107,12 +108,13 @@ export class MercadoPagoService {
       tournament,
     };
     const paymentCompleted = await this.paymentDetailRepository.save(pay);
+    
     if (paymentCompleted.status === 'approved') {
       await this.paymentDetailRepository.update(paymentCompleted.id, {
         successInscription: true,
       });
       const paymentApproved = await this.paymentDetailRepository.findOne({
-        where: { id: paymentCompleted.id },
+        where: { id: paymentCompleted.id }, relations: {user:true, tournament:true}
       });
       const { password, ...cleanUser } = paymentApproved.user;
       const { user, ...paymentClean } = paymentApproved;
@@ -147,7 +149,7 @@ export class MercadoPagoService {
     const payments = await this.paymentDetailRepository.find({
       order: {
         date_created: 'DESC',
-      },
+      }, relations: { user:true }
     });
     const validPaymentId: PaymentDetail[] = payments.filter((payment) => {
       return payment.id !== null;

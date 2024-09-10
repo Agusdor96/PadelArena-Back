@@ -13,7 +13,7 @@ import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
 @Controller('mercado-pago')
 export class MercadoPagoController {
   constructor(private readonly mercadoPagoService: MercadoPagoService) {}
-
+  
   @ApiBearerAuth()
   @Post('create_preference')
   @UseGuards(AuthGuard)
@@ -26,7 +26,6 @@ export class MercadoPagoController {
   @HttpCode(201)
   @Post('feedback')
   @UseInterceptors(HeaderInterceptor)
-  @UseGuards(AuthGuard)
   feedbackPayment (@Query('data.id') id: string, @Body() body : string){
     this.mercadoPagoService.encryptHeaders(body)
     this.mercadoPagoService.getpayment(id)

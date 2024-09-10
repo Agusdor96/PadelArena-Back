@@ -40,4 +40,9 @@ export class TournamentController {
   changeInscriptionStatus(@Param('id', ParseUUIDPipe) id: string) {
     return this.tournamentService.changeInscriptionStatus(id)
   }
+
+  // @Get('tournamentWinner/:userId')
+  // teamWinner (@Param('userId', ParseUUIDPipe) userId:string){
+  //   return this.tournamentService.tournamentWinner(userId)
+  // }
 }
