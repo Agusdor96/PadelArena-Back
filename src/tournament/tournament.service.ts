@@ -120,7 +120,7 @@ constructor(
         id:id
       },
       relations: {
-        team:true,
+        team:{user:true},
         matches:true,
         fixture:true,
         category: true,
