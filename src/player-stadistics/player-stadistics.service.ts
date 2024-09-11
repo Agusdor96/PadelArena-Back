@@ -4,6 +4,7 @@ import { PlayerStadistic } from './entities/player-stadistic.entity';
 import { In, Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 import { Team } from '../team/entities/team.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
 
 @Injectable()
 export class PlayerStadisticsService {
@@ -47,16 +48,26 @@ export class PlayerStadisticsService {
       const playerStadistic = await this.playerStadisticRepository.findOneBy(player.playerStadistic)
      
       if(player.playerStadistic === null){
-       const stat = await this.playerStadisticRepository.save({loss: 1});
+       const stat = await this.playerStadisticRepository.save({loss: 1, lossTournaments: 1});
        player.playerStadistic = stat
        await this.userRepository.save(player)
       } else{
         playerStadistic.loss += 1
+        playerStadistic.lossTournaments += 1;
         await this.playerStadisticRepository.save(playerStadistic);
       }    
     }
 
     return { message: 'Estadisticas actualizadas con exito' };
+  }
+
+  async addTournamentWinner(winnerTeam: Team) {
+    const [player1, player2] = winnerTeam.user
+    player1.playerStadistic.wonTournaments += 1;
+    player2.playerStadistic.wonTournaments += 1;
+
+    await this.playerStadisticRepository.save(player1.playerStadistic)
+    await this.playerStadisticRepository.save(player2.playerStadistic)
   }
 
   async getPlayerStadistics(playerId: string) {
