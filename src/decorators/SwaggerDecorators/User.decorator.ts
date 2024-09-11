@@ -77,9 +77,9 @@ export function SwaggerGetOneUser() {
         ApiOperation({
             
             summary: "Obtiene un usuario por Id",
-            description:""
+            description:"Se obtiene un usuario por su id, idealmente se usaria para el perfil del usuario"
         }),
-        ApiResponse({status:201, description: "devuelve un objeto user con el rol modificado"}),
-        ApiResponse({status: 404, description: "Not found exception"})
+        ApiResponse({status:201, description: "Devuelve un objeto user"}),
+        ApiResponse({status: 404, description: "NotFoundException"})
     )
 }
