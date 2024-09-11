@@ -8,6 +8,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
+import { SwaggerByTournament, SwaggerByUser, SwaggerCreatePreference, SwaggerFeedback, SwaggerGetAllPayments, SwaggerInscriptionStatus } from 'src/decorators/SwaggerDecorators/Mp.decorators';
 
 @ApiTags("MERCADO PAGO")
 @Controller('mercado-pago')
@@ -16,6 +17,7 @@ export class MercadoPagoController {
   
   @ApiBearerAuth()
   @Post('create_preference')
+  @SwaggerCreatePreference()
   @UseGuards(AuthGuard)
   @UseInterceptors(UserIdINterceptor)
   apiMPConnection(@Body() req: dataPaymentDto){
@@ -25,6 +27,7 @@ export class MercadoPagoController {
   @ApiBearerAuth()
   @HttpCode(201)
   @Post('feedback')
+  @SwaggerFeedback()
   @UseInterceptors(HeaderInterceptor)
   feedbackPayment (@Query('data.id') id: string, @Body() body : string){
     this.mercadoPagoService.encryptHeaders(body)
@@ -34,6 +37,7 @@ export class MercadoPagoController {
 
   @ApiBearerAuth()
   @Put("/inscriptionStatus/:paymentId")
+  @SwaggerInscriptionStatus()
   @UseGuards(AuthGuard)
   updateSuccessInscription(@Param("paymentId") paymentId:string){
     return this.mercadoPagoService.updateSuccessInscription(paymentId)
@@ -41,6 +45,7 @@ export class MercadoPagoController {
 
   @ApiBearerAuth()
   @Get('allPayments')
+  @SwaggerGetAllPayments()
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   getAllPayments(){
@@ -49,6 +54,7 @@ export class MercadoPagoController {
 
   @ApiBearerAuth()
   @Get("byTournament/:tournamentId")
+  @SwaggerByTournament()
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   allTournamentPayments(@Param("tournamentId", ParseUUIDPipe) tournamentId:string){
@@ -60,6 +66,7 @@ export class MercadoPagoController {
   }
   @ApiBearerAuth() 
   @Get("byUser/:userId")
+  @SwaggerByUser()
   @UseGuards(AuthGuard)
   allUserPayments(@Param("userId", ParseUUIDPipe) userId:string){
     try{

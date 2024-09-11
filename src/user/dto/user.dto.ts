@@ -59,7 +59,7 @@ export class UserDto {
   @IsUUID()
   category: string;
 
-  @ApiProperty({ description: 'Imagen de perfil del jugador', example: 'data:image/png' })
+  @ApiProperty({ description: 'Imagen de perfil del jugador', example: 'https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp' })
   @IsOptional()
   @Length(3, 50)
   @IsString()

@@ -109,10 +109,7 @@ export class MercadoPagoService {
     };
     const paymentCompleted = await this.paymentDetailRepository.save(pay);
     
-     if (paymentCompleted.status === 'approved') {
-    //   await this.paymentDetailRepository.update(paymentCompleted.id, {
-    //     successInscription: false,
-    //   });
+    if (paymentCompleted.status === 'approved') {
 
       const paymentApproved = await this.paymentDetailRepository.findOne({
         where: { id: paymentCompleted.id }, relations: {user:true, tournament:true}
