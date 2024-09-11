@@ -13,7 +13,6 @@ export class MatchService {
     @InjectRepository(Team) private teamRepository: Repository<Team>,
     @InjectRepository(TournamentEntity)
     private tournamentRepository :Repository<TournamentEntity>,
-  //   @Inject() private tournamentService: TournamentService,
   ) {}
 
   async createMatch({ teams, tournament, currentMatchTime, currentDayIndex }) {
@@ -46,16 +45,5 @@ export class MatchService {
       );
     }
     return matches;
-  }
-
-  async getOneMatch(teamId: string) {
-    const match = await this.matchRepository.findOneBy({ id: teamId });
-    if (!match) {
-      throw new NotFoundException(
-        'No se encontro ningun partido con el id proporcionado',
-      );
-    }
-
-    return match;
   }
 }

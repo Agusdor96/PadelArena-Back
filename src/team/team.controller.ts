@@ -3,10 +3,10 @@ import { TeamService } from './team.service';
 import { TeamDto } from './dto/team.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../guards/auth.guard';
-import { SwaggerTeamsInscription } from '../decorators/SwaggerDecorators/Team.decorator';
+import { SwaggerGetAllTeams, SwaggerGetOneTeam, SwaggerTeamsInscription } from '../decorators/SwaggerDecorators/Team.decorator';
 
 
-@ApiTags("TEAM")
+@ApiTags("EQUIPOS")
 @Controller('tournament-team')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
@@ -21,6 +21,7 @@ export class TeamController {
   
   @ApiBearerAuth()
   @Get('oneTeam/:id')
+  @SwaggerGetOneTeam()
   @UseGuards(AuthGuard)
   getTeamByID(@Param('id', ParseUUIDPipe) id: string) {
     return this.teamService.findOneTeam(id);
@@ -28,6 +29,7 @@ export class TeamController {
   
   @ApiBearerAuth()
   @Get(':tournamentId')
+  @SwaggerGetAllTeams()
   @UseGuards(AuthGuard)
   getAllTeams(@Param('tournamentId', ParseUUIDPipe) tournamentId:string) {
     return this.teamService.findAllTeamsByTournament(tournamentId);
