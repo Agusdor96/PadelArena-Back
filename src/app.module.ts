@@ -48,6 +48,6 @@ import { AllExceptionFilter } from './filters/globalException.filter';
 
   ],
   controllers: [],
-  // providers: [{provide: APP_FILTER, useClass: AllExceptionFilter}],
+  providers: [{provide: APP_FILTER, useClass: AllExceptionFilter}],
 })
 export class AppModule {}
