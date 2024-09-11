@@ -1,6 +1,6 @@
 [
   {
-    "name": "Summer Padel Cup",
+    "name": "Torneo de verano",
     "startDate": "2024-12-24",
     "startTime": "10:00",
     "endTime": "17:00",
@@ -9,14 +9,14 @@
     "matchDuration": 60,
     "courts": 2,
     "description": "El torneo de verano más esperado con un premio de 5000€. ¡Prepárate para la competición!",
-    "tournamentFlyer": "/images/default-image.jpg",
+    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Torneo_de_verano_p7bfh6.jpg",
     "category": "Primera",
     "price": 30,
     "plusCode": "5PWX+84 Santiago del Estero"
   },
   {
-    "name": "Autumn Padel Challenge",
-    "startDate": "2024-12-10",
+    "name": "Torneo de Otoño",
+    "startDate": "2025-04-10",
     "startTime": "09:00",
     "endTime": "17:00",
     "playingDays": ["Martes", "Jueves", "Sábado"],
@@ -24,14 +24,14 @@
     "matchDuration": 90,
     "courts": 4,
     "description": "Desafío de padel otoñal con un premio de 7500€. ¡Compite con los mejores!",
-    "tournamentFlyer": "/images/default-image.jpg",
+    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Torneo_de_oto%C3%B1o_ijg5t8.jpg",
     "category": "Primera",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "QVMF+86 Cota, Cundinamarca, Colombia"
   },
   {
-    "name": "Winter Padel League",
-    "startDate": "2024-12-01",
+    "name": "Torneo de invierno",
+    "startDate": "2025-07-01",
     "startTime": "11:00",
     "endTime": "19:00",
     "playingDays": ["Lunes", "Jueves"],
@@ -39,14 +39,14 @@
     "matchDuration": 30,
     "courts": 2,
     "description": "Liga de invierno con un premio de 3000€. ¡No dejes pasar esta oportunidad!",
-    "tournamentFlyer": "/images/default-image.jpg",
+    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Torneo_de_invierno_ggrfot.jpg",
     "category": "Tercera",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "VHFW+9C San Carlos de Bariloche, Río Negro Province"
   },
   {
-    "name": "Spring Padel Open",
-    "startDate": "2024-10-20",
+    "name": "Torneo primaveral",
+    "startDate": "2024-09-21",
     "startTime": "12:00",
     "endTime": "20:00",
     "playingDays": ["Miércoles", "Sábado", "Domingo"],
@@ -54,24 +54,24 @@
     "matchDuration": 90,
     "courts": 4,
     "description": "Torneo de primavera con un premio de 6000€. ¡Demuestra tu talento en la pista!",
-    "tournamentFlyer": "/images/default-image.jpg",
+    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Torneo_primaveral_smjiri.jpg",
     "category": "Cuarta",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "4FGC+P3 Capilla del Monte, Córdoba Province"
   },
   {
-    "name": "Padel Masters Cup",
-    "startDate": "2024-11-15",
+    "name": "Copa Padel Arena",
+    "startDate": "2024-09-12",
     "startTime": "13:00",
     "endTime": "21:00",
-    "playingDays": ["Viernes", "Sábado"],
+    "playingDays": ["Jueves"],
     "teamsQuantity": 16,
     "matchDuration": 60,
     "courts": 3,
-    "description": "Copa de maestros de padel con un premio de 10000€. ¡Sólo para los mejores!",
-    "tournamentFlyer": "/images/default-image.jpg",
+    "description": "El torneo mas importante del año, los equipos deeran mostrar sus grandes habilidades para llevarse la copa",
+    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Copa_Padel_Arena_jdeqj4.jpg",
     "category": "Quinta",
     "price": 30,
-    "plusCode": "5PWX+84 Santiago del Estero"
+    "plusCode": "FG36+RJ Buenos Aires"
   }
 ]
