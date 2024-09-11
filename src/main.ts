@@ -13,8 +13,8 @@ import { AllExceptionFilter } from './filters/globalException.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const httpAdapterHost = app.get(HttpAdapterHost)
-  app.useGlobalFilters( new AllExceptionFilter(httpAdapterHost))
+  // const httpAdapterHost = app.get(HttpAdapterHost)
+  // app.useGlobalFilters( new AllExceptionFilter(httpAdapterHost))
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

@@ -161,7 +161,7 @@ export class FixtureService {
     const teamIdInMatch = teamsIds.includes(winnerId);
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
     
-    const winnerTeam: Team = await this.teamRepository.findOne({where:{id:winnerId}})
+    const winnerTeam: Team = await this.teamRepository.findOne({where:{id:winnerId}, relations:{user:{playerStadistic:true}}})
 
     match.teamWinner = winnerTeam
 
@@ -181,7 +181,9 @@ export class FixtureService {
     const tournamentFromMatch = match.tournament.id
 
     if (round.stage === 'final') {
-      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED, teamWinner:winnerTeam})
+    await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED, teamWinner:winnerTeam})
+    const finishedTournament = await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}}) 
+    await this.playerStatsService.addTournamentWinner(winnerTeam)
       return fixtureFromRound;
     } 
     const allMatchesFromThatRound = round.matches;
