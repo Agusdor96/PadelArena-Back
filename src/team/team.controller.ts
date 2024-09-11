@@ -3,6 +3,7 @@ import { TeamService } from './team.service';
 import { TeamDto } from './dto/team.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../guards/auth.guard';
+import { SwaggerTeamsInscription } from '../decorators/SwaggerDecorators/Team.decorator';
 
 
 @ApiTags("TEAM")
@@ -12,6 +13,7 @@ export class TeamController {
 
   @ApiBearerAuth()
   @Post(':tournamentId')
+  @SwaggerTeamsInscription()
   @UseGuards(AuthGuard)
   newTeam(@Param('tournamentId', ParseUUIDPipe) tournamentId: string, @Body() TeamDto: TeamDto) {
     return this.teamService.teamInscription(tournamentId, TeamDto);

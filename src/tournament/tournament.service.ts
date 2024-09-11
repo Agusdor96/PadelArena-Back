@@ -59,7 +59,7 @@ constructor(
         default: days.push(false);
       }
     });
-  
+    
     if(days.includes(false)) throw new BadRequestException("No pueden haber campos de dias invalidos o vacios")
     if(createTournamentDto.matchDuration < 30) throw new BadRequestException("Los partidos no pueden durar menos de 30 minutos")
     if(createTournamentDto.courts < 1) throw new BadRequestException("Debe haber al menos una cancha disponible")
@@ -120,7 +120,7 @@ constructor(
         id:id
       },
       relations: {
-        team:true,
+        team:{user:true},
         matches:true,
         fixture:true,
         category: true,
@@ -187,10 +187,4 @@ constructor(
     }
     return {message: "Torneos cargados con exito"}
   } 
-
-  // async tournamentWinner(userId: string) {
-  //   const team = await this.
-  //   const tournament = await this.tournamentRepository.find({where: {teamWinner: }})
-  //   console.log(tournament);
-  // }
 }

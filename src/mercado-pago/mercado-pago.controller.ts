@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, UseGuards, Put } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
@@ -30,6 +30,13 @@ export class MercadoPagoController {
     this.mercadoPagoService.encryptHeaders(body)
     this.mercadoPagoService.getpayment(id)
     return id
+  }
+
+  @ApiBearerAuth()
+  @Put("/inscriptionStatus/:paymentId")
+  @UseGuards(AuthGuard)
+  updateSuccessInscription(@Param("paymentId") paymentId:string){
+    return this.mercadoPagoService.updateSuccessInscription(paymentId)
   }
 
   @ApiBearerAuth()

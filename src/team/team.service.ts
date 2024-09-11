@@ -47,6 +47,8 @@ export class TeamService {
       throw new NotFoundException(
         'No se encuentra torneo con el id proporcionado',
       );
+    
+    if(tournament.team.length >= tournament.teamsQuantity) throw new BadRequestException("Las inscripciones de este torneo estan completas")
 
     const players = await this.userRepository.find({
       where: { id: In(TeamDto.players) },

@@ -37,7 +37,7 @@ export class User {
     @Column('text', {nullable: true})
         address:string
 
-    @Column({ type: "text", nullable: true, default: "https://asset.cloudinary.com/ds7jn3ymr/07244713074f55f66782faa03a555811" })
+    @Column({ type: "text", nullable: true, default: "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp"})
         profileImg?: string
 
     @Column({nullable: true})

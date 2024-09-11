@@ -1,10 +1,11 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PasswordsCompare } from '../decorators/EqualPasswords';
-import { CredentialsDto, UserDto } from '../user/dto/user.dto';
+import { UserDto } from '../user/dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { GoogleUserDto } from '../user/dto/googleUser.dto';
-import { SwaggerGoogleAuth } from '../decorators/AuthSwagger.decorator';
+import { SwaggerGoogleAuth, SwaggerLocalSignIn, SwaggerLocalSignUp } from '../decorators/SwaggerDecorators/Auth.decorator';
+import { CredentialsDto } from '../user/dto/credential.dto';
 
 @ApiTags("AUTH")
 @Controller('auth')
@@ -12,6 +13,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @HttpCode(201)
   @Post('/local-signup')
+  @SwaggerLocalSignUp()
   signUp (
     @PasswordsCompare()
     @Body() userDto:UserDto) {
@@ -20,6 +22,7 @@ export class AuthController {
 
   @HttpCode(201)
   @Post('/local-signin')
+  @SwaggerLocalSignIn()
   signIn(@Body() credentials:CredentialsDto) {
     return this.authService.signInUser(credentials)
   }
