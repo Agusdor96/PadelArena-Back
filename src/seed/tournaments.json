@@ -1,5 +1,20 @@
 [
   {
+    "name": "Copa Padel Arena",
+    "startDate": "2024-09-12",
+    "startTime": "13:00",
+    "endTime": "21:00",
+    "playingDays": ["Jueves"],
+    "teamsQuantity": 16,
+    "matchDuration": 60,
+    "courts": 3,
+    "description": "El torneo mas importante del año, los equipos deeran mostrar sus grandes habilidades para llevarse la copa",
+    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Copa_Padel_Arena_jdeqj4.jpg",
+    "category": "Primera",
+    "price": 30,
+    "plusCode": "FG36+RJ Buenos Aires"
+  },
+  {
     "name": "Torneo de verano",
     "startDate": "2024-12-24",
     "startTime": "10:00",
@@ -10,7 +25,7 @@
     "courts": 2,
     "description": "El torneo de verano más esperado con un premio de 5000€. ¡Prepárate para la competición!",
     "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Torneo_de_verano_p7bfh6.jpg",
-    "category": "Primera",
+    "category": "Quinta",
     "price": 30,
     "plusCode": "5PWX+84 Santiago del Estero"
   },
@@ -25,7 +40,7 @@
     "courts": 4,
     "description": "Desafío de padel otoñal con un premio de 7500€. ¡Compite con los mejores!",
     "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Torneo_de_oto%C3%B1o_ijg5t8.jpg",
-    "category": "Primera",
+    "category": "Segunda",
     "price": 30,
     "plusCode": "QVMF+86 Cota, Cundinamarca, Colombia"
   },
@@ -58,20 +73,5 @@
     "category": "Cuarta",
     "price": 30,
     "plusCode": "4FGC+P3 Capilla del Monte, Córdoba Province"
-  },
-  {
-    "name": "Copa Padel Arena",
-    "startDate": "2024-09-12",
-    "startTime": "13:00",
-    "endTime": "21:00",
-    "playingDays": ["Jueves"],
-    "teamsQuantity": 16,
-    "matchDuration": 60,
-    "courts": 3,
-    "description": "El torneo mas importante del año, los equipos deeran mostrar sus grandes habilidades para llevarse la copa",
-    "tournamentFlyer": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726083082/Copa_Padel_Arena_jdeqj4.jpg",
-    "category": "Quinta",
-    "price": 30,
-    "plusCode": "FG36+RJ Buenos Aires"
   }
 ]
