@@ -1,7 +1,7 @@
 import { Controller, Get,  Param, ParseUUIDPipe } from '@nestjs/common';
 import { MatchService } from './match.service';
 import { ApiTags } from '@nestjs/swagger';
-import { SwaggerGetMatches } from 'src/decorators/SwaggerDecorators/Match.decorator';
+import { SwaggerGetMatches } from '../decorators/SwaggerDecorators/Match.decorator';
 
 @ApiTags("PARTIDOS")
 @Controller('match')
