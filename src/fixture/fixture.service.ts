@@ -139,11 +139,9 @@ export class FixtureService {
     if (!tournament.fixture) {
       const round = await this.roundRepository.save(newRound);
       return round;
-    }
-          
+    }  
     newRound.fixture = tournament.fixture;
 
-    
     const round = await this.roundRepository.save(newRound);
     const returnRound = await this.roundRepository.findOne({where:{id:round.id}, relations:{matches:{teams:true, teamWinner:true}}})
     return returnRound;     
@@ -182,7 +180,6 @@ export class FixtureService {
 
     if (round.stage === 'final') {
     await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED, teamWinner:winnerTeam})
-    const finishedTournament = await this.tournamentRepository.findOne({where:{id:tournamentFromMatch}}) 
     await this.playerStatsService.addTournamentWinner(winnerTeam)
       return fixtureFromRound;
     } 

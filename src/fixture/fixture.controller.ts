@@ -7,6 +7,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { SwaggerGetFixture, SwaggerUpdateMatchWinner } from 'src/decorators/SwaggerDecorators/Fixture.decorator';
 
 @ApiTags("FIXTURE")
 @Controller('tournamentfixture')
@@ -16,12 +17,14 @@ export class FixtureController {
   @ApiBearerAuth()
   @Roles(RoleEnum.ADMIN)
   @Put('matchWinner/:winnerId')
+  @SwaggerUpdateMatchWinner()
   @UseGuards(AuthGuard,RolesGuard)
   addWinners (@Param('winnerId', ParseUUIDPipe) winnerId: string, @Body() matchId: MatchIdDTO) {
     return this.fixtureService.uploadWinners(matchId, winnerId)
   }
 
   @Get("/:fixtureId")
+  @SwaggerGetFixture()
   getOneFixture(@Param("fixtureId", ParseUUIDPipe)fixtureId: string){
     return this.fixtureService.getOneFixture(fixtureId)
   }
