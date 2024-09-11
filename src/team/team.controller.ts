@@ -6,7 +6,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { SwaggerGetAllTeams, SwaggerGetOneTeam, SwaggerTeamsInscription } from '../decorators/SwaggerDecorators/Team.decorator';
 
 
-@ApiTags("TEAM")
+@ApiTags("EQUIPOS")
 @Controller('tournament-team')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}

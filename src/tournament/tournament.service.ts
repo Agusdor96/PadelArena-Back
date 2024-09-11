@@ -18,13 +18,10 @@ export class TournamentService {
 constructor(
   @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
-  @Inject() private fixtureService: FixtureService,
-  @Inject() private fileService: FileService,
-  @InjectRepository(Team) private teamRepository: Repository<Team>
+  @Inject() private fixtureService: FixtureService
 ){}
 
   async createTournament(createTournamentDto:any) {
-
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
     if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
       
@@ -80,9 +77,10 @@ constructor(
   
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
       const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
+
       const tournament = new TournamentEntity();
-      tournament.name = createTournamentDto.name;
-      tournament.startDate = createTournamentDto.startDate;
+        tournament.name = createTournamentDto.name;
+        tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
         tournament.startingTime = format(startTime, "HH:mm"); 
         tournament.finishTime = format(endTime, "HH:mm");
@@ -99,7 +97,6 @@ constructor(
       
       const newTournament = await this.tournamentRepository.save(tournament);
       return newTournament;
-
   }
 
   async getAllTournaments() {

@@ -12,7 +12,7 @@ import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 import { AdminKeyDto } from './dto/adminKey.dto';
 import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
 
-@ApiTags("USERS")
+@ApiTags("USUARIOS")
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

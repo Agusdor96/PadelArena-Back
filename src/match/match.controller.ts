@@ -3,7 +3,7 @@ import { MatchService } from './match.service';
 import { ApiTags } from '@nestjs/swagger';
 import { SwaggerGetMatches } from 'src/decorators/SwaggerDecorators/Match.decorator';
 
-@ApiTags("MATCH")
+@ApiTags("PARTIDOS")
 @Controller('match')
 export class MatchController {
   constructor(private readonly matchService: MatchService) {}

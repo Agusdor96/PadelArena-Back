@@ -22,7 +22,7 @@ import { RoleEnum } from 'src/user/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { SwaggerProfileImage, SwaggerTournamentFlyer } from 'src/decorators/SwaggerDecorators/Files.decorator';
 
-@ApiTags("FILE")
+@ApiTags("ARCHIVOS")
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
