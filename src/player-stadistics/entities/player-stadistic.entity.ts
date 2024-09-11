@@ -16,7 +16,7 @@ export class PlayerStadistic {
 
     @Column({default:0})
         wonTournaments?:number
-        
+
     @Column({default:0})
         lossTournaments?:number
 }
