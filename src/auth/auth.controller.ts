@@ -7,7 +7,7 @@ import { GoogleUserDto } from 'src/user/dto/googleUser.dto';
 import { SwaggerGoogleAuth, SwaggerLocalSignIn, SwaggerLocalSignUp } from '../decorators/SwaggerDecorators/Auth.decorator';
 import { CredentialsDto } from 'src/user/dto/credential.dto';
 
-@ApiTags("AUTH")
+@ApiTags("AUTENTICACION")
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

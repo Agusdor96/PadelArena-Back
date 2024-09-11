@@ -414,6 +414,84 @@
     "address": "2929 Maple St",
     "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp",
     "category": "Primera"
+  },
+  {
+    "name": "Agustin",
+    "lastName": "Repetto",
+    "email": "agus@example.com",
+    "password": "Hola1234#",
+    "passwordConfirm": "Hola1234#",
+    "phone": "1124089475",
+    "country": "Argentina",
+    "city": "Bariloche",
+    "address": "Calle 1121",
+    "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1725983599/srwcs6mrpa8ua23lsf8d.jpg",
+    "category": "Segunda"
+  },
+  {
+    "name": "Esteban",
+    "lastName": "Necuse",
+    "email": "steve@example.com",
+    "password": "Hola1234#",
+    "passwordConfirm": "Hola1234#",
+    "phone": "2345678904",
+    "country": "Uruguay",
+    "city": "Montevideo",
+    "address": "Calle 221",
+    "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp",
+    "category": "Segunda"
+  },
+  {
+    "name": "Ana",
+    "lastName": "Casconi",
+    "email": "ana@example.com",
+    "password": "Hola1234#",
+    "passwordConfirm": "Hola1234#",
+    "phone": "2345678904",
+    "country": "Argentina",
+    "city": "Cordoba",
+    "address": "Calle 548",
+    "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp",
+    "category": "Segunda"
+  },
+  {
+    "name": "Samuel",
+    "lastName": "Castrillon",
+    "email": "samu@example.com",
+    "password": "Hola1234#",
+    "passwordConfirm": "Hola1234#",
+    "phone": "2345678904",
+    "country": "Colombia",
+    "city": "Bogota",
+    "address": "Calle 658",
+    "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1725989504/t9lddpdffs019gq47yxm.jpg",
+    "category": "Segunda"
+  },
+  {
+    "name": "Pilar",
+    "lastName": "Carranza",
+    "email": "pili@example.com",
+    "password": "Hola1234#",
+    "passwordConfirm": "Hola1234#",
+    "phone": "2345678904",
+    "country": "Argentina",
+    "city": "Santiago Del Estero",
+    "address": "Calle 487",
+    "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp",
+    "category": "Segunda"
+  },
+  {
+    "name": "Rosario",
+    "lastName": "Kuen",
+    "email": "ro@example.com",
+    "password": "Hola1234#",
+    "passwordConfirm": "Hola1234#",
+    "phone": "2345678904",
+    "country": "Argentina",
+    "city": "Carmen de Patagones",
+    "address": "Calle 574",
+    "profileImg": "https://res.cloudinary.com/ds7jn3ymr/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1726081935/kyizdqvuazrvv7cdjyve.jpg",
+    "category": "Segunda"
   }
 ]
   

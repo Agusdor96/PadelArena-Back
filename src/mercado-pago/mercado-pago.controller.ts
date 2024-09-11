@@ -9,7 +9,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from 'src/user/roles.enum';
 import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
 
-@ApiTags("MERCADO-PAGO")
+@ApiTags("MERCADO PAGO")
 @Controller('mercado-pago')
 export class MercadoPagoController {
   constructor(private readonly mercadoPagoService: MercadoPagoService) {}

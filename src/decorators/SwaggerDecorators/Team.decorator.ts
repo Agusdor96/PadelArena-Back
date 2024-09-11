@@ -22,3 +22,13 @@ export function SwaggerGetOneTeam() {
         ApiResponse({status: 404, description: "El equipo no existe, revisa la informacion proporcionada"})
     )
 }
+export function SwaggerGetAllTeams() {
+    return applyDecorators(
+        ApiOperation({
+            summary: "Obtener todos los equipos del torneo",
+            description:"Se obtienen todos los equipos de un torneo en particular, pasando por parametro el id del torneo"
+        }),
+        ApiResponse({status: 201, description: "Un array de objetos equipo con los usuarios que pertencen al equipo"}),
+        ApiResponse({status: 404, description: "No se encontraron equipos inscriptos en este torneo"})
+    )
+}
