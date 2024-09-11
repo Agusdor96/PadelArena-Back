@@ -1,7 +1,7 @@
-import { Category } from '../category/entities/category.entity';
-import { Match } from '../match/entities/match.entity';
-import { TournamentEntity } from '../tournament/entities/tournament.entity';
-import { User } from '../user/entities/user.entity';
+import { Category } from '../../category/entities/category.entity';
+import { Match } from '../../match/entities/match.entity';
+import { TournamentEntity } from '../../tournament/entities/tournament.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   Column,
   Entity,

@@ -1,6 +1,6 @@
-import { Round } from "../fixture/entities/round.entity";
-import { Team } from "../team/entities/team.entity";
-import { TournamentEntity } from "../tournament/entities/tournament.entity";
+import { Round } from "../../fixture/entities/round.entity";
+import { Team } from "../../team/entities/team.entity";
+import { TournamentEntity } from "../../tournament/entities/tournament.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {v4 as uuid} from 'uuid'
 
