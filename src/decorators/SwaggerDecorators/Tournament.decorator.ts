@@ -5,7 +5,7 @@ export function SwaggerNewTournament() {
     return applyDecorators(
         ApiOperation({
             summary: "Crear un nuevo torneo",
-            description:"El organizador debe tener el rol de ADMINISTRADOR. Es él, el que llenando los campos con la informacion solicitada segun sus preferencias, podra crear un nuevo torneo para que los jugadores puedan inscribirse y participar. El PlusCode se obtiene al seleccionar una ubicacion de comercio desde google maps"
+            description:"**ORGANIZADOR**. El organizador debe tener el rol de ADMINISTRADOR. Es él, el que llenando los campos con la informacion solicitada segun sus preferencias, podra crear un nuevo torneo para que los jugadores puedan inscribirse y participar. El PlusCode se obtiene al seleccionar una ubicacion de comercio desde google maps"
         }),
         ApiResponse({status: 201, description: "Devuelve el torneo creado con todos sus detalles"}),
         ApiResponse({status: 400, description: "BadRequestException"})
@@ -35,7 +35,7 @@ export function SwaggerCloseInscriptions() {
     return applyDecorators(
         ApiOperation({
             summary: "Cerrar las inscripciones del torneo",
-            description:"A traves de este endpoint el organizador podra cerrar las inscripciones de los torneos una vez que cumpla con la cantidad de equipos requeridos. Esto ejecutara una funcion que actualiza las inscripciones del torneo y a su vez se creara el fixture con la primer ronda del torneo y sus respectivos partidos."
+            description:"**ORGANIZADOR**. A traves de este endpoint el organizador podra cerrar las inscripciones de los torneos una vez que cumpla con la cantidad de equipos requeridos. Esto ejecutara una funcion que actualiza las inscripciones del torneo y a su vez se creara el fixture con la primer ronda del torneo y sus respectivos partidos."
         }),
         ApiResponse({status: 201, description: "Devuelve un mensaje de exito con el id del Fixture correspondiente al torneo."}),
         ApiResponse({status: 400, description: "BadRequestException"}),
