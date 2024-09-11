@@ -7,7 +7,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleEnum } from './roles.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { SwaggerUpdateUser,SwaggerMakeMeAdmin } from 'src/decorators/SwaggerDecorators/User.decorator';
+import { SwaggerUpdateUser,SwaggerMakeMeAdmin, SwaggerUpdateUserCategory, SwaggerGetAllUsers, SwaggerGetUsersByCategory, SwaggerGetUsersFromTournament, SwaggerGetOneUser } from 'src/decorators/SwaggerDecorators/User.decorator';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 import { AdminKeyDto } from './dto/adminKey.dto';
 import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
@@ -19,6 +19,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @Get()
+  @SwaggerGetAllUsers()
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(PasswordInterceptor)
@@ -28,6 +29,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @Get('category/:categoryId')
+  @SwaggerGetUsersByCategory()
   @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getUsersBy(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
@@ -57,6 +59,7 @@ export class UserController {
   
   @ApiBearerAuth()
   @Put("updateCategory/:userId")
+  @SwaggerUpdateUserCategory()
   @Roles(RoleEnum.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(PasswordInterceptor)
@@ -68,6 +71,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @Get('tournament/:userId')
+  @SwaggerGetUsersFromTournament()
   @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getUserTournament(@Param('userId', ParseUUIDPipe) userId: string) {
@@ -76,6 +80,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @Get(':id')
+  @SwaggerGetOneUser()
   @UseGuards(AuthGuard)
   @UseInterceptors(PasswordInterceptor)
   getOneUser(@Param('id', ParseUUIDPipe) id: string) {
