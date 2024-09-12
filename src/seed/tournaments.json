@@ -17,8 +17,8 @@
   {
     "name": "Copa Padel Arena",
     "startDate": "2024-09-12",
-    "startTime": "13:00",
-    "endTime": "14:00",
+    "startTime": "15:00",
+    "endTime": "18:00",
     "playingDays": ["Jueves", "Viernes"],
     "teamsQuantity": 16,
     "matchDuration": 30,
