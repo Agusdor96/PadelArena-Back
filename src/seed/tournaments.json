@@ -19,7 +19,7 @@
     "startDate": "2024-09-12",
     "startTime": "13:00",
     "endTime": "14:00",
-    "playingDays": ["Jueves, Viernes"],
+    "playingDays": ["Jueves", "Viernes"],
     "teamsQuantity": 16,
     "matchDuration": 30,
     "courts": 6,
