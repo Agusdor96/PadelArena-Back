@@ -2,15 +2,13 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
-import { In, Repository } from 'typeorm';
-import { Category } from 'src/category/entities/category.entity';
+import { Repository } from 'typeorm';
+import { Category } from '../category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
-import { FixtureService } from 'src/fixture/fixture.service';
+import { FixtureService } from '../fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
-import { FileService } from 'src/file/file.service';
 import { addDays, format, parse, differenceInHours } from 'date-fns';
-import { Team } from 'src/team/entities/team.entity';
 
 @Injectable()
 export class TournamentService {
@@ -127,7 +125,6 @@ constructor(
     if(!tournament){
       throw new NotFoundException("No se encuentra torneo con el id proporcionado")
     }
-  
     return tournament;
   }
 

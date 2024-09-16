@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, ParseUUIDPipe, UseGuards} from '@ne
 import { TeamService } from './team.service';
 import { TeamDto } from './dto/team.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { SwaggerGetAllTeams, SwaggerGetOneTeam, SwaggerTeamsInscription } from '../decorators/SwaggerDecorators/Team.decorator';
 
 

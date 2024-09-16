@@ -1,16 +1,16 @@
 import { Body, Controller, Get, Param, ParseUUIDPipe, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
 import { RoleEnum } from './roles.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { SwaggerUpdateUser,SwaggerMakeMeAdmin, SwaggerUpdateUserCategory, SwaggerGetAllUsers, SwaggerGetUsersByCategory, SwaggerGetUsersFromTournament, SwaggerGetOneUser } from 'src/decorators/SwaggerDecorators/User.decorator';
+import { SwaggerUpdateUser,SwaggerMakeMeAdmin, SwaggerUpdateUserCategory, SwaggerGetAllUsers, SwaggerGetUsersByCategory, SwaggerGetUsersFromTournament, SwaggerGetOneUser } from '../decorators/SwaggerDecorators/User.decorator';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 import { AdminKeyDto } from './dto/adminKey.dto';
-import { UserIdINterceptor } from 'src/interceptors/userId.interceptor';
+import { UserIdINterceptor } from '../interceptors/userId.interceptor';
 
 @ApiTags("USUARIOS")
 @Controller('users')

@@ -1,5 +1,5 @@
 import { IsArray, IsDate, IsNotEmpty, IsOptional, MaxLength, MinLength} from "class-validator"
-import { Team } from "src/team/entities/team.entity"
+import { Team } from "../../team/entities/team.entity"
 
 export class MatchDto {
 

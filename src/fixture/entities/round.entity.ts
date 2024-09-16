@@ -1,4 +1,4 @@
-import { Match } from "src/match/entities/match.entity";
+import { Match } from "../../match/entities/match.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Fixture } from "./fixture.entity";

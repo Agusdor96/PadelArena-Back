@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
-import { User } from 'src/user/entities/user.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
+import { User } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { FileRepository } from './file.repository';
 
