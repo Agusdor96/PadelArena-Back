@@ -19,7 +19,6 @@ export class UserIdINterceptor implements NestInterceptor{
         const paramsId = request.params.id || request.params.userId;
         const decriptedToken = this.jwtService.decode(token);
 
-        console.log(request.params);
         if(paramsId){
             if(paramsId != decriptedToken.id){
                 throw new UnauthorizedException(`No autorizado. (params)`);

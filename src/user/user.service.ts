@@ -4,7 +4,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as data from '../seed/users.json';
 import * as bcrypt from 'bcrypt'
-import { Category } from 'src/category/entities/category.entity';
+import { Category } from '../category/entities/category.entity';
 import { GoogleUserDto } from './dto/googleUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UpdateUserCategoryDto } from './dto/userCategory.dto';
@@ -82,7 +82,7 @@ constructor(
     return cleanUser;
   }  
 
- async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
+  async updateUserProfile(userId: string, modifiedUser: UpdateUserDto) {
     const userToUpdate = await this.userRepository.findOneBy({id:userId})
     if(!userToUpdate){
       throw new NotFoundException("No se encontro usuario con el Id proporcionado")
@@ -102,7 +102,7 @@ constructor(
      return outPasswordUser;
   }
 
-async updateUserRole(userId: string, adminKey: AdminKeyDto) {
+  async updateUserRole(userId: string, adminKey: AdminKeyDto) {
     const user = await this.getUserById(userId)
     if(!user)throw new NotFoundException("No se encuentra usuario con el id proporcionado")
     if(adminKey.secretKey !== this.adminKey)throw new ForbiddenException("La clave no es correcta")
@@ -121,6 +121,7 @@ async updateUserRole(userId: string, adminKey: AdminKeyDto) {
       }
     return user;
   }
+  
   async getUserById(id: string): Promise<User> {
     const user = await this.userRepository.findOne({where:{id}, relations:{category:true, team:true}})
       if(!user){

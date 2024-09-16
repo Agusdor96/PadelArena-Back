@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
 import { Repository } from 'typeorm';
-import { Team } from 'src/team/entities/team.entity';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
+import { Team } from '../team/entities/team.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
 import { format } from 'date-fns-tz';
 
 @Injectable()
@@ -13,7 +13,6 @@ export class MatchService {
     @InjectRepository(Team) private teamRepository: Repository<Team>,
     @InjectRepository(TournamentEntity)
     private tournamentRepository :Repository<TournamentEntity>,
-  //   @Inject() private tournamentService: TournamentService,
   ) {}
 
   async createMatch({ teams, tournament, currentMatchTime, currentDayIndex }) {
@@ -46,16 +45,5 @@ export class MatchService {
       );
     }
     return matches;
-  }
-
-  async getOneMatch(teamId: string) {
-    const match = await this.matchRepository.findOneBy({ id: teamId });
-    if (!match) {
-      throw new NotFoundException(
-        'No se encontro ningun partido con el id proporcionado',
-      );
-    }
-
-    return match;
   }
 }

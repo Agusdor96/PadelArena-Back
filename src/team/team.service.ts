@@ -8,13 +8,13 @@ import { TeamDto } from './dto/team.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Team } from './entities/team.entity';
 import { In, Repository } from 'typeorm';
-import { TournamentService } from 'src/tournament/tournament.service';
-import { User } from 'src/user/entities/user.entity';
+import { TournamentService } from '../tournament/tournament.service';
+import { User } from '../user/entities/user.entity';
 import * as data from '../seed/team.json';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
-import { StatusEnum } from 'src/tournament/tournament.enum';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
+import { StatusEnum } from '../tournament/tournament.enum';
 import { validate as uuidValidate } from 'uuid';
-import { PaymentDetail } from 'src/mercado-pago/entities/paymentDetail.entity';
+import { PaymentDetail } from '../mercado-pago/entities/paymentDetail.entity';
 import { sender } from './inscriptionMail';
 
 @Injectable()
@@ -47,6 +47,8 @@ export class TeamService {
       throw new NotFoundException(
         'No se encuentra torneo con el id proporcionado',
       );
+    
+    if(tournament.team.length >= tournament.teamsQuantity) throw new BadRequestException("Las inscripciones de este torneo estan completas")
 
     const players = await this.userRepository.find({
       where: { id: In(TeamDto.players) },

@@ -1,7 +1,7 @@
-import { Category } from 'src/category/entities/category.entity';
-import { Fixture } from 'src/fixture/entities/fixture.entity';
-import { Match } from 'src/match/entities/match.entity';
-import { Team } from 'src/team/entities/team.entity';
+import { Category } from '../../category/entities/category.entity';
+import { Fixture } from '../../fixture/entities/fixture.entity';
+import { Match } from '../../match/entities/match.entity';
+import { Team } from '../../team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import {v4 as uuid} from 'uuid';
 import { InscriptionEnum, StatusEnum } from '../tournament.enum';
@@ -64,7 +64,7 @@ export class TournamentEntity {
   @Column("text", { array: true, nullable: true })
     gallery: string[]
 
-  @Column({type: 'text', nullable: false, default: 'https://assets-decimas-2.s3.amazonaws.com/uploads/2023/03/como-aprender-jugar-padel.jpg'})
+  @Column({type: 'text', nullable: false, default: 'https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726077682/wradydhdk2n7rbhc7v39.jpg'})
     tournamentFlyer: string
 
   @Column()

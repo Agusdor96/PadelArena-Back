@@ -1,4 +1,4 @@
-import { TournamentEntity } from "src/tournament/entities/tournament.entity";
+import { TournamentEntity } from "../../tournament/entities/tournament.entity";
 import {  Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Round } from "./round.entity";

@@ -3,12 +3,12 @@ import { IsArray, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUU
 
 
 export class CreateTournamentDto {
-    @ApiProperty({ description: 'Nombre que se le quiera dar al torneo', example: 'Torneo de Verano' })
+    @ApiProperty({ description: 'Nombre que se le quiera dar al torneo', example: 'Torneo Prueba' })
     @IsNotEmpty()
     @IsString()
         name: string;
     
-    @ApiProperty({ description: 'Fecha de inicio del torneo', example: '2024-12-24' })
+    @ApiProperty({ description: 'Fecha de inicio del torneo', example: '2024-12-20' })
     @IsDateString()
     @IsNotEmpty()
         startDate: Date;
@@ -23,7 +23,7 @@ export class CreateTournamentDto {
     @IsString()
         endTime: string;
 
-    @ApiProperty({ description: 'Dias en los que se desarrollara el torneo', example: ' ["Lunes", "Miércoles", "Viernes"]' })
+    @ApiProperty({ description: 'Dias en los que se desarrollara el torneo', example: ' ["Lunes", "Miércoles"]' })
     @IsArray()
     @IsNotEmpty()
         playingDays: string[];
@@ -44,11 +44,11 @@ export class CreateTournamentDto {
     @IsNumber()
         courts: number;
 
-    @ApiProperty({ description: 'Descripcion del torneo', example: 'El torneo de verano más esperado con un premio de 5000€. ¡Prepárate para la competición!' })
+    @ApiProperty({ description: 'Descripcion del torneo', example: 'El torneo más esperado. ¡Prepárate para la competición!' })
     @IsNotEmpty()
         description: string;
 
-    @ApiProperty({ description: 'Alguna imagen de portada', example: '/images/default-image.jpg' })
+    @ApiProperty({ description: 'Alguna imagen de portada', example: 'https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726077682/wradydhdk2n7rbhc7v39.jpg' })
     @IsOptional()
         tournamentFlyer: string;
 

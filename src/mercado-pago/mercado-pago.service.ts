@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
 import { Payment, Preference } from 'mercadopago';
-import { client } from 'src/config/mercadopago';
+import { client } from '../config/mercadopago';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentDetail } from './entities/paymentDetail.entity';
 import { Repository } from 'typeorm';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
-import { User } from 'src/user/entities/user.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
+import { User } from '../user/entities/user.entity';
 import * as crypto from 'crypto';
-import { InscriptionEnum } from 'src/tournament/tournament.enum';
+import { InscriptionEnum } from '../tournament/tournament.enum';
 
 @Injectable()
 export class MercadoPagoService {
@@ -42,7 +43,6 @@ export class MercadoPagoService {
     if (!user) {
       throw new NotFoundException('No se encontró al usuario');
     }
-    console.log(user.category.name, "?=", tournament.category.name);
     
     if(user.category.name !== tournament.category.name) throw new BadRequestException("El usuario debe pertencer a la categoria del torneo")
 
@@ -110,9 +110,7 @@ export class MercadoPagoService {
     const paymentCompleted = await this.paymentDetailRepository.save(pay);
     
     if (paymentCompleted.status === 'approved') {
-      await this.paymentDetailRepository.update(paymentCompleted.id, {
-        successInscription: true,
-      });
+
       const paymentApproved = await this.paymentDetailRepository.findOne({
         where: { id: paymentCompleted.id }, relations: {user:true, tournament:true}
       });
@@ -131,6 +129,21 @@ export class MercadoPagoService {
       ...paymentClean,
     };
     return { message: response };
+  }
+
+  async updateSuccessInscription(paymentId: string) {
+    const paymentInDb = await this.paymentDetailRepository.findOne({where:{payment_id:paymentId}})
+    if(!paymentInDb) throw new NotFoundException("No se encontro pago con el id proporcionado")
+    if(paymentInDb.successInscription === true) throw new NotFoundException("El estado de la inscripcion de este pago ya fue actualizado")
+
+    try{
+      await this.paymentDetailRepository.update({ payment_id: paymentId }, {
+        successInscription: true,
+      });
+      return ("El estado de la inscripcion en el pago fue actualizado con exito");
+    }catch (error){
+      throw new ConflictException("No se logro actualizar el estado de la inscripcion en el pago")
+    }
   }
 
   getpayment(id: string) {

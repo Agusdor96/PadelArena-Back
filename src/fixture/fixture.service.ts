@@ -5,17 +5,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
 import { Repository } from 'typeorm';
 import { Fixture } from './entities/fixture.entity';
 import { Round } from './entities/round.entity';
-import { MatchService } from 'src/match/match.service';
-import { Match } from 'src/match/entities/match.entity';
-import { PlayerStadisticsService } from 'src/player-stadistics/player-stadistics.service';
+import { MatchService } from '../match/match.service';
+import { Match } from '../match/entities/match.entity';
+import { PlayerStadisticsService } from '../player-stadistics/player-stadistics.service';
 import { getMinutes, getHours, parse, addMinutes} from 'date-fns';
 import {  format } from 'date-fns-tz';
-import { Team } from 'src/team/entities/team.entity';
-import { StatusEnum } from 'src/tournament/tournament.enum';
+import { Team } from '../team/entities/team.entity';
+import { StatusEnum } from '../tournament/tournament.enum';
 
 
 @Injectable()
@@ -139,11 +139,9 @@ export class FixtureService {
     if (!tournament.fixture) {
       const round = await this.roundRepository.save(newRound);
       return round;
-    }
-          
+    }  
     newRound.fixture = tournament.fixture;
 
-    
     const round = await this.roundRepository.save(newRound);
     const returnRound = await this.roundRepository.findOne({where:{id:round.id}, relations:{matches:{teams:true, teamWinner:true}}})
     return returnRound;     
@@ -161,7 +159,7 @@ export class FixtureService {
     const teamIdInMatch = teamsIds.includes(winnerId);
     if (!teamIdInMatch) throw new BadRequestException('El equipo debe pertenecer al partido para poder ganarlo');
     
-    const winnerTeam: Team = await this.teamRepository.findOne({where:{id:winnerId}})
+    const winnerTeam: Team = await this.teamRepository.findOne({where:{id:winnerId}, relations:{user:{playerStadistic:true}}})
 
     match.teamWinner = winnerTeam
 
@@ -181,7 +179,8 @@ export class FixtureService {
     const tournamentFromMatch = match.tournament.id
 
     if (round.stage === 'final') {
-      await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED, teamWinner:winnerTeam})
+    await this.tournamentRepository.update(tournamentFromMatch, {status:StatusEnum.FINISHED, teamWinner:winnerTeam})
+    await this.playerStatsService.addTournamentWinner(winnerTeam)
       return fixtureFromRound;
     } 
     const allMatchesFromThatRound = round.matches;

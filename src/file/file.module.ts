@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileController } from './file.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { TournamentEntity } from 'src/tournament/entities/tournament.entity';
+import { User } from '../user/entities/user.entity';
+import { TournamentEntity } from '../tournament/entities/tournament.entity';
 import { FileRepository } from './file.repository';
-import { CloudinaryConnection } from 'src/config/cloudinary';
+import { CloudinaryConnection } from '../config/cloudinary';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, TournamentEntity])],

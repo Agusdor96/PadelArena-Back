@@ -2,13 +2,14 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
-import { Category } from 'src/category/entities/category.entity';
-import { GoogleUserDto } from 'src/user/dto/googleUser.dto';
-import { CredentialsDto, UserDto } from 'src/user/dto/user.dto';
-import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
+import { Category } from '../category/entities/category.entity';
+import { GoogleUserDto } from '../user/dto/googleUser.dto';
+import { UserDto } from '../user/dto/user.dto';
+import { User } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
 import { Repository } from 'typeorm';
 import { sender } from './mail';
+import { CredentialsDto } from '../user/dto/credential.dto';
 
 
 @Injectable()

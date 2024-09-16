@@ -2,15 +2,13 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
-import { In, Repository } from 'typeorm';
-import { Category } from 'src/category/entities/category.entity';
+import { Repository } from 'typeorm';
+import { Category } from '../category/entities/category.entity';
 import { InscriptionEnum, StatusEnum } from './tournament.enum';
-import { FixtureService } from 'src/fixture/fixture.service';
+import { FixtureService } from '../fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';
-import { FileService } from 'src/file/file.service';
 import { addDays, format, parse, differenceInHours } from 'date-fns';
-import { Team } from 'src/team/entities/team.entity';
 
 @Injectable()
 export class TournamentService {
@@ -18,13 +16,10 @@ export class TournamentService {
 constructor(
   @InjectRepository(TournamentEntity) private tournamentRepository: Repository<TournamentEntity>,
   @InjectRepository(Category) private categoryRepository: Repository<Category>,
-  @Inject() private fixtureService: FixtureService,
-  @Inject() private fileService: FileService,
-  @InjectRepository(Team) private teamRepository: Repository<Team>
+  @Inject() private fixtureService: FixtureService
 ){}
 
   async createTournament(createTournamentDto:any) {
-
     const category = await this.categoryRepository.findOne({where: {id:createTournamentDto.category}});
     if(!category) throw new BadRequestException("Solo podes crear un torneo que sea de las categorias definidas")
       
@@ -59,7 +54,7 @@ constructor(
         default: days.push(false);
       }
     });
-  
+    
     if(days.includes(false)) throw new BadRequestException("No pueden haber campos de dias invalidos o vacios")
     if(createTournamentDto.matchDuration < 30) throw new BadRequestException("Los partidos no pueden durar menos de 30 minutos")
     if(createTournamentDto.courts < 1) throw new BadRequestException("Debe haber al menos una cancha disponible")
@@ -80,9 +75,10 @@ constructor(
   
       const tournamentDuration = Math.ceil(totalMatches / matchesPerDay);
       const endDate = addDays(new Date(createTournamentDto.startDate), tournamentDuration);
+
       const tournament = new TournamentEntity();
-      tournament.name = createTournamentDto.name;
-      tournament.startDate = createTournamentDto.startDate;
+        tournament.name = createTournamentDto.name;
+        tournament.startDate = createTournamentDto.startDate;
         tournament.endDate = endDate;
         tournament.startingTime = format(startTime, "HH:mm"); 
         tournament.finishTime = format(endTime, "HH:mm");
@@ -99,7 +95,6 @@ constructor(
       
       const newTournament = await this.tournamentRepository.save(tournament);
       return newTournament;
-
   }
 
   async getAllTournaments() {
@@ -120,7 +115,7 @@ constructor(
         id:id
       },
       relations: {
-        team:true,
+        team:{user:true},
         matches:true,
         fixture:true,
         category: true,
@@ -130,7 +125,6 @@ constructor(
     if(!tournament){
       throw new NotFoundException("No se encuentra torneo con el id proporcionado")
     }
-  
     return tournament;
   }
 
@@ -187,10 +181,4 @@ constructor(
     }
     return {message: "Torneos cargados con exito"}
   } 
-
-  // async tournamentWinner(userId: string) {
-  //   const team = await this.
-  //   const tournament = await this.tournamentRepository.find({where: {teamWinner: }})
-  //   console.log(tournament);
-  // }
 }

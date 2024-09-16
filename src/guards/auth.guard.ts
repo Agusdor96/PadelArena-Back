@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate{
         if(!token){
             throw new BadRequestException("No se encontro el Bearer token")
         }
-
+    
         try{
             const secret = process.env.JWT_SECRET
             const userPayload = this.JWTservice.verify(token,{secret})
@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate{
             return true;
 
         } catch (err){
-            throw new UnauthorizedException("Token invalido")
+            throw new UnauthorizedException("Token invalido (guard)")
         }
     }
 }

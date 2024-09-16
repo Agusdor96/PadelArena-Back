@@ -1,10 +1,10 @@
-import { Category } from "src/category/entities/category.entity";
-import { PlayerStadistic } from "src/player-stadistics/entities/player-stadistic.entity";
-import { Team } from "src/team/entities/team.entity";
+import { Category } from "../../category/entities/category.entity";
+import { PlayerStadistic } from "../../player-stadistics/entities/player-stadistic.entity";
+import { Team } from "../../team/entities/team.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RoleEnum } from "../roles.enum";
 import {v4 as uuid} from 'uuid';
-import { Message } from "src/global-chat/entities/message.entity";
+import { Message } from "../../global-chat/entities/message.entity";
 
 @Entity({
     name: "USERS"  
@@ -37,7 +37,7 @@ export class User {
     @Column('text', {nullable: true})
         address:string
 
-    @Column({ type: "text", nullable: true, default: "https://asset.cloudinary.com/ds7jn3ymr/07244713074f55f66782faa03a555811" })
+    @Column({ type: "text", nullable: true, default: "https://res.cloudinary.com/ds7jn3ymr/image/upload/v1726010405/userPadel_njifpz.webp"})
         profileImg?: string
 
     @Column({nullable: true})

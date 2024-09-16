@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Message } from './entities/message.entity';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { Socket } from 'socket.io';
 
 @Injectable()
@@ -34,7 +34,10 @@ export class GlobalChatService {
     async getAllMessages(){
         const dbMessages = await this.messagesRespository.find({
             order: {createdAt:"DESC"}, take:15, relations:{sender:true}
-        })          
+        })    
+        
+        if(!dbMessages.length)return ("Todavia no hay mensajes")
+
         const messages = dbMessages.map((oneMessage) =>({
             content: oneMessage.content,
             sender: oneMessage.sender.name
