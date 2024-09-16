@@ -60,124 +60,11 @@ Para levantar el proyecto es importante tener las siguientes variables de entorn
 
 ## Referencias principales de la API
 
-#### Swagger
+#### [SwaggerDocu](https://padelarena.onrender.com/api)
+⏰ La documentacion demora la menos 1 minutos en cargar ya que la app esta deployada en la version gratuita de render
 
-```http
-  GET /api
-```
 
-#### Iniciar de sesion por google
 
-```http
-  GET /auth/google-sign
-```
-
-| Body | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `name`      | `string` | **Requerido**. Nombre del usuario. |
-| `email` | `string` | **Requerido**. Email del usuario.
-
-`Para conocer las otras formas de iniciar sesion, visita swagger`
-
-#### Buscar usuarios por categoria
-
-```http
-  GET /users/category/{categoryId}
-```
-
-| Parametros | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `categoryId`      | `string` | **Requerido**. Id de la categoria. |
-
-#### Cambiar la categoria de los usuarios
-
-```http
-  PUT /users/updateCategory/{userId}
-```
-
-| Parametros | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `userId`      | `string` | **Requerido**. Id del usuario. |
-
-| Body | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `category`      | `uuid` | **Requerido**. |
-
-`La categoria solo puede ser cambiada por el administrador`
-
-#### Buscar los torneos donde el usuario esta vinculado
-
-```http
-  GET /users/tournament/{userId}
-```
-
-| Parametros | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `userId`      | `string` | **Requerido**. Id del usuario. |
-
-#### Obtener las categorias
-
-```http
-  GET /category
-```
-
-#### Subir un equipo
-
-```http
-  PUT /tournament-team/{tournamentId}
-```
-
-| Parametros | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `tournamentId`      | `string` | **Requerido**. Id del torneo. |
-
-| Body | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `user 1`      | `uuid` | **Requerido**. |
-| `user 2`      | `uuid` | **Requerido**. |
-
-#### Crear un torneo
-
-```http
-  POST /tournament/new
-```
-
-| Body | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `name`      | `string` | **Requerido**. Nombre del torneo. |
-| `startDate`      | `string` | **Requerido**. Fecha de inicio prevista. |
-| `endTime`      | `string` | **Requerido**. Fecha de final prevista. |
-| `playingDays`      | `string` | **Requerido**. Array con dias de la semana a jugar. Ejemplo: ['Lunes', 'Martes']. |
-| `teamsQuantity`      | `number` | **Requerido**. Cantidad de equipos a jugar (16). |
-| `matchDuration`      | `number` | **Requerido**. Duracion prevista para cada partido. |
-| `courts`      | `number` | **Requerido**. Cantidad de canchas disponibles para desarrollar el torneo. |
-| `description`      | `string` | **Requerido**. Pequeña descripcion del mismo (aqui puede ir el premio). |
-| `tournamentFlyer`      | `string` | **Opcional**. Flyer representativo del torneo. |
-| `category`      | `string` | **Requerido**. Categoria sobre la cual se desarrollará el torneo. |
-| `price`      | `number` | **Requerido**. Precio de la inscripción. |
-| `plusCode`      | `string` | **Requerido**. Para la geolocalizacion es necesario ingresar el pluscode de google maps. |
-
-#### Ingresar el equipo ganador de un partido
-
-```http
-  PUT /tournamentfixture/matchWinner/{winnerId}
-```
-
-| Parametros | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `winnerId`      | `string` | **Requerido**. Id del equipo ganador. |
-
-| Body | Tipo     | Descripción                       |
-| :-------- | :------- | :-------------------------------- |
-| `matchId`      | `string` | **Requerido**. Id del partido en cuestión. |
-
-#### Ejecutar un pago
-
-```http
-  POST /mercado-pago/create_preference
-```
-
-`No es necesario enviar nada, ya que esta funcion retorna el link de redireccion a mercado pago`
 ## Authors
 
 - [@Agusdor96](https://github.com/Agusdor96)
@@ -186,4 +73,4 @@ Para levantar el proyecto es importante tener las siguientes variables de entorn
 
 ## Tecnologias utilizadas
 
-**Servidor:** Nest.js, TypeORM, PostgreSQL, Socket.io, Crypto.js, JWT, OAuth, Checkout Pro, Typescript. 
+**Servidor:** Nest.js, TypeORM, PostgreSQL, Socket.io, Crypto.js, JWT, OAuth, Checkout Pro, Typescript.  

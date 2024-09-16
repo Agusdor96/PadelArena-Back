@@ -59,3 +59,4 @@ const swaggerConfig = new DocumentBuilder()
   await app.listen(Number(process.env.SERVER_PORT));
 }
 bootstrap();
+  
