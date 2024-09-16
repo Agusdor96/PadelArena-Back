@@ -61,7 +61,7 @@ Para levantar el proyecto es importante tener las siguientes variables de entorn
 ## Referencias principales de la API
 
 #### [SwaggerDocu](https://padelarena.onrender.com/api)
-⏰ La documentacion demora la menos 1 minutos en cargar ya que la app esta deployada en la version gratuita de render
+⏰ La documentacion demora al menos 1 minutos en cargar ya que la app esta deployada en la version gratuita de render
 
 
 
