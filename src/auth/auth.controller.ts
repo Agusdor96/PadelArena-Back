@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { PasswordsCompare } from '../decorators/EqualPasswords';
+import { PasswordsCompare } from '../decorators/EqualPasswords.decorator';
 import { UserDto } from '../user/dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { GoogleUserDto } from '../user/dto/googleUser.dto';

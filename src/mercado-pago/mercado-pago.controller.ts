@@ -8,7 +8,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { RoleEnum } from '../user/roles.enum';
 import { UserIdINterceptor } from '../interceptors/userId.interceptor';
-import { SwaggerByTournament, SwaggerByUser, SwaggerCreatePreference, SwaggerFeedback, SwaggerGetAllPayments, SwaggerInscriptionStatus } from '../decorators/SwaggerDecorators/Mp.decorators';
+import { SwaggerByTournament, SwaggerByUser, SwaggerCreatePreference, SwaggerFeedback, SwaggerGetAllPayments, SwaggerInscriptionStatus } from '../decorators/SwaggerDecorators/Mp.decorator';
 
 @ApiTags("MERCADO PAGO")
 @Controller('mercado-pago')
