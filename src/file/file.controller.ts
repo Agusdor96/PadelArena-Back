@@ -1,42 +1,15 @@
-import {
-  Controller,
-  FileTypeValidator,
-  MaxFileSizeValidator,
-  Param,
-  ParseFilePipe,
-  ParseUUIDPipe,
-  Post,
-  Put,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, UploadedFile} from '@nestjs/common';
 import { FileService } from './file.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { FileDto } from './dto/file.dto';
-import { UserIdINterceptor } from '../interceptors/userId.interceptor';
-import { AuthGuard } from '../guards/auth.guard';
-import { Roles } from '../decorators/roles.decorator';
-import { RoleEnum } from '../user/roles.enum';
-import { RolesGuard } from '../guards/roles.guard';
-import { SwaggerProfileImage, SwaggerTournamentFlyer } from '../decorators/SwaggerDecorators/Files.decorator';
+import { ApiTags } from '@nestjs/swagger';
+import { CustomTournamentFlyer } from 'src/decorators/controllerDecorators/fileController.decorator';
 
 @ApiTags("ARCHIVOS")
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @ApiBearerAuth()
   @Put('update-tournamentFlyer/:id')
-  @SwaggerTournamentFlyer()
-  @Roles(RoleEnum.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
-  @UseInterceptors(FileInterceptor('file'))
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({description: "Image to be uploaded",
-               type: FileDto,
-          })
+  @CustomTournamentFlyer()
   updateTournamentFlyer(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
@@ -57,15 +30,7 @@ export class FileController {
     return this.fileService.UpdateTournamentFlyer(id, file)
   }
 
-  @ApiBearerAuth()
   @Put('update-userProfileImage/:id')
-  @SwaggerProfileImage()
-  @UseGuards(AuthGuard)
-  @UseInterceptors(UserIdINterceptor,FileInterceptor('file'))
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({description: "Image to be uploaded",
-               type: FileDto,
-          })
   updateUserProfileImage(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(

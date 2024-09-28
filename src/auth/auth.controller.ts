@@ -4,31 +4,30 @@ import { PasswordsCompare } from '../decorators/EqualPasswords.decorator';
 import { UserDto } from '../user/dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { GoogleUserDto } from '../user/dto/googleUser.dto';
-import { SwaggerGoogleAuth, SwaggerLocalSignIn, SwaggerLocalSignUp } from '../decorators/SwaggerDecorators/Auth.decorator';
 import { CredentialsDto } from '../user/dto/credential.dto';
+import { CustomGoogleSignIn, CustomLocalSignIn, CustomLocalSignUp } from 'src/decorators/controllerDecorators/authController.decorator';
 
 @ApiTags("AUTENTICACION")
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-  @HttpCode(201)
+
   @Post('/local-signup')
-  @SwaggerLocalSignUp()
+  @CustomLocalSignUp()
   signUp (
     @PasswordsCompare()
     @Body() userDto:UserDto) {
     return this.authService.signUpUser(userDto)
   }
 
-  @HttpCode(201)
   @Post('/local-signin')
-  @SwaggerLocalSignIn()
+  @CustomLocalSignIn()
   signIn(@Body() credentials:CredentialsDto) {
     return this.authService.signInUser(credentials)
   }
 
   @Post("google-sign")
-  @SwaggerGoogleAuth()
+  @CustomGoogleSignIn()
   signGoogle(@Body() googleUser:GoogleUserDto){
     return this.authService.authGoogleSign(googleUser);
   }
