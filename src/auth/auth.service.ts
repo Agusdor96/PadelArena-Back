@@ -8,7 +8,7 @@ import { UserDto } from '../user/dto/user.dto';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { Repository } from 'typeorm';
-import { sender } from './mail';
+import { sender } from '../utils/mail';
 import { CredentialsDto } from '../user/dto/credential.dto';
 
 

@@ -2,7 +2,7 @@ import { Category } from "../../category/entities/category.entity";
 import { PlayerStadistic } from "../../player-stadistics/entities/player-stadistic.entity";
 import { Team } from "../../team/entities/team.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { RoleEnum } from "../roles.enum";
+import { RoleEnum } from "../../enums/roles.enum";
 import {v4 as uuid} from 'uuid';
 import { Message } from "../../global-chat/entities/message.entity";
 

@@ -15,7 +15,7 @@ import { PlayerStadisticsService } from '../player-stadistics/player-stadistics.
 import { getMinutes, getHours, parse, addMinutes} from 'date-fns';
 import {  format } from 'date-fns-tz';
 import { Team } from '../team/entities/team.entity';
-import { StatusEnum } from '../tournament/tournament.enum';
+import { StatusEnum } from '../enums/tournament.enum';
 
 
 @Injectable()

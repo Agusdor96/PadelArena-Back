@@ -1,6 +1,6 @@
 import { applyDecorators, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
-import { RoleEnum } from "src/user/roles.enum";
+import { RoleEnum } from "src/enums/roles.enum";
 import { Roles } from "../roles.decorator";
 import { SwaggerGetFixture, SwaggerUpdateMatchWinner } from "../SwaggerDecorators/Fixture.decorator";
 import { AuthGuard } from "src/guards/auth.guard";

@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentEntity } from './entities/tournament.entity';
 import { Repository } from 'typeorm';
 import { Category } from '../category/entities/category.entity';
-import { InscriptionEnum, StatusEnum } from './tournament.enum';
+import { InscriptionEnum, StatusEnum } from '../enums/tournament.enum';
 import { FixtureService } from '../fixture/fixture.service';
 import * as data from "../seed/tournaments.json"
 import { validate as uuidValidate } from 'uuid';

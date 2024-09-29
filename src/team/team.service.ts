@@ -12,10 +12,10 @@ import { TournamentService } from '../tournament/tournament.service';
 import { User } from '../user/entities/user.entity';
 import * as data from '../seed/team.json';
 import { TournamentEntity } from '../tournament/entities/tournament.entity';
-import { StatusEnum } from '../tournament/tournament.enum';
+import { StatusEnum } from '../enums/tournament.enum';
 import { validate as uuidValidate } from 'uuid';
 import { PaymentDetail } from '../mercado-pago/entities/paymentDetail.entity';
-import { sender } from './inscriptionMail';
+import { sender } from '../utils/inscriptionMail';
 
 @Injectable()
 export class TeamService {

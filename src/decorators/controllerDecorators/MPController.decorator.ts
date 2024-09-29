@@ -4,7 +4,7 @@ import { SwaggerCreatePreference, SwaggerFeedback, SwaggerGetAllPayments, Swagge
 import { AuthGuard } from "src/guards/auth.guard";
 import { UserIdINterceptor } from "src/interceptors/userId.interceptor";
 import { HeaderInterceptor } from "src/interceptors/demo.interceptor";
-import { RoleEnum } from "src/user/roles.enum";
+import { RoleEnum } from "src/enums/roles.enum";
 import { Roles } from "../roles.decorator";
 import { RolesGuard } from "src/guards/roles.guard";
 

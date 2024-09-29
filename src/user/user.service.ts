@@ -11,8 +11,8 @@ import { UpdateUserCategoryDto } from './dto/userCategory.dto';
 
 import { AdminKeyDto } from './dto/adminKey.dto';
 import { ConfigService } from '@nestjs/config';
-import { RoleEnum } from './roles.enum';
-import { sender } from './categoryChangeMail';
+import { RoleEnum } from '../enums/roles.enum';
+import { sender } from '../utils/categoryChangeMail';
 
 @Injectable()
 export class UserService {

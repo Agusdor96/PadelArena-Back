@@ -2,7 +2,7 @@ import { applyDecorators, UseGuards, UseInterceptors} from "@nestjs/common";
 import { ApiBearerAuth} from "@nestjs/swagger";
 import { SwaggerCloseInscriptions, SwaggerGetAllTournaments, SwaggerGetOneTournament, SwaggerNewTournament } from "../SwaggerDecorators/Tournament.decorator";
 import { Roles } from "../roles.decorator";
-import { RoleEnum } from "src/user/roles.enum";
+import { RoleEnum } from "src/enums/roles.enum";
 import { AuthGuard } from "src/guards/auth.guard";
 import { RolesGuard } from "src/guards/roles.guard";
 import { TransformTime } from "src/interceptors/dateTime.interceptor";

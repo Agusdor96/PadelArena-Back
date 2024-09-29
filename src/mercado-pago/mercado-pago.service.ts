@@ -16,7 +16,7 @@ import { Repository } from 'typeorm';
 import { TournamentEntity } from '../tournament/entities/tournament.entity';
 import { User } from '../user/entities/user.entity';
 import * as crypto from 'crypto';
-import { InscriptionEnum } from '../tournament/tournament.enum';
+import { InscriptionEnum } from '../enums/tournament.enum';
 
 @Injectable()
 export class MercadoPagoService {

@@ -4,7 +4,7 @@ import { PasswordInterceptor } from '../interceptors/passwords.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
-import { RoleEnum } from './roles.enum';
+import { RoleEnum } from '../enums/roles.enum';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { SwaggerUpdateUser,SwaggerMakeMeAdmin, SwaggerUpdateUserCategory, SwaggerGetAllUsers, SwaggerGetUsersByCategory, SwaggerGetUsersFromTournament, SwaggerGetOneUser } from '../decorators/SwaggerDecorators/User.decorator';

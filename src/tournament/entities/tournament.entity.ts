@@ -4,7 +4,7 @@ import { Match } from '../../match/entities/match.entity';
 import { Team } from '../../team/entities/team.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import {v4 as uuid} from 'uuid';
-import { InscriptionEnum, StatusEnum } from '../tournament.enum';
+import { InscriptionEnum, StatusEnum } from '../../enums/tournament.enum';
 
 
  @Entity({
