@@ -45,7 +45,7 @@ export function SwaggerGetAllPayments() {
         ApiResponse({status: 404, description: "No se encuentran pagos concretados en la BDD"})
     )
 }
-export function SwaggerByTournament() {
+export function SwaggerTournamentPayments() {
     return applyDecorators(
         ApiOperation({
             summary: "Obtener todos los pagos referentes a un torneo",
@@ -55,7 +55,7 @@ export function SwaggerByTournament() {
         ApiResponse({status: 404, description: "NotFoundException"})
     )
 }
-export function SwaggerByUser() {
+export function SwaggerUserPayments() {
     return applyDecorators(
         ApiOperation({
             summary: "Obtener los pagos de un usuario",

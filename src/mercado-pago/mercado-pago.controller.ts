@@ -1,62 +1,42 @@
-import { Controller, Post, Body, UseInterceptors, Get, Param, ParseUUIDPipe, HttpCode, Query, UseGuards, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseUUIDPipe, Query, Put } from '@nestjs/common';
 import { MercadoPagoService } from './mercado-pago.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { dataPaymentDto } from './dtos/dataPayment.dto';
-import { HeaderInterceptor } from '../interceptors/demo.interceptor';
-import { AuthGuard } from '../guards/auth.guard';
-import { RolesGuard } from '../guards/roles.guard';
-import { Roles } from '../decorators/roles.decorator';
-import { RoleEnum } from '../user/roles.enum';
-import { UserIdINterceptor } from '../interceptors/userId.interceptor';
-import { SwaggerByTournament, SwaggerByUser, SwaggerCreatePreference, SwaggerFeedback, SwaggerGetAllPayments, SwaggerInscriptionStatus } from '../decorators/SwaggerDecorators/Mp.decorator';
+import { CustomCreatePreference, CustomFeedBack, CustomGetPayments, CustomInscriptionStatus, CustomTournamentPayments, CustomUserPayments } from 'src/decorators/controllerDecorators/MPController.decorator';
 
 @ApiTags("MERCADO PAGO")
 @Controller('mercado-pago')
 export class MercadoPagoController {
   constructor(private readonly mercadoPagoService: MercadoPagoService) {}
   
-  @ApiBearerAuth()
   @Post('create_preference')
-  @SwaggerCreatePreference()
-  @UseGuards(AuthGuard)
-  @UseInterceptors(UserIdINterceptor)
+  @CustomCreatePreference()
   apiMPConnection(@Body() req: dataPaymentDto){
     return this.mercadoPagoService.mpConnections(req)
   }
   
-  @ApiBearerAuth()
-  @HttpCode(201)
   @Post('feedback')
-  @SwaggerFeedback()
-  @UseInterceptors(HeaderInterceptor)
+  @CustomFeedBack()
   feedbackPayment (@Query('data.id') id: string, @Body() body : string){
     this.mercadoPagoService.encryptHeaders(body)
     this.mercadoPagoService.getpayment(id)
     return id
   }
 
-  @ApiBearerAuth()
   @Put("/inscriptionStatus/:paymentId")
-  @SwaggerInscriptionStatus()
-  @UseGuards(AuthGuard)
+  @CustomInscriptionStatus()
   updateSuccessInscription(@Param("paymentId") paymentId:string){
     return this.mercadoPagoService.updateSuccessInscription(paymentId)
   }
 
-  @ApiBearerAuth()
   @Get('allPayments')
-  @SwaggerGetAllPayments()
-  @Roles(RoleEnum.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @CustomGetPayments()
   getAllPayments(){
     return this.mercadoPagoService.getAllPayments()
   }
 
-  @ApiBearerAuth()
   @Get("byTournament/:tournamentId")
-  @SwaggerByTournament()
-  @Roles(RoleEnum.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @CustomTournamentPayments()
   allTournamentPayments(@Param("tournamentId", ParseUUIDPipe) tournamentId:string){
     try{
       return this.mercadoPagoService.getPaymentsFromTournament(tournamentId)
@@ -64,10 +44,9 @@ export class MercadoPagoController {
       throw err
     }
   }
-  @ApiBearerAuth() 
+
   @Get("byUser/:userId")
-  @SwaggerByUser()
-  @UseGuards(AuthGuard)
+  @CustomUserPayments()
   allUserPayments(@Param("userId", ParseUUIDPipe) userId:string){
     try{
       return this.mercadoPagoService.getPaymentsFromUser(userId)
