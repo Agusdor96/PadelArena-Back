@@ -19,14 +19,12 @@ export function CustomNewTournament(){
 
 export function CustomGetAllTournaments(){
     return applyDecorators(
-        ApiBearerAuth(),
         SwaggerGetAllTournaments()
     )
 }
 
 export function CustomGetTournament(){
     return applyDecorators(
-        ApiBearerAuth(),
         SwaggerGetOneTournament()
     )
 }

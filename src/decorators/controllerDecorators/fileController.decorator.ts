@@ -23,7 +23,7 @@ export function CustomTournamentFlyer(){
     )
 }
 
-export function CustomUserImage(){
+export function CustomUserProfileImage(){
     return applyDecorators(
         ApiBearerAuth(),
         SwaggerProfileImage(),

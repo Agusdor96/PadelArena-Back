@@ -1,7 +1,7 @@
 import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, UploadedFile} from '@nestjs/common';
 import { FileService } from './file.service';
 import { ApiTags } from '@nestjs/swagger';
-import { CustomTournamentFlyer } from 'src/decorators/controllerDecorators/fileController.decorator';
+import { CustomTournamentFlyer, CustomUserProfileImage } from 'src/decorators/controllerDecorators/fileController.decorator';
 
 @ApiTags("ARCHIVOS")
 @Controller('file')
@@ -31,6 +31,7 @@ export class FileController {
   }
 
   @Put('update-userProfileImage/:id')
+  @CustomUserProfileImage()
   updateUserProfileImage(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
