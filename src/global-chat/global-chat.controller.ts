@@ -1,8 +1,7 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import { Controller, Get} from "@nestjs/common";
 import { GlobalChatService } from "./global-chat.service";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "../guards/auth.guard";
-import { SwaggerGetMessages } from "../decorators/SwaggerDecorators/Chat.decorator";
+import { ApiTags } from "@nestjs/swagger";
+import { CustomChat } from "src/decorators/controllerDecorators/chatController.decorator";
 
 @ApiTags("CHAT")
 @Controller('/chat')
@@ -11,10 +10,8 @@ export class ChatController{
         private readonly chatService: GlobalChatService
     ){}
 
-    @ApiBearerAuth()
     @Get()
-    @SwaggerGetMessages()
-    @UseGuards(AuthGuard)
+    @CustomChat()
     getChat(){
         return this.chatService.getAllMessages()
     }

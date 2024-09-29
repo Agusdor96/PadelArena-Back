@@ -9,7 +9,6 @@ import { CustomGetFixture, CustomUpdateWinners } from 'src/decorators/controller
 export class FixtureController {
   constructor(private readonly fixtureService: FixtureService) {}
 
-  
   @Put('matchWinner/:winnerId')
   @CustomUpdateWinners()
   addWinners (@Param('winnerId', ParseUUIDPipe) winnerId: string, @Body() matchId: MatchIdDTO) {
